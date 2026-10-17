@@ -249,3 +249,14 @@ Endpoints: PATCH /api/v1/teacher/students/{studentId}/profile and POST /api/v1/t
 Migrations 009-010 NOT deployed to cloud; cloud remains at 8/8.
 Student creation/provisioning and Batch/Enrollment pages, cloud HTTP smoke tests and remaining parity are not yet complete.
 See docs/TEACHER_ADMIN_STUDENT_PROFILE_WRITE.md and docs/TEACHER_ADMIN_ENROLLMENT_REQUEST_WRITE.md.
+
+<!-- MUSA_TEACHER_CORE_PARTB_V1 -->
+## Teacher Admin Core Management — Combined Part B
+Status: FOUR production-bound read API routes implemented locally; real hosted JWT smoke tests pending.
+- Student directory: status-filtered, bounded, active-teacher-only student profiles.
+- Batch roster: verified batch, filtered enrollments and linked student profile projections.
+- Batch occupancy: active/pending counts and informational remaining seats (write RPC owns capacity locks).
+- Enrollment detail: enrollment, matching student profile and batch details.
+- Supabase Cloud DEV currently at migrations 001–010 (operator verified previously); NO new SQL applied by this part.
+- No original reference parity closure asserted; student provisioning, UI wiring, remaining management tabs and real hosted E2E remain pending.
+- See docs/TEACHER_CORE_MANAGEMENT_PARTB.md.
