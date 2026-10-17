@@ -275,3 +275,12 @@ No DB/cloud changes or Git push.
 - 264/264 tests, lint, typecheck and production build passed.
 - Remaining: edit and publishing flows, grading publication and ranking, released-only student readers, UI integration and hosted HTTP E2E.
 - Local feature-wise Git commits only; NEVER pushed.
+
+<!-- MUSA_TEACHER_ACADEMIC_PUBLICATION_PARTD_V1 -->
+## Teacher Academic Publish & Student Results (Part D)
+- Teacher assignment/exam publish and atomic grade release with competition-rank tie handling.
+- Student GET /api/v1/student/results shows only active owner enrolled and published results through a verified RPC.
+- Local-only SQL migrations 014-016, real PostgreSQL rollback QA, 278/278 tests, lint, typecheck and build verified.
+- Cloud DEV remains on migrations 001-010; next migrations 011-016 require explicit approval.
+- Still pending: live signed-JWT HTTP smoke, assignment submissions/grades, module edits, UI and original feature parity.
+- Three local feature-wise commits; no Git push.
