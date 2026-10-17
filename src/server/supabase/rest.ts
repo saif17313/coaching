@@ -40,7 +40,7 @@ export async function readSupabaseRows<T>(
   const { url: root, key } = config();
   const url = new URL(`/rest/v1/${table}`, root);
   for (const [name, value] of Object.entries(query)) {
-    if (!/^(select|id|student_id|batch_id|status|role|code|is_archived|order|limit|offset)$/.test(name)) {
+    if (!/^(select|id|student_id|batch_id|status|role|account_status|code|is_archived|order|limit|offset)$/.test(name)) {
       throw new Error(`Query parameter is not permitted: ${name}`);
     }
     url.searchParams.set(name, value);
