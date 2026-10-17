@@ -260,3 +260,10 @@ Status: FOUR production-bound read API routes implemented locally; real hosted J
 - Supabase Cloud DEV currently at migrations 001–010 (operator verified previously); NO new SQL applied by this part.
 - No original reference parity closure asserted; student provisioning, UI wiring, remaining management tabs and real hosted E2E remain pending.
 - See docs/TEACHER_CORE_MANAGEMENT_PARTB.md.
+
+<!-- MUSA_TEACHER_ACADEMIC_READS_V1 -->
+## Teacher Academic Read Endpoints — Combined Delivery
+Six teacher-only signed-JWT and RLS-scoped GET APIs: subjects, syllabus, routine, assignments, exams, results.
+Verified: 251/251 automated Node tests, lint (warnings permitted), typecheck and production build.
+Remaining: transactional academic write/publish/grade RPCs, student released-only projection and live signed-JWT HTTP QA.
+No DB/cloud changes or Git push.
