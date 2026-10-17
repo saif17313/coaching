@@ -267,3 +267,11 @@ Six teacher-only signed-JWT and RLS-scoped GET APIs: subjects, syllabus, routine
 Verified: 251/251 automated Node tests, lint (warnings permitted), typecheck and production build.
 Remaining: transactional academic write/publish/grade RPCs, student released-only projection and live signed-JWT HTTP QA.
 No DB/cloud changes or Git push.
+
+<!-- MUSA_TEACHER_ACADEMIC_TRANSACTIONAL_PARTC_V1 -->
+## Teacher Academic Transactional Part C
+- Six teacher-only audited, idempotent RPC write endpoints implemented: subjects, syllabus, routine, assignment draft, exam draft and draft marks.
+- Local migrations 011–013 applied and rollback-only PostgreSQL QA passed; cloud DEV remains on first ten migrations.
+- 264/264 tests, lint, typecheck and production build passed.
+- Remaining: edit and publishing flows, grading publication and ranking, released-only student readers, UI integration and hosted HTTP E2E.
+- Local feature-wise Git commits only; NEVER pushed.
