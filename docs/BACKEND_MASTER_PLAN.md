@@ -241,3 +241,11 @@ Endpoint: GET /api/v1/teacher/students/{studentId}/management.
 Fields: verified active-teacher access, RLS-scoped student profile/account status and paginated enrollments.
 Does NOT claim Student Management is feature-complete: new student provisioning, edits, bulk actions and UX wiring remain pending.
 See docs/TEACHER_ADMIN_STUDENT_MANAGEMENT_PARTA.md.
+
+<!-- MUSA_TEACHER_WRITE_COMMANDS_009_010 -->
+### Teacher Student Profile + Enrollment Request (Phases 6 and 8)
+Status: local APIs, SQL migrations 009-010, PostgreSQL rollback-only QA, tests and build verified.
+Endpoints: PATCH /api/v1/teacher/students/{studentId}/profile and POST /api/v1/teacher/enrollment-requests.
+Migrations 009-010 NOT deployed to cloud; cloud remains at 8/8.
+Student creation/provisioning and Batch/Enrollment pages, cloud HTTP smoke tests and remaining parity are not yet complete.
+See docs/TEACHER_ADMIN_STUDENT_PROFILE_WRITE.md and docs/TEACHER_ADMIN_ENROLLMENT_REQUEST_WRITE.md.
