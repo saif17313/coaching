@@ -305,3 +305,5 @@ No DB/cloud changes or Git push.
 Student Portal Academic Part G: 7 verified, RLS-scoped GET endpoints (subjects, syllabus, routine, assignments list/detail, published exams list/detail); 340 Node tests. No SQL change. Student submission/auth UI and hosted JWT QA remain pending.
 
 Student Portal Part H: 7 secured assignment and notification workflows, teacher draft grading/publish, 384 Node tests, two local migrations (019/020) with rollback-only PostgreSQL QA. Storage attachments, signed-JWT end-to-end and cloud rollout are pending.
+
+Website CMS Core Part I: 9 protected teacher/public CMS APIs; draft page, ordered section/item, revision-locked audited publication and anonymous published-only snapshot. 405 Node tests; local-only migration 021 and PostgreSQL rollback QA. Storage uploads, global settings writes, Shifat's Tales exact field parity, frontend and cloud signed-JWT E2E are NOT complete.
