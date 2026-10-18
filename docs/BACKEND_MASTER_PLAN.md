@@ -303,3 +303,5 @@ No DB/cloud changes or Git push.
 - Cloud DEV stays at 10 migrations. No environment mutations, DB reset, seed or Git push.
 
 Student Portal Academic Part G: 7 verified, RLS-scoped GET endpoints (subjects, syllabus, routine, assignments list/detail, published exams list/detail); 340 Node tests. No SQL change. Student submission/auth UI and hosted JWT QA remain pending.
+
+Student Portal Part H: 7 secured assignment and notification workflows, teacher draft grading/publish, 384 Node tests, two local migrations (019/020) with rollback-only PostgreSQL QA. Storage attachments, signed-JWT end-to-end and cloud rollout are pending.
