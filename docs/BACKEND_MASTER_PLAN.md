@@ -311,3 +311,7 @@ Website CMS Core Part I: 9 protected teacher/public CMS APIs; draft page, ordere
 <!-- MUSA_CMS_PARTJ_GLOBAL_SETTINGS -->
 ### Website CMS Part J — Global Settings, Page Archive and Public Navigation
 Verified local CMS settings draft/publish, teacher-only revision locks, anonymous published-only navigation and archive; 424 Node tests, local migration 022 and rollback-only PostgreSQL QA. Media upload, exact Shifat's Tales field parity, frontend and cloud E2E are NOT complete. See docs/WEBSITE_CMS_SETTINGS_NAVIGATION_PARTJ.md.
+
+<!-- MUSA_OFFICE_PARTK_CASHFLOW -->
+### Part K — Teacher Office Expenses / Cashflow / Announcement Lifecycle (local-first)
+Nine signed teacher API routes, two local-only migrations 023–024, immutable expense/reversal journal, transparent UTC cashflow and complete-only CSV, guarded announcement edits/archive, 474 Node tests and rollback-only PostgreSQL QA. UI/media storage, cloud migrations and Shifat's Tales exact field parity are NOT complete. See docs/TEACHER_OFFICE_FINANCE_RESOURCES_PARTK.md.
