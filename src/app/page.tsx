@@ -1,8 +1,4 @@
-export default function HomePage() {
-  return (
-    <main>
-      <h1>Coaching Management System</h1>
-      <p>Repository foundation is ready. Business modules will be implemented phase-by-phase.</p>
-    </main>
-  );
-}
+import {SiteExperience} from '@/components/website/SiteExperience';
+import {publicNavigation,publicPage,publicSettings} from '@/server/website/public-site';
+export const dynamic='force-dynamic';
+export default async function HomePage(){const [page,settings,navigation]=await Promise.all([publicPage('home'),publicSettings(),publicNavigation()]);return <SiteExperience page={page} settings={settings} navigation={navigation}/>;}
