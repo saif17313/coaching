@@ -315,3 +315,7 @@ Verified local CMS settings draft/publish, teacher-only revision locks, anonymou
 <!-- MUSA_OFFICE_PARTK_CASHFLOW -->
 ### Part K — Teacher Office Expenses / Cashflow / Announcement Lifecycle (local-first)
 Nine signed teacher API routes, two local-only migrations 023–024, immutable expense/reversal journal, transparent UTC cashflow and complete-only CSV, guarded announcement edits/archive, 474 Node tests and rollback-only PostgreSQL QA. UI/media storage, cloud migrations and Shifat's Tales exact field parity are NOT complete. See docs/TEACHER_OFFICE_FINANCE_RESOURCES_PARTK.md.
+
+<!-- MUSA_STUDENT_COMPLETION_PARTL -->
+### Part L — Student Portal Dashboard, Profile, Billing, Calendar and Progress
+Seven student-only signed JWT routes, two local-only migrations 025–026, per-student billing reconciliation, published-only grade aggregation, student self-profile edit with idempotency/audit, local rollback QA, 522 Node tests. Password/Auth reauthentication, media, complete frontend, cloud deploy and exact Shifat's Tales parity remain pending. See docs/STUDENT_PORTAL_COMPLETION_PARTL.md.
