@@ -293,3 +293,11 @@ No DB/cloud changes or Git push.
 - Operator must verify 304 Node tests, lint, typecheck and production build before this milestone is accepted.
 - Remaining: resource uploads/downloads, transactional payments/refunds, notification dispatch/read receipts, CSV exports, CMS/frontend parity and hosted signed-JWT E2E.
 - Cloud DEV unchanged, no Git push.
+
+<!-- MUSA_TEACHER_OFFICE_TRANSACTIONAL_PARTF -->
+## Teacher Office Transactional Part F — Finance & Resources
+- Added eight guarded audited write API endpoints (fee plan, monthly dues, payment, waiver, refund, announcement draft/publish and notification dispatch).
+- Added local-only migrations 017/018, no direct client DML, verified teacher+receipt checks, row locks and immutable finance ledger entries.
+- Require 320 tests, lint, typecheck, build, local PostgreSQL lint and rollback-only transaction QA before marking accepted.
+- Still pending: verified storage uploads/materials publishing, correction/export, CMS, complete student portal, frontends and cloud signed-JWT smoke testing.
+- Cloud DEV stays at 10 migrations. No environment mutations, DB reset, seed or Git push.
