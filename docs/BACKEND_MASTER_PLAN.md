@@ -284,3 +284,12 @@ No DB/cloud changes or Git push.
 - Cloud DEV remains on migrations 001-010; next migrations 011-016 require explicit approval.
 - Still pending: live signed-JWT HTTP smoke, assignment submissions/grades, module edits, UI and original feature parity.
 - Three local feature-wise commits; no Git push.
+
+<!-- MUSA_TEACHER_OFFICE_RESOURCES_FINANCE_PARTE -->
+## Teacher Resources, Finance, Reports and Student Read Surfaces — Part E
+- Added 16 protected signed-JWT read/report routes across teacher resources, student released-only content, teacher/student dues/payments, notifications, audit and finance reporting.
+- Read-only PostgREST repository uses same verified bearer under RLS; no new migrations or direct client writes.
+- Complete-only report uses explicit size caps and gross BDT minor-unit strings; does not imply a reconciled outstanding balance.
+- Operator must verify 304 Node tests, lint, typecheck and production build before this milestone is accepted.
+- Remaining: resource uploads/downloads, transactional payments/refunds, notification dispatch/read receipts, CSV exports, CMS/frontend parity and hosted signed-JWT E2E.
+- Cloud DEV unchanged, no Git push.
