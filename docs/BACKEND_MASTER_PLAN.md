@@ -307,3 +307,7 @@ Student Portal Academic Part G: 7 verified, RLS-scoped GET endpoints (subjects, 
 Student Portal Part H: 7 secured assignment and notification workflows, teacher draft grading/publish, 384 Node tests, two local migrations (019/020) with rollback-only PostgreSQL QA. Storage attachments, signed-JWT end-to-end and cloud rollout are pending.
 
 Website CMS Core Part I: 9 protected teacher/public CMS APIs; draft page, ordered section/item, revision-locked audited publication and anonymous published-only snapshot. 405 Node tests; local-only migration 021 and PostgreSQL rollback QA. Storage uploads, global settings writes, Shifat's Tales exact field parity, frontend and cloud signed-JWT E2E are NOT complete.
+
+<!-- MUSA_CMS_PARTJ_GLOBAL_SETTINGS -->
+### Website CMS Part J — Global Settings, Page Archive and Public Navigation
+Verified local CMS settings draft/publish, teacher-only revision locks, anonymous published-only navigation and archive; 424 Node tests, local migration 022 and rollback-only PostgreSQL QA. Media upload, exact Shifat's Tales field parity, frontend and cloud E2E are NOT complete. See docs/WEBSITE_CMS_SETTINGS_NAVIGATION_PARTJ.md.
