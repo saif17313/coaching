@@ -62,7 +62,7 @@ test('Mutations require UUID Idempotency-Key, JSON media type and strict body',a
  }
 });
 test('Public page never allows draft or poisoned snapshots',async()=>{
- for(const poisoned of [{...snapshot,secret:'draft'}, {...snapshot,slug:'another'}, {...snapshot,sections:[{...snapshot.sections[0],items:[{...snapshot.sections[0].items[0],storageKey:'secret'}]}]}, {...snapshot,sections:[{...snapshot.sections[0],items:[{...snapshot.sections[0].items[0],mediaId:ids.item}]}]}]){
+ for(const poisoned of [{...snapshot,secret:'draft'}, {...snapshot,slug:'another'}, {...snapshot,sections:[{...snapshot.sections[0],items:[{...snapshot.sections[0].items[0],storageKey:'secret'}]}]}, {...snapshot,sections:[{...snapshot.sections[0],items:[{...snapshot.sections[0].items[0],mediaId:"NOT_A_UUID"}]}]}]){
   assert.equal((await api('publicPage',teacher,poisoned)(req('publicPage'),ctx)).status,502);
  }
  assert.equal((await api('publicPage',teacher,null)(req('publicPage'),ctx)).status,404);

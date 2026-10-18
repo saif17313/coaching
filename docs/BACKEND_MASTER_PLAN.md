@@ -319,3 +319,13 @@ Nine signed teacher API routes, two local-only migrations 023–024, immutable e
 <!-- MUSA_STUDENT_COMPLETION_PARTL -->
 ### Part L — Student Portal Dashboard, Profile, Billing, Calendar and Progress
 Seven student-only signed JWT routes, two local-only migrations 025–026, per-student billing reconciliation, published-only grade aggregation, student self-profile edit with idempotency/audit, local rollback QA, 522 Node tests. Password/Auth reauthentication, media, complete frontend, cloud deploy and exact Shifat's Tales parity remain pending. See docs/STUDENT_PORTAL_COMPLETION_PARTL.md.
+
+### Combined Part M handoff — verified private CMS media + responsive public website (2026-10-19)
+
+- Base: exact committed `MusaSir_Current_Source_After_PartL.zip`; last verified local HEAD `8a70d6afd7`, 26 migrations and 58 local commits.
+- Adds migration `20261019000500_cms_verified_private_media.sql`, private Storage/RLS, upload registration, media attachment, safe public image serving, and snapshot-based responsive homepage/section rendering.
+- Published page images require registered Storage object, metadata match and archive locks; raw storage keys never enter public page DTOs. Legacy blanket media publication denial is replaced by **verified** publication checks.
+- Requires Windows Node suite, Next.js lint/typecheck/build and real local PostgreSQL rollback-only QA before feature commits; any real Storage HTTP/JWT E2E remains a separate pre-production acceptance gate.
+- Premium visual handoff: navy/jade/ivory/warm-gold, familiar information structure but distinctly upgraded brand treatment, app-like mobile usability; teacher/student/CMS authenticated application shells remain scheduled for Part N.
+- **OPEN**: original Shifat's Tales per-section field mapping (must not claim parity), media image decoder hardening, teacher draft preview, orphan cleanup, browser Auth workflow, upload of receipts/materials, PDF reports, cloud deployment, production security review.
+- This entry does not mark Phases 34–52 complete or modify the roadmap hierarchy.
