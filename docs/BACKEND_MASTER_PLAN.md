@@ -301,3 +301,5 @@ No DB/cloud changes or Git push.
 - Require 320 tests, lint, typecheck, build, local PostgreSQL lint and rollback-only transaction QA before marking accepted.
 - Still pending: verified storage uploads/materials publishing, correction/export, CMS, complete student portal, frontends and cloud signed-JWT smoke testing.
 - Cloud DEV stays at 10 migrations. No environment mutations, DB reset, seed or Git push.
+
+Student Portal Academic Part G: 7 verified, RLS-scoped GET endpoints (subjects, syllabus, routine, assignments list/detail, published exams list/detail); 340 Node tests. No SQL change. Student submission/auth UI and hosted JWT QA remain pending.
