@@ -54,3 +54,10 @@ test('write-readiness includes a typed .d.mts sibling for Next.js route import',
  assert.match(declaration,/runtime: 'local-development' \| 'deployment'/);
  assert.match(declaration,/Readonly<Record<string, string \| undefined>>/);
 });
+
+
+test('deployed read-only status offers hosting configuration guidance, not local launcher',()=>{
+ const hosted=cmsWriteReadiness({NODE_ENV:'production'});assert.equal(hosted.writable,false);assert.match(hosted.detail,/hosting environment/);assert.doesNotMatch(hosted.detail,/DEV write launcher/);
+ const local=cmsWriteReadiness({NODE_ENV:'development'});assert.match(local.detail,/local DEV write launcher/);
+ const editor=read('../src/components/portal/WebsiteAdminStudio.tsx');assert.match(editor,/writeRuntime==='deployment'/);assert.match(editor,/COACHING_ENABLE_MUTATION_APIS=enabled-after-db-verification/);
+});

@@ -48,6 +48,7 @@ export function WebsiteAdminStudio({target}:{target?:{id?:string;sectionId?:stri
  const [section,setSection]=useState(emptySection),[item,setItem]=useState(emptyItem),[media,setMedia]=useState<Media[]>([]),[selectedMedia,setSelectedMedia]=useState(''),[uploadFile,setUploadFile]=useState<File|null>(null),[imageAlt,setImageAlt]=useState('');
  const [global,setGlobal]=useState<SettingsData|null>(null),[settings,setSettings]=useState<SiteSettings>(emptySettings);
  const [writeStatus,setWriteStatus]=useState<'checking'|'enabled'|'disabled'|'unavailable'|'unauthenticated'|'forbidden'>('checking');
+ const [writeRuntime,setWriteRuntime]=useState<'local-development'|'deployment'|null>(null);
  const [persisted,setPersisted]=useState(false);
  const [typedDirty,setTypedDirty]=useState(false);
  const [visualKey,setVisualKey]=useState<string|null>(null),[typedPreview,setTypedPreview]=useState<{sectionId:string;itemId:string;key:string;value:Record<string,unknown>}|null>(null);
@@ -71,6 +72,7 @@ export function WebsiteAdminStudio({target}:{target?:{id?:string;sectionId?:stri
    if(!response.ok||!json||typeof json!=='object'||Reflect.get(json,'success')!==true)throw Error('WRITE_STATUS_UNAVAILABLE');
    const data=Reflect.get(json,'data');
    if(!data||typeof data!=='object'||typeof Reflect.get(data,'writable')!=='boolean')throw Error('WRITE_STATUS_INVALID');
+   const runtime=Reflect.get(data,'runtime');if(runtime==='local-development'||runtime==='deployment')setWriteRuntime(runtime);
    setWriteStatus(Reflect.get(data,'writable')?'enabled':'disabled');
   }catch{if(!signal?.aborted&&sequence===statusSequence.current)setWriteStatus('unavailable');}
  },[]);
@@ -186,7 +188,7 @@ export function WebsiteAdminStudio({target}:{target?:{id?:string;sectionId?:stri
 
   <div className={'studio-write-status studio-write-status-'+writeStatus} role="status" aria-live="polite">
    <div><strong>{writeStatus==='enabled'?(persisted?'Database mutation confirmed this session':'Write gate enabled · CMS read service reachable'):writeStatus==='disabled'?'Editor is in read-only server mode':writeStatus==='checking'?'Checking backend write readiness…':writeStatus==='unauthenticated'?'Sign in again to edit':writeStatus==='forbidden'?'Active Teacher access required':'CMS backend could not be reached'}</strong>
-   <p>{writeStatus==='enabled'?(persisted?'The server confirmed an operation and the editor read back the persisted data. Each further edit still requires authorization and revision checks.':'The runtime gate and an authenticated CMS read passed. Write permissions and persistence are verified only after a successful save.'):writeStatus==='disabled'?'Your running Next.js process has the reviewed mutation gate OFF. Close the old server and start RUN_EDUCENTRE_DEV_WRITES.ps1 -Start in the project root. Do not reset Supabase or modify RLS.':writeStatus==='checking'?'Checking the running server—not a different PowerShell terminal.':'Recheck access after resolving the session, permissions or backend availability.'}</p></div>
+   <p>{writeStatus==='enabled'?(persisted?'The server confirmed an operation and the editor read back the persisted data. Each further edit still requires authorization and revision checks.':'The runtime gate and an authenticated CMS read passed. Write permissions and persistence are verified only after a successful save.'):writeStatus==='disabled'?(writeRuntime==='deployment'?'This deployed server has the write gate OFF. Configure COACHING_ENABLE_MUTATION_APIS=enabled-after-db-verification in this Vercel project environment and redeploy after verifying Auth, RLS and RPCs. A local PowerShell launcher cannot change Vercel. Do not reset Supabase or disable RLS.':'Your running local Next.js process has the reviewed mutation gate OFF. Close the old server and start RUN_EDUCENTRE_DEV_WRITES.ps1 -Start in the project root. Do not reset Supabase or modify RLS.'):writeStatus==='checking'?'Checking the running server—not a different PowerShell terminal.':'Recheck access after resolving the session, permissions or backend availability.'}</p></div>
    <button type="button" className="portal-secondary" onClick={()=>void checkWriteStatus()}>Recheck write access ↻</button>
   </div>
   <div className="studio-stepper"><span>01 · Compose</span><span>02 · Preview draft</span><span>03 · Publish</span></div>

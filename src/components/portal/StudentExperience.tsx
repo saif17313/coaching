@@ -21,7 +21,7 @@ const sections:{id:Mode;name:string;hint:string;symbol:string}[]=[
  {id:'billing',name:'Billing',hint:'Reconciled monthly statement',symbol:'৳'},
  {id:'dues',name:'Dues',hint:'Monthly fee obligations',symbol:'◫'},
  {id:'payments',name:'Payments',hint:'Recorded receipts',symbol:'✓'},
- {id:'profile',name:'Profile',hint:'Manage your display name',symbol:'☺'},
+ {id:'profile',name:'My full profile',hint:'Admission, guardian, academic and contact details',symbol:'☺'},
  {id:'calendar',name:'Calendar',hint:'Assignments and exams by date',symbol:'▦'}
 ];
 const weekdays=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
@@ -42,6 +42,8 @@ export function StudentExperience({mode,batchId,batchName,billPeriod,onNavigate,
  const spec=sections.find(x=>x.id===mode)||sections[0],requiresBatch=batchesModes.has(mode),hasBatch=!requiresBatch||!!batchId;
  const paged=['batches','subjects','routine','assignments','exams','materials','announcements','results','notifications','dues','payments'].includes(mode);
  useEffect(()=>{let cancelled=false;Promise.resolve().then(()=>{if(!cancelled){setLoading(true);setError('');setData(null);}});
+  // The admission/profile view owns its verified reader and lifecycle. Never block it on the legacy profile endpoint.
+  if(mode==='profile'){Promise.resolve().then(()=>{if(!cancelled){setData({});setLoading(false);}});return()=>{cancelled=true;};}
   if(!hasBatch){Promise.resolve().then(()=>{if(!cancelled)setLoading(false);});return()=>{cancelled=true;};}
   studentRead(mode,requiresBatch?batchId:'',{offset,limit:20,billPeriod,from,to}).then(value=>{if(!cancelled){setData(value);}}).catch(err=>{if(!cancelled)setError((err as Error).message);}).finally(()=>{if(!cancelled)setLoading(false);});
   return()=>{cancelled=true;};
@@ -63,7 +65,7 @@ export function StudentExperience({mode,batchId,batchName,billPeriod,onNavigate,
  const items=list(data),record=asObject(data),total=typeof record.total==='number'?record.total:null;
  return <section className="student-experience" aria-label="Student learning workspace">
   <div className="student-hero"><div><span className="portal-kicker">EDUCENTRE / STUDENT WORKSPACE</span><h2>{mode==='dashboard'?`A better way to learn, ${str(record.fullName).split(' ')[0]||'every day'}.`:spec.name}</h2><p>{spec.hint}. All information is loaded from your own verified account; drafts and other students’ records stay private.</p></div><div className="student-hero-art" aria-hidden="true"><span>✧</span><i>LEARN / GROW / ACHIEVE</i></div></div>
-  <nav className="student-quicknav" aria-label="Learning shortcuts">{sections.filter(s=>['dashboard','batches','subjects','assignments','exams','results','notifications','billing'].includes(s.id)).map(s=><button key={s.id} onClick={()=>onNavigate(s.id)} className={mode===s.id?'current':''} aria-current={mode===s.id?'page':undefined}><span>{s.symbol}</span>{s.name}</button>)}</nav>
+  <nav className="student-quicknav" aria-label="Learning shortcuts">{sections.filter(s=>['dashboard','batches','subjects','assignments','exams','results','notifications','billing','profile'].includes(s.id)).map(s=><button key={s.id} onClick={()=>onNavigate(s.id)} className={mode===s.id?'current':''} aria-current={mode===s.id?'page':undefined}><span>{s.symbol}</span>{s.name}</button>)}</nav>
   <div className="student-toolbar"><div><span className="portal-kicker">{batchId&&requiresBatch?batchName||'Selected batch':'MY LEARNING SPACE'}</span><h3>{spec.name}</h3><p>{spec.hint}</p></div><button className="portal-secondary" disabled={loading||saving} onClick={refresh}>↻ Refresh</button></div>
   {mode==='calendar'&&<div className="student-controls"><label>From<input type="date" value={from} onChange={e=>setFrom(e.target.value)}/></label><label>To<input type="date" value={to} onChange={e=>setTo(e.target.value)}/></label></div>}
   {notice&&<div className="portal-success" role="status">{notice}</div>}{error&&<div className="portal-alert" role="alert">{error}</div>}

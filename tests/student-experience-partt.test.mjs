@@ -23,3 +23,14 @@ test('Part T v1.1 resets Student UI on mode/batch remount without setState-in-ef
  assert.doesNotMatch(student,/useEffect\(\(\)=>\{setOffset\(0\)/);
  assert.match(student,/return\(\)=>\{cancelled=true;\}/);
 });
+
+
+test('My full profile uses the admission reader independent of legacy profile and visibly shows DB fields',()=>{
+ const experience=readFileSync(new URL('../src/components/portal/StudentExperience.tsx',import.meta.url),'utf8');
+ const detail=readFileSync(new URL('../src/components/portal/StudentAdmissionProfile.tsx',import.meta.url),'utf8');
+ assert.match(experience,/if\(mode==='profile'\)\{Promise\.resolve\(\)\.then/);
+ assert.match(experience,/setData\(\{\}\);setLoading\(false\)/);
+ assert.match(experience,/'billing','profile'\]\.includes\(s\.id\)/);
+ for(const field of ['Student phone','School / college','Class / group','Academic session','Guardian phone','Not provided']) assert.ok(detail.includes(field));
+ assert.match(detail,/api\/v1\/student\/admission-profile/);
+});

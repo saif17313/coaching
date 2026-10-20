@@ -6,7 +6,7 @@ export function cmsWriteReadiness(env) {
     mutationVerified:false,
     runtime:env?.NODE_ENV==='development'?'local-development':'deployment',
     scope:'active-teacher-jwt-and-supabase-rls',
-    detail:enabled?'Write gate enabled; all mutations still require verified teacher authorization, CSRF, idempotency and DB RLS.':'Write gate OFF in the running server process. Restart using the guarded EduCentre DEV write launcher; changing another terminal does not update this server.',
+    detail:enabled?'Write gate enabled; all mutations still require verified teacher authorization, CSRF, idempotency and DB RLS.':env?.NODE_ENV==='development'?'Write gate OFF in the running local server. Stop the old Next.js instance and use the guarded local DEV write launcher.':'Write gate OFF in this deployment. The project owner must configure the existing reviewed mutation flag in the hosting environment and redeploy; local PowerShell launchers cannot change a cloud process.',
   });
 }
 
