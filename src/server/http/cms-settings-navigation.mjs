@@ -14,7 +14,7 @@ function opId(req){const id=req.headers.get('idempotency-key');if(!isUUID(id))fa
 async function json(req){const type=req.headers.get('content-type')??'';if(!/^application\/json(?:;\s*charset=utf-8)?$/i.test(type))fail('INVALID_CONTENT_TYPE',415);
  const size=req.headers.get('content-length');if(size!==null&&(!/^\d+$/.test(size)||Number(size)>4096))fail('BODY_TOO_LARGE',413);
  const body=await req.text();if(body.length>4096)fail('BODY_TOO_LARGE',413);let parsed;try{parsed=JSON.parse(body);}catch{fail('INVALID_BODY',400);}if(!object(parsed))fail('INVALID_BODY',400);return parsed;}
-function settings(x,allowLogo=false){
+function settings(x,allowLogo=true){
  const k=['siteTitle','tagline','contactEmail','contactPhone','footerText','logoMediaId'];
  if(!exact(x,k)||!bounded(x.siteTitle,2,160)||!bounded(x.tagline,0,160)||!bounded(x.footerText,0,1000)||/[<>]/.test(x.siteTitle+x.tagline+x.footerText)
   ||!bounded(x.contactEmail,3,254)||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(x.contactEmail)

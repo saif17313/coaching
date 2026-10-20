@@ -1,0 +1,60 @@
+/** Reference semantic fields. This is UI/schema configuration, never operational data. */
+const string=(title,maxLength=160)=>({type:'string',title,maxLength,pattern:'^[^\\u0000-\\u0008\\u000b\\u000c\\u000e-\\u001f\\u007f]*$'});
+const object=(properties,title)=>({type:'object',title,properties,additionalProperties:false});
+const list=(title,items,maxItems=30)=>({type:'array',title,items,maxItems});
+const media=title=>({...string(title,36),pattern:'^$|^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$',media:true});
+const url=title=>({...string(title,2048),pattern:'^$|^/(?!/)[^\\\\\\s]*$|^https://[^\\s@\\\\]+$',link:true});
+const ids=title=>({...list(title,{...media('Published record ID'),media:false,pattern:'^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$'}),uniqueItems:true,relation:true});
+const header=object({badge:string('Badge'),title1:string('Title'),title2:string('Highlighted title'),description:string('Introduction',2000)},'Section heading');
+const entry=object({title:string('Title'),subtitle:string('Subtitle'),description:string('Description',2000),year:string('Year / period'),institution:string('Institution'),url:url('Link'),icon:string('Icon'),mediaId:media('Image')},'Entry');
+const namedList=(title,fields)=>list(title,object(fields,'Entry'));
+const hero={tagline:string('Tagline'),headline:string('Heading'),highlightedText:string('Highlighted text'),description:string('Description',2000),teacherName:string('Teacher name'),teacherTitle:string('Teacher title'),teacherSubtitle:string('Teacher subtitle'),teacherImage:media('Teacher photograph'),features:list('Learning features',string('Feature')),primaryCtaLabel:string('Primary button label'),primaryCtaUrl:url('Primary button link'),secondaryCtaLabel:string('Secondary button label'),secondaryCtaUrl:url('Secondary button link'),enableMotion:{type:'boolean',title:'Enable decorative motion'}};
+const forms={};
+const add=(key,label,kind,fields={},itemFields={})=>{forms[key]={key,label,kind,section:object(fields,label),item:object(itemFields,label+' item')};};
+add('HOME_HERO','Homepage hero','hero',hero);
+for(const key of ['ABOUT_HERO','COURSES_HERO','GALLERY_HERO','RESULTS_HERO','MATERIALS_HERO','CALENDAR_HERO','ROUTINE_HERO','NEWS_EVENTS_HERO','REVIEWS_HERO','CONTACT_HERO'])add(key,key.replaceAll('_',' ').toLowerCase(),'hero',{eyebrow:string('Eyebrow'),title:string('Heading'),subtitle:string('Subtitle'),description:string('Description',2000),highlightedText:string('Highlighted text')});
+add('HOME_STATS','Hero statistics','cards',{stats:namedList('Statistics',{value:string('Value'),label:string('Label'),description:string('Context',500),verified:{type:'boolean',title:'Verified claim'},demo:{type:'boolean',title:'Clearly labeled DEMO'}})});
+add('HOME_WHY_CHOOSE','Why learn with us','cards',{eyebrow:string('Eyebrow'),heading:string('Heading'),highlightedText:string('Highlighted text'),description:string('Description',2000),benefits:namedList('Benefits',{icon:string('Icon'),title:string('Title'),description:string('Description',1000)}),trustItems:list('Trust statements',string('Statement'))});
+add('HOME_TEACHER','Meet the teacher','rich-text',{teacherName:string('Teacher name'),teacherTitle:string('Title'),teacherSubtitle:string('Qualifications'),teacherSpecialty:string('Specialty'),teacherBio:string('Biography',6000),teacherImage:media('Portrait'),teachingMethods:list('Teaching methods',entry)});
+add('HOME_FEATURED_COURSES','Featured course selection','courses',{selectedCourseIds:ids('Featured courses in display order')});
+add('HOME_STUDENT_SUCCESS','Student success selection','results',{selectedStudentIds:ids('Featured results in display order')});
+add('HOME_TESTIMONIALS','Featured testimonials','reviews',{selectedTestimonialIds:ids('Approved testimonials in display order')});
+add('HOME_GALLERY','Featured gallery selection','gallery',{selectedAlbumIds:ids('Featured albums in display order')});
+add('HOME_NEWS_EVENTS','Featured news selection','news',{featuredId:media('Featured article ID'),selectedRightIds:ids('Other featured articles')});
+add('HOME_TOP_STUDENTS','Celebrating excellence','results',{header,months:namedList('Achievement periods',{title:string('Period'),description:string('Context',1000),selectedStudentIds:ids('Published students')})});
+add('HOME_YOUTUBE_CLASSES','Video classes','cards',{header,classes:namedList('Classes',{title:string('Title'),description:string('Description',1000),url:url('YouTube URL'),duration:string('Duration')})});
+for(const [key,label,field] of [['ABOUT_EDUCATION','Education','education'],['ABOUT_TRAINING','Training','training'],['ABOUT_RESEARCH_EXP','Research experience','researchData'],['ABOUT_PUBLICATIONS','Publications','publications'],['ABOUT_PROJECTS','Projects','projects'],['ABOUT_ECA','Extra curricular activities','ecaList'],['ABOUT_SKILLS','Skills','skills']])add(key,label,'rich-text',{header,[field]:list(label,entry)});
+add('ABOUT_METRICS','Teacher portfolio highlights','cards',{metrics:namedList('Highlights',{value:string('Value'),label:string('Label'),description:string('Context',1000)})});
+add('COURSES_CARDS','Course catalog','courses',{}, {duration:string('Duration'),examType:string('Exam type'),target:string('Target class'),schedule:string('Schedule'),features:list('Course features',string('Feature'))});
+add('RESULTS_STUDENTS','Student achievement records','results',{}, {achievement:string('Achievement',1000),examType:string('Exam type'),year:string('Year'),institution:string('Institution'),verified:{type:'boolean',title:'Verified achievement'},demo:{type:'boolean',title:'DEMO record'}});
+add('REVIEWS_ITEMS','Reviews and approval','reviews',{}, {author:string('Author'),rating:{type:'integer',minimum:1,maximum:5,title:'Rating'},approved:{type:'boolean',title:'Approved for public display'},consent:{type:'boolean',title:'Consent to publication'},demo:{type:'boolean',title:'DEMO testimonial'}});
+add('GALLERY_ALBUMS','Gallery albums','gallery',{}, {category:string('Category'),date:string('Date'),images:namedList('Album photographs',{mediaId:media('Photograph'),alt:string('Alternative text',200),caption:string('Caption',500)}),videoUrl:url('Video link')});
+add('NEWS_EVENTS_ITEMS','News articles and events','news',{}, {category:string('Category'),date:string('Event date'),month:string('Month'),time:string('Time'),location:string('Venue'),excerpt:string('Excerpt',1000),fullContent:string('Article body',12000),isFeatured:{type:'boolean',title:'Feature this article'}});
+for(const [key,label,field] of [['NEWS_EVENTS_CATEGORIES','News categories','categories'],['MATERIALS_CATEGORIES','Material categories','categories']])add(key,label,key.startsWith('NEWS')?'news':'materials',{[field]:list(label,string('Category'))});
+add('MATERIALS_ITEMS','Public learning resources','materials',{}, {category:string('Category'),fileType:string('Resource type'),fileUrl:url('Public resource URL'),access:{type:'string',title:'Access',enum:['public'],maxLength:6}});
+for(const [key,label,kind] of [['CALENDAR_CARD','Academic calendar','academic-calendar'],['ROUTINE_CARD','Class routine','routine']])add(key,label,kind,{title:string('Display title'),description:string('Description',2000),imageMediaId:media('Schedule flyer')},{date:string('Date'),day:string('Day'),startTime:string('Start time'),endTime:string('End time'),subject:string('Subject'),room:string('Room')});
+add('CONTACT_INFO','Contact information and map','contact',{address:string('Address',1000),transitInfo:string('How to reach us',2000),securityInfo:string('Visitor information',2000),mapEmbedUrl:url('Google map embed URL'),mapDirectionUrl:url('Directions URL'),phone:string('Phone',30),email:string('Email',254),socialLinks:namedList('Social links',{label:string('Label'),url:url('Link')})});
+add('CONTACT_FAQ','Frequently asked questions','faq',{faqs:namedList('Questions',{question:string('Question',300),answer:string('Answer',2000)})});
+add('GLOBAL_FOOTER','Footer and navigation','footer',{description:string('Footer description',2000),copyrightText:string('Copyright text',500),socialLinks:namedList('Social links',{label:string('Label'),url:url('Link')}),links:namedList('Navigation links',{label:string('Label'),url:url('Link'),location:{type:'string',title:'Location',enum:['header','footer','both']},enabled:{type:'boolean',title:'Visible'}})});
+export const CMS_FORMS=Object.freeze(forms);
+export function validateSchema(value,schema){
+ if(schema.enum&&!schema.enum.includes(value))return false;
+ if(schema.type==='object')return value!==null&&typeof value==='object'&&!Array.isArray(value)&&Object.keys(value).every(k=>Object.hasOwn(schema.properties,k)&&validateSchema(value[k],schema.properties[k]));
+ if(schema.type==='array')return Array.isArray(value)&&value.length<=schema.maxItems&&(!schema.uniqueItems||new Set(value.map(x=>JSON.stringify(x))).size===value.length)&&value.every(x=>validateSchema(x,schema.items));
+ if(schema.type==='string')return typeof value==='string'&&Array.from(value).length<=(schema.maxLength??2048)&&(!schema.pattern||new RegExp(schema.pattern).test(value))&&(!schema.link||safeContentUrl(value));
+ if(schema.type==='boolean')return typeof value==='boolean';
+ return schema.type==='integer'&&Number.isSafeInteger(value)&&value>=schema.minimum&&value<=schema.maximum;
+}
+export function safeContentUrl(value){if(value==='')return true;if(/^\/(?!\/)[^\\\s]*$/.test(value))return true;try{const u=new URL(value);return u.protocol==='https:'&&!u.username&&!u.password&&!u.port;}catch{return false;}}
+export function validateCmsFields(key,value,item=false){return Boolean(CMS_FORMS[key]&&JSON.stringify(value).length<=60000&&validateSchema(value,CMS_FORMS[key][item?'item':'section']));}
+export function formForTarget(target){
+ if(!target?.slug)return null;
+ const exactTargets={'about-page-summary-metrics-strip':'ABOUT_METRICS','about-page-education-timeline':'ABOUT_EDUCATION','about-page-research-publications':'ABOUT_PUBLICATIONS','about-page-industrial-training-banner':'ABOUT_TRAINING','about-page-projects-grid':'ABOUT_PROJECTS','about-page-technical-skills':'ABOUT_SKILLS'};
+ if(exactTargets[target.id])return exactTargets[target.id];
+ const label=target.label?.toLowerCase()??'',slug=target.slug;
+ const mappings={'Hero':'HOME_HERO','Hero Stats':'HOME_STATS','Offered Batches':'HOME_FEATURED_COURSES','Why Learn Section':'HOME_WHY_CHOOSE','Meet Teacher Section':'HOME_TEACHER','Celebrating Excellence':'HOME_TOP_STUDENTS','Student Success Stories':'HOME_STUDENT_SUCCESS','Concept Breakdown Theater':'HOME_YOUTUBE_CLASSES','Testimonials':'HOME_TESTIMONIALS','News & Events':'HOME_NEWS_EVENTS','Captured Moments':'HOME_GALLERY'};
+ if(mappings[target.label]&&['home-page','home'].some(x=>(target.id??'').startsWith(x)||slug==='home'))return mappings[target.label];
+ if(target.kind==='hero')return ({'academic-calendar':'CALENDAR_HERO','class-routine':'ROUTINE_HERO','news-events':'NEWS_EVENTS_HERO'}[slug]??slug.replaceAll('-','_').toUpperCase()+'_HERO');
+ if(slug==='about'){const entry=Object.values(CMS_FORMS).find(x=>x.key.startsWith('ABOUT_')&&x.label.toLowerCase()===label);if(entry)return entry.key;}
+ return {'courses':'COURSES_CARDS','results':'RESULTS_STUDENTS','reviews':'REVIEWS_ITEMS','gallery':'GALLERY_ALBUMS','contact':label.includes('faq')?'CONTACT_FAQ':'CONTACT_INFO','academic-calendar':'CALENDAR_CARD','class-routine':'ROUTINE_CARD','news-events':label.includes('categor')?'NEWS_EVENTS_CATEGORIES':'NEWS_EVENTS_ITEMS','materials':label.includes('categor')?'MATERIALS_CATEGORIES':'MATERIALS_ITEMS'}[slug]??null;
+}

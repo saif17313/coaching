@@ -1,0 +1,1 @@
+export function createCmsFieldsRoute(ports:{verify:(token:string)=>Promise<unknown>;call:(name:string,token:string|null,args:Record<string,unknown>)=>Promise<unknown>}):(req:Request,ctx?:{params?:Promise<Record<string,string>>})=>Promise<Response>;

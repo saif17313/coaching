@@ -1,4 +1,6 @@
 /** Part P: validated request boundary for the teacher CMS. Uses existing proxy/JWT/RPC routes. */
+import {validateCmsFields} from './cms-fields.mjs';
+import {validOrganization} from './cms-order.mjs';
 const UUID=/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const SLUG=/^[a-z][a-z0-9-]{1,62}$/;
 export const CMS_KINDS=['hero','rich-text','cards','gallery','results','courses','contact','cta','faq','news','reviews','academic-calendar','routine','materials','footer'];
@@ -25,18 +27,20 @@ export function cmsResponseError(status,value){
   MEDIA_PUBLIC_IN_USE:'This image is in published content. Remove it and publish that change before archiving it.',
   MEDIA_DRAFT_IN_USE:'This image is attached to draft content. Remove the attachment before archiving it.',
   MEDIA_NOT_VERIFIED:'The selected media could not be verified in Storage. Choose a verified image before publishing.',
+  SECTION_KEY_REQUIRED:'Save the section’s content form before editing its individual content details.',
+  INVALID_CONTENT_REFERENCE:'Choose records that are currently published in the corresponding source page.',
  };
  const message=messages[code]??(status===401?'Session expired. Sign in again.':status===403?'Access denied. Confirm active teacher account.':status===503?'Write service unavailable. Supabase could not complete the request. Recheck backend access; the runtime gate alone does not prove a mutation can succeed.':status===409?'The record changed or conflicts with existing content. Reload and review before retrying.':status===400?'Invalid input. Check the field values and try again.':`Request failed (${status}).`);
  return new CmsRequestError(code,status,message);
 }
-function validSettings(x){return exact(x,['siteTitle','tagline','contactEmail','contactPhone','footerText','logoMediaId'])&&string(x.siteTitle,160,2)&&string(x.tagline,160)&&string(x.footerText,1000)&&!/[<>]/.test(x.siteTitle+x.tagline+x.footerText)&&string(x.contactEmail,254,3)&&/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(x.contactEmail)&&(x.contactPhone===null||string(x.contactPhone,20,7))&&x.logoMediaId===null;}
+function validSettings(x){return exact(x,['siteTitle','tagline','contactEmail','contactPhone','footerText','logoMediaId'])&&string(x.siteTitle,160,2)&&string(x.tagline,160)&&string(x.footerText,1000)&&!/[<>]/.test(x.siteTitle+x.tagline+x.footerText)&&string(x.contactEmail,254,3)&&/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(x.contactEmail)&&(x.contactPhone===null||string(x.contactPhone,20,7))&&(x.logoMediaId===null||id(x.logoMediaId));}
 export function cmsRequest(kind,params={}){
  const {pageId,sectionId,itemId,mediaId,payload}=params;
  const root='/api/v1/teacher/website';
  const page=id(pageId)?`${root}/pages/${pageId}`:null;
  const s=id(sectionId)?`${page}/sections/${sectionId}`:null;
  const i=id(itemId)?`${s}/items/${itemId}`:null;
- if(['pageUpdate','publish','archive','section','item','attach'].includes(kind)&&!page)err('Select a valid page.');
+ if(['pageUpdate','publish','archive','section','item','attach','fields','organize'].includes(kind)&&!page)err('Select a valid page.');
  let method='GET',path='',body=null;
  switch(kind){
  case 'pages':path=`${root}/pages`;break;
@@ -58,6 +62,15 @@ export function cmsRequest(kind,params={}){
  case 'item':
   if(!i||!exact(payload,['expectedRevision','order','title','description','url','visible'])||!revision(payload.expectedRevision)||payload.expectedRevision===0||!Number.isSafeInteger(payload.order)||payload.order<0||payload.order>1000||!string(payload.title,160)||!string(payload.description,2000)||!validUrl(payload.url)||typeof payload.visible!=='boolean')err('Invalid item fields.');
   method='PUT';path=i;body=payload;break;
+ case 'fields':
+  if(!s||!exact(payload,['sectionKey','content','itemId','expectedRevision'])||!revision(payload.expectedRevision)||payload.expectedRevision===0||payload.itemId!==null&&!id(payload.itemId)||!validateCmsFields(payload.sectionKey,payload.content,payload.itemId!==null))err('Invalid structured content fields.');
+  method='PUT';path=`${s}/fields`;body=payload;break;
+ case 'organize':
+  if(!validOrganization(payload))err('Invalid content ordering or attachment selection.');
+  method='POST';path=`${page}/organize`;body=payload;break;
+ case 'mediaArchive':
+  if(!id(mediaId))err('Invalid media ID.');
+  method='POST';path=`${root}/media/${mediaId}/archive`;body={};break;
  case 'attach':
   if(!id(itemId)||!id(mediaId)||!exact(payload,['expectedRevision','mediaId'])||payload.mediaId!==mediaId||!revision(payload.expectedRevision)||payload.expectedRevision===0)err('Invalid image selection.');
   method='POST';path=`${page}/items/${itemId}/media`;body=payload;break;

@@ -1,7 +1,8 @@
 import 'server-only';
+import {createHash} from 'node:crypto';
 import {createCmsMediaRoute} from './cms-media.mjs';
 import {verifyActiveActor} from './production-read-adapter';
-import {cmsRpcError} from './cms-errors.mjs';
+import {cmsRpcError,cmsError} from './cms-errors.mjs';
 type MediaKind='upload'|'list'|'attach'|'archive'|'publicMedia';
 function config(){
  const key=process.env.SUPABASE_ANON_KEY,raw=process.env.SUPABASE_URL;
@@ -27,12 +28,20 @@ async function upload({token,key,bytes,contentType}:{token:string,key:string,byt
  if(!/^[0-9a-f-]{36}\/[0-9a-f-]{36}\.(jpg|png|webp|avif)$/.test(key))throw Error('INVALID_STORAGE_KEY');
  const data=new Uint8Array(bytes.length);data.set(bytes);
  const res=await fetch(new URL(`/storage/v1/object/musa-site-media/${encodedPath(key)}`,root),{method:'POST',headers:{apikey:anon,Authorization:`Bearer ${token}`,'Content-Type':contentType,'x-upsert':'false','Cache-Control':'no-store'},body:data,cache:'no-store',redirect:'error',signal:AbortSignal.timeout(25000)});
- if(!res.ok)throw Error('MEDIA_UPLOAD_FAILED');
+ if(!res.ok){
+  const failure=await res.json().catch(()=>null);
+  if(res.status!==409&&failure?.statusCode!=='409'&&failure?.error!=='Duplicate')throw cmsError('MEDIA_STORAGE_UNAVAILABLE',503);
+  // Retrying a completed upload must never overwrite an object. Read it under
+  // this Teacher's JWT and confirm the bytes before replaying the metadata RPC.
+  const previous=await readObject({key,token});
+  const digest=(value:Uint8Array)=>createHash('sha256').update(value).digest('hex');
+  if(previous.length!==bytes.length||digest(previous)!==digest(bytes))throw cmsError('IDEMPOTENCY_CONFLICT',409);
+ }
 }
-async function readObject({key}:{key:string}):Promise<Uint8Array>{
+async function readObject({key,token}:{key:string;token?:string}):Promise<Uint8Array>{
  const {root,key:anon}=config();
  if(!/^[0-9a-f-]{36}\/[0-9a-f-]{36}\.(jpg|png|webp|avif)$/.test(key))throw Error('INVALID_STORAGE_KEY');
- const res=await fetch(new URL(`/storage/v1/object/authenticated/musa-site-media/${encodedPath(key)}`,root),{headers:{apikey:anon,Authorization:`Bearer ${anon}`},cache:'no-store',redirect:'error',signal:AbortSignal.timeout(15000)});
+ const res=await fetch(new URL(`/storage/v1/object/authenticated/musa-site-media/${encodedPath(key)}`,root),{headers:{apikey:anon,Authorization:`Bearer ${token??anon}`},cache:'no-store',redirect:'error',signal:AbortSignal.timeout(15000)});
  if(!res.ok)throw Error('STORAGE_READ_DENIED');
  const len=Number(res.headers.get('content-length'));if(Number.isFinite(len)&&len>5242880)throw Error('MEDIA_TOO_LARGE');
  const reader=res.body?.getReader();if(!reader)throw Error('MEDIA_MISSING');let size=0;const parts:Uint8Array[]=[];
