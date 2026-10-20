@@ -18,7 +18,7 @@
     "audit:prod": "npm audit --omit=dev --audit-level=high"
   },
   "dependencies": {
-    "next": "16.3.4",
+    "next": "16.4.2",
     "react": "19.2.8",
     "react-dom": "19.2.8",
     "three": "0.186.1"
@@ -29,7 +29,7 @@
     "@types/react-dom": "^19.2.0",
     "@types/three": "0.186.0",
     "eslint": "9.39.5",
-    "eslint-config-next": "16.3.4",
+    "eslint-config-next": "16.4.2",
     "typescript": "6.0.3"
   }
 }

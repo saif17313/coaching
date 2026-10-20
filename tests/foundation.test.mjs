@@ -11,7 +11,7 @@ test("package exposes required verification scripts", async () => {
 
 test("production stack uses intended versions", async () => {
   const packageJson = JSON.parse(await readFile("package.json", "utf8"));
-  assert.equal(packageJson.dependencies.next, "16.3.4");
+  assert.equal(packageJson.dependencies.next, "16.4.2");
   assert.equal(packageJson.dependencies.react, "19.2.8");
   assert.equal(packageJson.dependencies["react-dom"], "19.2.8");
   assert.equal(packageJson.devDependencies.typescript, "6.0.3");
