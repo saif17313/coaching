@@ -2,6 +2,22 @@
 
 > Source of truth for plan and implementation progress.
 
+## Part W — Public Discovery and Accessibility (pending Windows verification, 2026-10-19)
+
+- Latest **operator-verified** checkpoint: Part V Installed, **634/634 tests PASS**, lint 0 errors / 15 warnings, TypeScript PASS, Next.js production build PASS.
+- This source-only package adds a section index and client-only search strictly from already-published CMS snapshots. Public search never contacts a database or external search provider and strips media IDs and published item URLs from the client search index.
+- No migration change, `.env` change, Git operation, cloud request, or mutation-flag enablement. Signed JWT write E2E, private video upload, custom item icons, and editable global logo **remain pending**. The 27 existing SQL migration files are checksummed and untouched.
+- This Part W delivery is **not** accepted until the guarded Windows installer passes all four verification commands. Earlier snapshot test totals below are historical and may be outdated.
+
+## Part T — Student Learning Experience (delivery pending Windows acceptance, 2026-10-19)
+
+- Latest **operator-verified** checkpoint: Part S Finance Studio install, **609/609 tests**, lint with 0 errors/16 warnings, TypeScript and Next.js production build PASS.
+- Part T is a new frontend module, **NOT operator-verified until its Windows installer passes**. Source adds a StudentExperience component, a strict cookie-only client API adapter, and dedicated student screens for dashboard, batches, subjects/syllabus, routine, assignment text submission/own status, exams schedule, notices, results, progress, notifications, monthly statement/CSV, dues/payments, calendar and profile update.
+- Existing Teacher Management, Teacher Academics, Teacher Finance and Website CMS entrypoints are preserved; do not enable public profile creation or direct SQL writes.
+- Student assignment file upload, live MCQ timer, downloadable branded scorecards, private material download grants and password/email changes **are not completed** in this delivery; their backend contracts and independent JWT/storage E2E must be implemented before UI claims.
+- Local DB readiness 38/38; real signed Teacher JWT read smoke PASS; simulated authenticated PostgreSQL role write with transaction ROLLBACK and zero residue PASS. **Signed-JWT PostgREST/HTTP writes, private media upload/public publication E2E and browser student identity isolation are NOT certified**. `COACHING_ENABLE_MUTATION_APIS` remains OFF; do not change `.env`, cloud SQL, DB/reset or Git.
+- Maintain the original Phase 0–52 hierarchy below as authoritative; Part-letter UI deliveries do not close phases.
+
 ## Current Progress (offline development track)
 
 ```text
@@ -329,3 +345,94 @@ Seven student-only signed JWT routes, two local-only migrations 025–026, per-s
 - Premium visual handoff: navy/jade/ivory/warm-gold, familiar information structure but distinctly upgraded brand treatment, app-like mobile usability; teacher/student/CMS authenticated application shells remain scheduled for Part N.
 - **OPEN**: original Shifat's Tales per-section field mapping (must not claim parity), media image decoder hardening, teacher draft preview, orphan cleanup, browser Auth workflow, upload of receipts/materials, PDF reports, cloud deployment, production security review.
 - This entry does not mark Phases 34–52 complete or modify the roadmap hierarchy.
+
+
+## Part N — authenticated responsive workspace delivery (2026-10-19, package NOT INSTALLED)
+
+- **Baseline evidence:** `MusaSir_Current_WORKTREE_02a33e805040_20261019-040612.zip`; `.git` metadata reports `feature/p00-foundation` / `02a33e805040b334c0b6718244ed5ad9bf0322a9`. This is a worktree snapshot; commit/index cleanliness and installed DB state remain unverified. Part M private media and public website source is present, 27 SQL migration source files included.
+- **Payload:** real-data Teacher/Student portal screens, credential login using Supabase Auth + active RLS profile check, server-only HttpOnly access cookie, CSRF-guarded existing API routing, CMS page/item/section/media editor, mobile app shell, existing Part J archive route repair; documentation and focused security tests.
+- **Existing backend untouched:** Auth `/user` validation, role profile, RLS, idempotent RPCs, media validation, and default-OFF mutation gate. No new migrations, SQL cloud changes, credentials, `.env` edits, database reset, Git push, or automatic local commit.
+- **Isolated verification:** 6/6 new security tests pass; TS/TSX syntax transpilation succeeds. Full dependency-backed ESLint/tsc/Next build and real JWT/Storage E2E **not verified in this sandbox**; Windows guarded installer performs them before accepting.
+- **Still open:** complete Teacher CRUD forms, Student submission browser UX, CMS settings/media draft preview, token rotation/refresh, page-by-page functional parity, accessibility and local Auth/Storage E2E. **Do not mark phases 5–52 as completed** from a frontend shell alone.
+- See `docs/PREMIUM_PORTAL_PARTN_HANDOFF.md` for acceptance matrix, deployment caveats, and known gaps.
+
+
+### Part N reference parity + lint-safe installer repair (pending operator acceptance, 2026-10-19)
+
+- Reference source audit: `docs/SHIFATS_TALES_REFERENCE_PARITY_PARTN.md`. Reference 137 frontend page routes vs current baseline 2; this is a route-inventory comparison, not a completion percentage.
+- Repair package fixes Part N CMS initial effect lint regression and ignores only historical untracked `payload/**` and `installer.cjs` staging for ESLint; TypeScript excludes historical `payload` staging. No application module or mutation flag regression intended.
+- Operator still must successfully install and verify Node suite, ESLint, TypeScript, Next build and manually test Auth and Storage E2E. This entry **does not** declare Part N complete.
+
+<!-- MUSA_PARTO_TEACHER_MANAGEMENT_UI -->
+### Part O — Teacher Management Operational UI (2026-10-19, acceptance pending)
+- Built dedicated Teacher Students/Batches/Enrollments operation screens using approved backend API paths and current Part N authenticated browser proxy; no direct browser SQL or service-role access.
+- Student full-name/status transitions; batch create/name/capacity/archive; enrollment request/approve/reject/cancel, bounded lists/status filters, confirmation for access-impacting actions, mobile layouts and error/empty/loading states.
+- **Student account provisioning is NOT present**: requires approved Auth/invite backend first; no database profile-only user creation. Current mutation feature flag stays OFF and SQL/JWT write E2E is still pending.
+- No migrations, cloud SQL, `.env` modifications, Git push, or implicit activation. Windows test/lint/typecheck/build installer acceptance required before marking source installed. See `docs/TEACHER_MANAGEMENT_PARTO_HANDOFF.md`.
+
+### Part P — Website Admin Studio + dynamic public presentation (delivery candidate; Windows install pending)
+
+- **Scope:** Extend the real Part N/O Teacher-authenticated CMS into a task-specific Website Admin Studio (pages/SEO, global text settings, section upsert, item upsert, visibility, verified image upload/attachment and separate publish/archive) plus local draft preview and accessible motion-enhanced public hero.
+- **Security:** Browser commands use same-origin cookie-authenticated proxy and existing teacher JWT/RLS/RPC; UUID idempotency, `x-musa-ui` marker, revision-checked writes. No service-role browser use, no migration, no cloud SQL and no mutation flag enablement.
+- **Media:** Existing private Supabase Storage remains canonical. Local draft preview does not request private unpublished images. Cloudinary is optional for future public video delivery, not an auth/storage replacement.
+- **Reference parity:** This is a usable generalized content studio, **not** full Shifat's Tales per-section typed-field, logo, icons, video or page-by-page editor parity. Each additional field requires explicit DTO + migration + RLS/RPC + tests, then UI.
+- **Acceptance:** New client contract tests, Node suite, lint, typecheck, production build and guarded Windows installer verification; local signed-JWT/Storage E2E remains pending. Do not mark complete until operator output confirms install and smoke tests.
+- **Next milestones:** (1) Local mutation/RLS acceptance and safe student onboarding; (2) Teacher Academics deep CRUD; (3) Teacher finance/office/report/export UI; (4) Student interactive learning flow; (5) CMS field-by-field parity including media/icons/videos; (6) immersive public website and page parity; (7) final real Auth/Storage E2E, accessibility/security and deployment. Batch milestones where dependencies allow; 7–8 user turns is a delivery target rather than a quality or calendar guarantee.
+
+### Part Q — Read-only local integration acceptance (package pending Windows install, 2026-10-19)
+- Part P verified by Windows operator: 572/572 tests, ESLint 0 errors (16 warnings), typecheck PASS, production build PASS. This is source/build acceptance, not CRUD write E2E.
+- Adds local-only, read-only RLS/RPC/grant/private bucket/migration catalogue checking and optional signed Teacher1 JWT → Auth `/user` → RLS profile read. No state or flags changed.
+- Q does not activate any mutation gate. Real transactional writes and student provisioning remain blocked until explicit local security acceptance and approval. See `docs/LOCAL_READINESS_PARTQ_HANDOFF.md`.
+
+### Part Q2 — Local rollback-only SQL transaction acceptance (optional proof, 2026-10-19)
+- Windows Part Q/AuthSmoke v1.1 verified: 583/583 tests, lint 0 errors, typecheck/build PASS, real local signed Teacher JWT and RLS profile access PASS.
+- Delivered optional local `RUN_MUSA_PARTQ_TX_ROLLBACK.ps1 -RunRollbackProof` with read-before/read-after zero-residue checks; `coaching_create_batch` + idempotent replay + update + CMS page.create + forged-actor denial + audit/receipt assertions execute exclusively inside one PostgreSQL BEGIN/ROLLBACK transaction.
+- **Limits:** This simulates PostgreSQL `authenticated` SQL role and `auth.uid()` using the validated local teacher record; it does NOT perform real JWT-bearing PostgREST/Next write HTTP E2E. Default mutation flag stays OFF, no cloud SQL, DB reset, secrets/env changes or Git push. See `docs/LOCAL_Q2_ROLLBACK_PROOF.md`.
+
+### Part R — Connected Teacher Academic Studio (2026-10-19)
+
+- [x] Add a reusable, contract-validated client for subject, syllabus, routine, assignment, exam and result CRUD-adjacent draft commands and publication through existing secure REST/RPC routes.
+- [x] Integrate a premium responsive six-step Academic Studio into authenticated Teacher Portal with batch/subject/exam scoping, active roster, validation and fail-closed errors.
+- [x] Keep public CMS, Teacher Management and Student Portal intact; preserve cookie/CSRF/JWT/idempotency boundaries and default-OFF write switch.
+- [x] Add focused Part R client-contract regression tests (sandbox); production full build remains a Windows-installer acceptance gate.
+- [ ] Local Windows Part R installer: npm test/lint/typecheck/build.
+- [ ] Real signed-JWT HTTP write E2E and independently approved activation of any local write switch (not in this package).
+- [ ] Remaining full Shifat's Tales parity, Teacher Finance workflow polish, Student interactivity, CMS icon/video parity, premium website hardening and end-to-end release QA.
+
+Source details: `docs/TEACHER_ACADEMICS_PARTR_HANDOFF.md`.
+
+### Part S (2026-10-19) — Teacher Finance Studio delivery, local source verification pending
+
+- Installed Part R was operator-verified: 598/598 tests, lint 0 errors, TypeScript and production build PASS; mutations stayed disabled.
+- This Part S package adds connected Finance Studio views for cashflow, fee plans, student dues/payments/waivers/refunds, expenses/reversal and complete-only CSV exports, with exact existing endpoint mapping. No schema or authorization changes.
+- Finance client validates BDT-to-paisa using integer arithmetic, strict UUIDs and parent IDs, operation receipts and CSRF marker. Server-side JWT, RLS, RPC and audit protections remain authoritative.
+- Part S sandbox Node/contract tests pass; **Windows test/lint/typecheck/build and real browser writes are unverified** until operator log confirms. The actual local PostgreSQL transaction proof from Q2 was simulated authenticated role + ROLLBACK, not real JWT HTTP writes.
+- Next: secure live-JWT HTTP write E2E in an approved **isolated local** environment, student interactive journeys, media and typed CMS parity, public-site experience and final security/production QA. Never silently activate production mutations.
+
+### Part U — Website editorial rendering and CMS composition UX (2026-10-19; Windows install pending)
+
+- **Baseline:** Part T v1.1 operator log confirmed **620/620 Node tests**, ESLint 0 errors (16 prior warnings), TS and Next.js build PASS. Real HTTP mutation E2E remains pending; global mutation switch OFF.
+- **Frontend:** CMS publication snapshots render 15 existing kinds with distinct responsive public presentation and published home metadata; dynamic hero photos and CTA labels/HTTPS links are CMS-owned; global tagline, brand and footer are from published global settings.
+- **Admin:** Added section blueprints and editorial readiness hints using only the existing strict `section.upsert` DTO; no new fake input fields or permission bypass.
+- **Integrity:** Part U adds **no** SQL migration and changes no RPC/auth/storage code. Existing 27 migration source hashes are installation guard dependencies. Public image route remains gated by published metadata and verified media assets.
+- **Limits:** Per-item custom icon, video upload/CDN, global logo, typed reference-only content models, assignment files, attendance, live MCQ, result PDFs, live JWT write HTTP E2E and deployment hardening are NOT complete. Future additive schema and E2E are mandatory; see `docs/WEBSITE_EDITORIAL_PARTU_HANDOFF.md`.
+- **Acceptance:** Windows installer must pass Node tests, ESLint, typecheck, Next build before this code is marked installed. No `.env`, cloud SQL, Git, migration source, data reset or mutation flag changes.
+
+### Part V — Published video-link presentation (2026-10-19)
+- **Scope:** reuse exact approved CMS `item.url` HTTPS link field to display published YouTube links as consent-to-load responsive cards on public pages. New allowlist/ID parser shared with CMS editor; no new CMS fields, SQL, RPC or Storage policy. Optional existing published logo ID displays through same-origin public media gate; **logo editing remains unsupported**.
+- **Verification:** new parser/host injection and iframe-gating unit tests plus full Node regression; Windows test/lint/typecheck/build required by guarded installer.
+- **Not done:** uploaded video file pipeline, editable per-item icons/global logo, dedicated parity fields, and real JWT HTTP mutations. No cloud SQL, `.env`, Git, DB reset or mutation flag activation.
+- **Next:** explicit operator approval for additive schema/API design and real authenticated local write E2E; do not treat link-based video as uploaded-video parity.
+
+## Part X — Hosted DEV Reference-Aligned CMS Demo & Dimensional Public Website (2026-10-20)
+
+- **Delivery status: source package prepared; Windows guarded install and hosted seeding remain pending user execution.** Do not mark hosted CMS seeded or production-ready before cloud verification.
+- Hosted `musa-sir-coaching-dev` user-confirmed batch Create → Edit → Refresh was independently verified by read-only cloud query on code `MUSA-DEMO-01`, capacity `35`.
+- Signed Teacher seed targets **exact** Hosted DEV project `rkpwqgwceekuvlizfpeb` and `effytechbd@gmail.com` using existing `coaching_cms_write` and `coaching_cms_settings_write` RPCs, checks empty CMS and revisions, publishes 12 demo-labeled pages and settings, and verifies anonymous public snapshots. No service-role bypass, new migration, Auth changes, `.env` changes, mutation flag activation or Git push.
+- Public reference inventory: Home, About, Courses, Gallery, Results, Reviews, News/Events, Materials, Academic Calendar, Class Routine, Projects, Contact. CMS schema remains generic (no claim of typed field parity). Illustrative data is **clearly labeled DEMO**; no fabricated official scores, testimonials, qualifications, dates, media or private materials.
+- Distinct midnight/iris/champagne site design uses CSS-only perspective and layered 3D animation from CMS-sourced site branding; reduced-motion support, no dependencies, no WebGL requirement.
+- Acceptance pending: Windows lint/typecheck/build, real signed CMS seed HTTP E2E, public media uploaded with approved content, student Auth and workflows, browser QA and deployment.
+
+## EduCentre Part AB — current-source incremental repair (20 Oct 2026)
+
+From user-provided `coaching(1).zip` and `Shifats-Tale(1).zip`: EduCentre visible rebrand fallback, active-Teacher-only CMS write-status GET, guarded local write launcher, signed Teacher CMS settings publish + optional academic demo seed, and published-page revision polling. Added negative gate tests. Source-level tests PASS; Windows lint/typecheck/build and cloud WRITE E2E pending. This is **not** a completed parity milestone. Full reference typed-field mapping, featured relation workflows, live student/finance acceptance, media attach/public bytes and Supabase Realtime push remain open. See `docs/EDUCENTRE_PARTAB_FUNCTIONALITY_AUDIT.md`.
