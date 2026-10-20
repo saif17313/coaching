@@ -1,0 +1,537 @@
+{
+  "projectRef": "rkpwqgwceekuvlizfpeb",
+  "teacherEmail": "effytechbd@gmail.com",
+  "settings": {
+    "siteTitle": "Musa Sir • Demo Preview",
+    "tagline": "DEMO PREVIEW • Replace sample information before launch",
+    "contactEmail": "demo-contact@example.org",
+    "contactPhone": null,
+    "footerText": "DEMO DATA — All courses, results, reviews and dates are illustrative. Replace with accurate verified details before public launch.",
+    "logoMediaId": null
+  },
+  "pages": [
+    {
+      "slug": "home",
+      "title": "Home",
+      "seoTitle": "Home | Musa Sir Demo",
+      "seoDescription": "Explore a preview of the Musa Sir coaching website and editorial sections.",
+      "sections": [
+        {
+          "kind": "hero",
+          "heading": "Build a stronger foundation. Learn with direction.",
+          "body": "DEMO PREVIEW • A sample learning space for physics, mathematics, classes and exam preparation. Actual enrollment and dates will be announced by the coaching team.",
+          "items": [
+            {
+              "title": "Demo content",
+              "description": "All course listings are sample layouts, not real admissions announcements.",
+              "url": null
+            }
+          ]
+        },
+        {
+          "kind": "cards",
+          "heading": "A thoughtful way to learn",
+          "body": "Sample pillars inspired by the reference site structure.",
+          "items": [
+            {
+              "title": "Clarity first",
+              "description": "DEMO • Concept explanation, guided practice and structured revision.",
+              "url": null
+            },
+            {
+              "title": "Stay on track",
+              "description": "DEMO • Routine, materials and teacher announcements in one place.",
+              "url": null
+            },
+            {
+              "title": "Progress with purpose",
+              "description": "DEMO • Assessment summaries and targeted feedback are planned in the student portal.",
+              "url": null
+            }
+          ]
+        },
+        {
+          "kind": "courses",
+          "heading": "Discover the learning paths",
+          "body": "Illustrative catalogue — verify offerings before enrolling.",
+          "items": [
+            {
+              "title": "Physics fundamentals",
+              "description": "DEMO • Core concepts, numerical problem solving and exam-friendly revision.",
+              "url": null
+            },
+            {
+              "title": "Higher mathematics",
+              "description": "DEMO • Algebra, calculus and applied problem-solving practice.",
+              "url": null
+            },
+            {
+              "title": "Admission preparation",
+              "description": "DEMO • Structured review for selected entrance examinations.",
+              "url": null
+            }
+          ]
+        },
+        {
+          "kind": "faq",
+          "heading": "Common questions",
+          "body": "Please contact the coaching team for current official policies.",
+          "items": [
+            {
+              "title": "Are these batches currently open?",
+              "description": "No. This is demo content. Confirm real dates and eligibility with the coaching team.",
+              "url": null
+            },
+            {
+              "title": "Can students see their progress online?",
+              "description": "The student portal is designed to display approved academic results, assignments and billing records.",
+              "url": null
+            },
+            {
+              "title": "Will the routine stay updated?",
+              "description": "Teachers can publish updates through the administration system; the CMS schedule here is illustrative.",
+              "url": null
+            }
+          ]
+        },
+        {
+          "kind": "cta",
+          "heading": "Your learning journey begins with clarity",
+          "body": "DEMO PREVIEW • Contact details and actual enrollment information will be published after verification.",
+          "items": []
+        }
+      ]
+    },
+    {
+      "slug": "about",
+      "title": "About",
+      "seoTitle": "About | Musa Sir Demo",
+      "seoDescription": "About the Musa Sir teaching approach and sample instructor portfolio.",
+      "sections": [
+        {
+          "kind": "hero",
+          "heading": "The story behind the learning",
+          "body": "DEMO • This is placeholder copy, not a verified biography. Replace with real education, experience and teaching philosophy.",
+          "items": []
+        },
+        {
+          "kind": "rich-text",
+          "heading": "Teaching philosophy",
+          "body": "A sample outline: explain first principles, practice actively, review thoughtfully, and build independent problem-solving habits.",
+          "items": [
+            {
+              "title": "Education and training",
+              "description": "DEMO PLACEHOLDER • Add verified qualifications in the CMS.",
+              "url": null
+            },
+            {
+              "title": "Research and publications",
+              "description": "DEMO PLACEHOLDER • Add authentic teaching projects, research and publications.",
+              "url": null
+            },
+            {
+              "title": "Community and extracurricular",
+              "description": "DEMO PLACEHOLDER • Add actual student activities and community initiatives.",
+              "url": null
+            }
+          ]
+        },
+        {
+          "kind": "cards",
+          "heading": "What matters in the classroom",
+          "body": "Sample themes to customize.",
+          "items": [
+            {
+              "title": "Concept-led lessons",
+              "description": "DEMO • Break hard problems into clear, manageable ideas.",
+              "url": null
+            },
+            {
+              "title": "Consistent practice",
+              "description": "DEMO • Combine classroom explanation with independent work.",
+              "url": null
+            },
+            {
+              "title": "Constructive feedback",
+              "description": "DEMO • Use assessment results to guide next steps.",
+              "url": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "courses",
+      "title": "Courses",
+      "seoTitle": "Courses | Musa Sir Demo",
+      "seoDescription": "Sample physics mathematics and admission coaching course catalog.",
+      "sections": [
+        {
+          "kind": "hero",
+          "heading": "Find a path that fits your goals",
+          "body": "DEMO • Course availability, fees and timetables require confirmation.",
+          "items": []
+        },
+        {
+          "kind": "courses",
+          "heading": "Explore sample courses",
+          "body": "Replace with verified subjects and current batch details.",
+          "items": [
+            {
+              "title": "SSC science foundation",
+              "description": "DEMO • Subject concepts, class notes and practice exercises.",
+              "url": null
+            },
+            {
+              "title": "HSC physics",
+              "description": "DEMO • Core chapters, mathematical application and numericals.",
+              "url": null
+            },
+            {
+              "title": "HSC higher mathematics",
+              "description": "DEMO • Guided practice from fundamentals to challenging problems.",
+              "url": null
+            },
+            {
+              "title": "Admission revision",
+              "description": "DEMO • Problem-solving drills and structured review sessions.",
+              "url": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "gallery",
+      "title": "Gallery",
+      "seoTitle": "Gallery | Musa Sir Demo",
+      "seoDescription": "Demo gallery layout for future approved campus and classroom photography.",
+      "sections": [
+        {
+          "kind": "hero",
+          "heading": "Moments worth remembering",
+          "body": "DEMO • No real student photographs have been published. Teacher may upload approved photos to the private CMS media library.",
+          "items": []
+        },
+        {
+          "kind": "gallery",
+          "heading": "Learning moments",
+          "body": "Placeholders below are descriptions only—not photographic evidence.",
+          "items": [
+            {
+              "title": "Classroom moments",
+              "description": "DEMO PHOTO PLACEHOLDER • Upload a consent-cleared classroom image.",
+              "url": null
+            },
+            {
+              "title": "Workshop snapshots",
+              "description": "DEMO PHOTO PLACEHOLDER • Add authentic workshop and learning-event pictures.",
+              "url": null
+            },
+            {
+              "title": "Community activities",
+              "description": "DEMO PHOTO PLACEHOLDER • Add approved activities or event coverage.",
+              "url": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "results",
+      "title": "Results",
+      "seoTitle": "Results | Musa Sir Demo",
+      "seoDescription": "Demo results showcase with no invented or verified academic claims.",
+      "sections": [
+        {
+          "kind": "hero",
+          "heading": "Celebrate achievement responsibly",
+          "body": "DEMO • This page contains no actual student results. Student records must be permissioned, approved and verified.",
+          "items": []
+        },
+        {
+          "kind": "results",
+          "heading": "Achievement board preview",
+          "body": "Mock cards showing how verified results could appear after teacher approval.",
+          "items": [
+            {
+              "title": "DEMO RESULT • Sample entry A",
+              "description": "Illustrative card only — not a real student, score or merit position.",
+              "url": null
+            },
+            {
+              "title": "DEMO RESULT • Sample entry B",
+              "description": "Illustrative card only — no admission guarantee is made.",
+              "url": null
+            },
+            {
+              "title": "DEMO RESULT • Sample entry C",
+              "description": "Illustrative card only — replace after consent and result verification.",
+              "url": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "reviews",
+      "title": "Reviews",
+      "seoTitle": "Reviews | Musa Sir Demo",
+      "seoDescription": "Demo testimonial layout that is not authentic student feedback.",
+      "sections": [
+        {
+          "kind": "hero",
+          "heading": "Every student perspective matters",
+          "body": "DEMO • No genuine student testimonials have been collected or verified in this environment.",
+          "items": []
+        },
+        {
+          "kind": "reviews",
+          "heading": "What a testimonial could look like",
+          "body": "The quotes below are clearly marked sample content.",
+          "items": [
+            {
+              "title": "DEMO REVIEW • Placeholder 1",
+              "description": "This is sample copy to demonstrate the review layout. It is not a real student testimonial.",
+              "url": null
+            },
+            {
+              "title": "DEMO REVIEW • Placeholder 2",
+              "description": "Replace this placeholder with student-approved feedback and an accurate attribution.",
+              "url": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "news-events",
+      "title": "News & Events",
+      "seoTitle": "News & Events | Musa Sir Demo",
+      "seoDescription": "Sample notices, events and announcements for the demo website.",
+      "sections": [
+        {
+          "kind": "hero",
+          "heading": "Stay connected to what comes next",
+          "body": "DEMO • Examples of notices and events only; no confirmed sessions announced.",
+          "items": []
+        },
+        {
+          "kind": "news",
+          "heading": "Latest announcements",
+          "body": "All entries below are illustrative.",
+          "items": [
+            {
+              "title": "DEMO • Orientation notice",
+              "description": "Sample placeholder for enrollment briefing, venue and registration instructions.",
+              "url": null
+            },
+            {
+              "title": "DEMO • Classroom update",
+              "description": "Sample classroom-change notice. Not a real scheduled event.",
+              "url": null
+            },
+            {
+              "title": "DEMO • Study workshop",
+              "description": "Sample workshop description with no confirmed date.",
+              "url": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "materials",
+      "title": "Study Materials",
+      "seoTitle": "Study Materials | Musa Sir Demo",
+      "seoDescription": "Public learning-material category preview without private document exposure.",
+      "sections": [
+        {
+          "kind": "hero",
+          "heading": "Resources for deliberate practice",
+          "body": "DEMO • Teacher-approved public materials may be linked here; private student files stay private.",
+          "items": []
+        },
+        {
+          "kind": "materials",
+          "heading": "Explore resources",
+          "body": "Illustrative materials categories; no downloadable file has been published yet.",
+          "items": [
+            {
+              "title": "Physics formulas",
+              "description": "DEMO PLACEHOLDER • Public formula sheets can be added after review.",
+              "url": null
+            },
+            {
+              "title": "Higher math practice",
+              "description": "DEMO PLACEHOLDER • Add appropriately licensed practice material.",
+              "url": null
+            },
+            {
+              "title": "Exam preparation guides",
+              "description": "DEMO PLACEHOLDER • Public study suggestions and revision notes.",
+              "url": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "academic-calendar",
+      "title": "Academic Calendar",
+      "seoTitle": "Academic Calendar | Musa Sir Demo",
+      "seoDescription": "Sample academic calendar page for public notices.",
+      "sections": [
+        {
+          "kind": "hero",
+          "heading": "Plan ahead with confidence",
+          "body": "DEMO • This is a preview. Dates shown here are not confirmed appointments.",
+          "items": []
+        },
+        {
+          "kind": "academic-calendar",
+          "heading": "Calendar highlights",
+          "body": "To be replaced with official dates.",
+          "items": [
+            {
+              "title": "DEMO • Enrollment window",
+              "description": "Date: To be announced by administration.",
+              "url": null
+            },
+            {
+              "title": "DEMO • Term review",
+              "description": "Date: To be announced by administration.",
+              "url": null
+            },
+            {
+              "title": "DEMO • Results publication",
+              "description": "Date: After teacher approval. No date confirmed.",
+              "url": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "class-routine",
+      "title": "Class Routine",
+      "seoTitle": "Class Routine | Musa Sir Demo",
+      "seoDescription": "Demo weekly class routine page with no confirmed class times.",
+      "sections": [
+        {
+          "kind": "hero",
+          "heading": "Keep every class in focus",
+          "body": "DEMO • Live student-specific schedules are managed separately from public editorial copy.",
+          "items": []
+        },
+        {
+          "kind": "routine",
+          "heading": "Routine board preview",
+          "body": "All times and venues are pending teacher confirmation.",
+          "items": [
+            {
+              "title": "DEMO • Physics session",
+              "description": "Day and time: To be announced.",
+              "url": null
+            },
+            {
+              "title": "DEMO • Mathematics practice",
+              "description": "Day and time: To be announced.",
+              "url": null
+            },
+            {
+              "title": "DEMO • Revision class",
+              "description": "Day and time: To be announced.",
+              "url": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "projects",
+      "title": "Projects",
+      "seoTitle": "Projects | Musa Sir Demo",
+      "seoDescription": "Demo page for teaching initiatives, projects and publications.",
+      "sections": [
+        {
+          "kind": "hero",
+          "heading": "Explore beyond the classroom",
+          "body": "DEMO • Portfolio categories only; no claim that these projects have been completed.",
+          "items": []
+        },
+        {
+          "kind": "cards",
+          "heading": "Teaching initiatives and projects",
+          "body": "Replace with real approved educational initiatives.",
+          "items": [
+            {
+              "title": "Classroom experiments",
+              "description": "DEMO PLACEHOLDER • Practical learning projects.",
+              "url": null
+            },
+            {
+              "title": "Problem-solving workshops",
+              "description": "DEMO PLACEHOLDER • Group study and academic activities.",
+              "url": null
+            },
+            {
+              "title": "Research and publications",
+              "description": "DEMO PLACEHOLDER • Add authenticated publications or achievements.",
+              "url": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "contact",
+      "title": "Contact",
+      "seoTitle": "Contact | Musa Sir Demo",
+      "seoDescription": "Demo contact section and sample frequently asked questions.",
+      "sections": [
+        {
+          "kind": "hero",
+          "heading": "Have a question? Get in touch.",
+          "body": "DEMO PREVIEW • Official contact details, classroom address, opening hours and maps are not published yet.",
+          "items": []
+        },
+        {
+          "kind": "contact",
+          "heading": "Contact information",
+          "body": "Update global CMS settings with verified contact email and phone before public release.",
+          "items": [
+            {
+              "title": "Email",
+              "description": "DEMO CONTACT • The address in settings is a placeholder, not a monitored inbox.",
+              "url": null
+            },
+            {
+              "title": "Visit",
+              "description": "DEMO CONTACT • No office address is verified for publication.",
+              "url": null
+            }
+          ]
+        },
+        {
+          "kind": "faq",
+          "heading": "Before you visit",
+          "body": "Only the coaching team can confirm current details.",
+          "items": [
+            {
+              "title": "Where is the center located?",
+              "description": "The verified location will be published after admin review.",
+              "url": null
+            },
+            {
+              "title": "How do I enroll?",
+              "description": "Contact the coaching team when enrollment instructions are officially published.",
+              "url": null
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "notice": "DEMO PREVIEW — illustrative content only; not a published coaching promise or verified student record."
+}
