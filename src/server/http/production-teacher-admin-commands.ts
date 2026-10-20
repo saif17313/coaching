@@ -1,3 +1,4 @@
+import {domainRpcError,RpcError} from './rpc-errors.mjs';
 import 'server-only';
 import {createTeacherAdminCommandEndpoint} from './teacher-admin-commands.mjs';
 import {verifyActiveActor} from './production-read-adapter';
@@ -5,7 +6,7 @@ type Kind='student-profile'|'enrollment-request';
 type Command={token:string;operationId:string;target:string|null;data:Readonly<Record<string,unknown>>;actorId:string};
 async function execute(kind:Kind,c:Command):Promise<unknown>{
   // The existing mutation feature-flag remains mandatory; no automatic production enablement.
-  if(process.env.COACHING_ENABLE_MUTATION_APIS!=='enabled-after-db-verification')throw Error('MUTATIONS_DISABLED');
+  if(process.env.COACHING_ENABLE_MUTATION_APIS!=='enabled-after-db-verification')throw new RpcError('MUTATIONS_DISABLED',503);
   const raw=process.env.SUPABASE_URL,key=process.env.SUPABASE_ANON_KEY;
   if(!raw||!key||/[\r\n]/.test(key)||key.length>4096)throw Error('DB_NOT_CONFIGURED');
   let root:URL;try{root=new URL(raw);}catch{throw Error('DB_NOT_CONFIGURED');}
@@ -18,7 +19,7 @@ async function execute(kind:Kind,c:Command):Promise<unknown>{
   const functionName=kind==='student-profile'?'coaching_update_student_profile':'coaching_request_enrollment';
   const url=new URL(`/rest/v1/rpc/${functionName}`,root);
   const response=await fetch(url,{method:'POST',headers:{apikey:key,Authorization:`Bearer ${c.token}`,'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify(body),cache:'no-store',redirect:'error',signal:AbortSignal.timeout(10000)});
-  if(!response.ok)throw Error('DB_RPC_REJECTED');
+  if(!response.ok)await domainRpcError(response);
   return response.json();
 }
 export const teacherStudentProfileRoute=createTeacherAdminCommandEndpoint('student-profile',{verify:verifyActiveActor,execute});

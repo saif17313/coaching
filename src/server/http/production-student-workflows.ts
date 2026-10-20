@@ -1,3 +1,4 @@
+import {domainRpcError,RpcError} from './rpc-errors.mjs';
 import 'server-only';
 import {createStudentWorkflow,type StudentWorkflowKind,type StudentWorkflowCommand} from './student-workflows.mjs';
 import {verifyActiveActor} from './production-read-adapter';
@@ -6,7 +7,7 @@ const names:Record<StudentWorkflowKind,string>={
 };
 async function execute(kind:StudentWorkflowKind,c:StudentWorkflowCommand):Promise<unknown>{
  if(kind==='submit'||kind==='grade'||kind==='gradePublish'||kind==='notificationRead'){
-  if(process.env.COACHING_ENABLE_MUTATION_APIS!=='enabled-after-db-verification')throw Error('MUTATIONS_DISABLED');
+  if(process.env.COACHING_ENABLE_MUTATION_APIS!=='enabled-after-db-verification')throw new RpcError('MUTATIONS_DISABLED',503);
  }
  const raw=process.env.SUPABASE_URL,key=process.env.SUPABASE_ANON_KEY;
  if(!raw||!key||/[^\x21-\x7e]/.test(key)||key.length>4096)throw Error('DB_NOT_CONFIGURED');
@@ -24,6 +25,6 @@ async function execute(kind:StudentWorkflowKind,c:StudentWorkflowCommand):Promis
   unreadCount:{},
  };
  const res=await fetch(new URL(`/rest/v1/rpc/${names[kind]}`,root),{method:'POST',headers:{apikey:key,Authorization:`Bearer ${c.token}`,'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify(args[kind]),cache:'no-store',redirect:'error',signal:AbortSignal.timeout(10000)});
- if(!res.ok)throw Error('STUDENT_WORKFLOW_RPC_FAILED');return res.json();
+ if(!res.ok)await domainRpcError(res);return res.json();
 }
 export const studentWorkflowRoute=(kind:StudentWorkflowKind)=>createStudentWorkflow(kind,{verify:verifyActiveActor,execute});

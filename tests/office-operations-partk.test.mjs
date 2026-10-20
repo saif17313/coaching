@@ -42,6 +42,17 @@ test('cashflow numeric aggregates are strings, never unsafe JS numbers',async()=
 test('expense list denies duplicates, mismatched ownership and surplus',async()=>{for(const bad of [{...list,items:[expense,expense],total:2},{...list,items:[{...expense,batchId:a}]},{...list,items:[{...expense,socialSecurityNumber:'secret'}]}]){const r=await perform(mk('expenseList',{result:bad}));assert.equal(r.status,502);}});
 test('no incomplete expense CSV exports; 1001 rows return explicit conflict',async()=>{const r=await perform(mk('expensesCsv',{result:{...list,total:1001}}));assert.equal(r.status,409);assert.equal(r.data.error.code,'EXPORT_ROW_LIMIT');});
 test('complete CSV escapes formulas in cells',async()=>{const r=await perform(mk('expensesCsv'));assert.equal(r.status,200);assert.match(r.data,/\"'=Office supply\"/);assert.match(r.headers.get('content-disposition'),/attachment/);});
+
+test('expense export uses database-sized pages and includes every row',async()=>{
+ const rows=Array.from({length:101},(_,i)=>({...expense,id:`${(i+1).toString(16).padStart(8,'0')}-0000-4000-8000-000000000000`})),requests=[];
+ const result=await perform(mk('expensesCsv',{call:async(kind,context)=>{assert.equal(kind,'expenseList');assert.ok(context.limit<=100);requests.push(context.offset);return {...list,total:rows.length,items:rows.slice(context.offset,context.offset+context.limit)};}}));
+ assert.equal(result.status,200);assert.deepEqual(requests,[0,100]);assert.equal(result.data.trim().split('\r\n').length,102);
+});
+test('expense export refuses a changed total between pages',async()=>{
+ const rows=Array.from({length:100},(_,i)=>({...expense,id:`${(i+1).toString(16).padStart(8,'0')}-0000-4000-8000-000000000000`}));
+ const result=await perform(mk('expensesCsv',{call:async(_,context)=>({...list,total:context.offset===0?101:102,items:context.offset===0?rows:[expense]})}));
+ assert.equal(result.status,409);assert.equal(result.data.error.code,'EXPORT_CHANGED');
+});
 test('detail not found is 404, never another student resource',async()=>{const r=await perform(mk('expenseDetail',{result:null}));assert.equal(r.status,404);});
 test('fixed RPC allowlist, global mutate opt-in, JWT-only (no service role)',()=>{const s=readFileSync('src/server/http/production-office-operations.ts','utf8');assert.match(s,/enabled-after-db-verification/);assert.match(s,/Authorization:`Bearer \$\{c.token\}`/);assert.ok(!s.includes('SERVICE_ROLE'));for(const rpc of ['coaching_record_office_expense','coaching_reverse_office_expense','coaching_office_cashflow_statement','coaching_edit_announcement_draft'])assert.ok(s.includes(rpc));});
 test('expense SQL has no direct student DML and uses append-only reversal',()=>{const s=readFileSync('supabase/migrations/20261019000100_office_expenses_and_financial_statement.sql','utf8');assert.ok(s.includes('ENABLE ROW LEVEL SECURITY'));assert.ok(s.includes('GRANT SELECT ON public.office_expenses'));assert.ok(!/GRANT (INSERT|UPDATE|DELETE|ALL) ON public.office_expenses TO authenticated/i.test(s));assert.match(s,/expense_id uuid PRIMARY KEY/);assert.match(s,/coaching_mutation_receipts/);});

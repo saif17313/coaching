@@ -1,3 +1,4 @@
+import {domainRpcError,RpcError} from './rpc-errors.mjs';
 import 'server-only';
 import {teacherPublishEndpoint,type PublishKind,type PublishCommand} from './academic-publication.mjs';
 import {verifyActiveActor} from './production-read-adapter';
@@ -12,11 +13,11 @@ function origin():{root:URL;key:string}{
  return {root,key};
 }
 async function execute(kind:PublishKind,c:PublishCommand):Promise<unknown>{
- if(process.env.COACHING_ENABLE_MUTATION_APIS!=='enabled-after-db-verification')throw Error('MUTATIONS_DISABLED');
+ if(process.env.COACHING_ENABLE_MUTATION_APIS!=='enabled-after-db-verification')throw new RpcError('MUTATIONS_DISABLED',503);
  const {root,key}=origin();const arg=kind==='assignment'?'p_assignment_id':'p_exam_id';
  const url=new URL(`/rest/v1/rpc/${names[kind]}`,root);
  const res=await fetch(url,{method:'POST',headers:{apikey:key,Authorization:`Bearer ${c.token}`,'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify({[arg]:c.target,p_operation_id:c.operationId}),cache:'no-store',redirect:'error',signal:AbortSignal.timeout(10000)});
- if(!res.ok)throw Error('RPC_FAILED');return res.json();
+ if(!res.ok)await domainRpcError(res);return res.json();
 }
 export const teacherAssignmentPublish=teacherPublishEndpoint('assignment',{verify:verifyActiveActor,execute});
 export const teacherExamPublish=teacherPublishEndpoint('exam',{verify:verifyActiveActor,execute});

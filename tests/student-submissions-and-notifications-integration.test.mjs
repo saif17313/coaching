@@ -13,7 +13,7 @@ const teachers={verified:true,userId:id,role:'teacher',accountStatus:'active',ac
 const cases={
  submit:{role:'student',method:'POST',params:{assignmentId:target},body:{answerText:'My correct answer'},out:{id:other,assignmentId:target,studentId:id,submittedAt:stamp,resubmitted:false}},
  ownSubmission:{role:'student',method:'GET',params:{assignmentId:target},out:{id:other,assignmentId:target,studentId:id,submittedAt:stamp,gradePublished:false,points:null,feedback:null}},
- submissionList:{role:'teacher',method:'GET',params:{assignmentId:target},out:{items:[{id:other,assignmentId:target,studentId:other,submittedAt:stamp,gradeStatus:'ungraded',points:null,feedback:null}]}},
+ submissionList:{role:'teacher',method:'GET',params:{assignmentId:target},out:{items:[{id:other,assignmentId:target,studentId:other,submittedAt:stamp,answerText:'DEMO submitted answer',gradeStatus:'ungraded',points:null,feedback:null}]}},
  grade:{role:'teacher',method:'POST',params:{submissionId:target},body:{points:85,feedback:'Good'},out:{id:target,assignmentId:other,gradeStatus:'draft',points:85}},
  gradePublish:{role:'teacher',method:'POST',params:{assignmentId:target},body:{},out:{assignmentId:target,publishedCount:1,gradesPublished:true}},
  notificationRead:{role:'student',method:'POST',params:{notificationId:target},body:{},out:{id:target,recipientId:id,readAt:stamp}},
@@ -82,6 +82,12 @@ test('submission list fails closed for oversized / duplicated teacher records',a
  const one=cases.submissionList.out.items[0];
  assert.equal((await go('submissionList',{output:{items:[one,one]}}).call()).status,502);
  assert.equal((await go('submissionList',{output:{items:Array(51).fill(one)}}).call()).status,502);
+});
+
+test('Teacher answer projection is bounded and rejects missing or non-text answers',async()=>{
+ const one=cases.submissionList.out.items[0];
+ for(const answerText of [undefined,{},'x'.repeat(20001)])assert.equal((await go('submissionList',{output:{items:[{...one,answerText}]}}).call()).status,502);
+ assert.equal((await go('submissionList',{output:{items:[{...one,answerText:'DEMO line one\nDEMO line two'}]}}).call()).status,200);
 });
 test('signed JWT, no service role, no direct submission table grants',()=>{
  const prod=readFileSync('src/server/http/production-student-workflows.ts','utf8');

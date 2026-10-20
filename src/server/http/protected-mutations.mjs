@@ -1,3 +1,4 @@
+import {RpcError} from './rpc-errors.mjs';
 /* Framework-free HTTP command boundary; requires a verified Auth user, DB role and active account. */
 const ID=/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const TOKEN=/^[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+$/;
@@ -90,7 +91,7 @@ export function createProtectedMutationEndpoint(kind,{verify,execute}={}){
       const target=scope.id?params[scope.id]:null;
       const result=await execute(kind,{actor:Object.freeze({id:actor.userId,role:'teacher',verified:true}),token,operationId:opId,target,input:Object.freeze(data)});
       return respond(kind==='batch-create'?201:200,{success:true,data:assertResult(kind,result,target,data)});
-    }catch(error){
+    }catch(error){if(error instanceof RpcError)return respond(error.status,{success:false,error:{code:error.code}});
       if(error instanceof MutationBoundaryError)return respond(error.status,{success:false,error:{code:error.code}});
       return respond(503,{success:false,error:{code:'SERVICE_UNAVAILABLE'}});
     }

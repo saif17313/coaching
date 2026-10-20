@@ -1,3 +1,4 @@
+import {RpcError} from './rpc-errors.mjs';
 /** Protected teacher publication commands: no direct client DML. */
 const UUID=/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const JWT=/^[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+$/;
@@ -23,7 +24,7 @@ export function teacherPublishEndpoint(kind,{verify,execute}={}){
    const cols=kind==='results'?['examId','status','publishedCount']:['id','status'];
    if(!data||typeof data!=='object'||Array.isArray(data)||Object.keys(data).length!==cols.length||Object.keys(data).some(k=>!cols.includes(k))||data.status!=='published'||(kind==='results'?(data.examId!==target||!Number.isSafeInteger(data.publishedCount)||data.publishedCount<1||data.publishedCount>1000000):(data.id!==target)))deny(502,'UPSTREAM_DATA_INVALID');
    return out(200,{success:true,data});
-  }catch(e){if(e?.code&&[400,401,403,405,413,415,502].includes(e.status))return out(e.status,{success:false,error:{code:e.code}});return out(503,{success:false,error:{code:'SERVICE_UNAVAILABLE'}});}
+  }catch(e){if(e instanceof RpcError)return out(e.status,{success:false,error:{code:e.code}});if(e?.code&&[400,401,403,405,413,415,502].includes(e.status))return out(e.status,{success:false,error:{code:e.code}});return out(503,{success:false,error:{code:'SERVICE_UNAVAILABLE'}});}
  };
 }
 export function studentPublishedResultsEndpoint({verify,read}={}){
@@ -45,6 +46,6 @@ export function studentPublishedResultsEndpoint({verify,read}={}){
     ids.add(v.id);
    }
    return out(200,{success:true,data});
-  }catch(e){if(e?.code&&[400,401,403,405,502].includes(e.status))return out(e.status,{success:false,error:{code:e.code}});return out(503,{success:false,error:{code:'SERVICE_UNAVAILABLE'}});}
+  }catch(e){if(e instanceof RpcError)return out(e.status,{success:false,error:{code:e.code}});if(e?.code&&[400,401,403,405,502].includes(e.status))return out(e.status,{success:false,error:{code:e.code}});return out(503,{success:false,error:{code:'SERVICE_UNAVAILABLE'}});}
  };
 }

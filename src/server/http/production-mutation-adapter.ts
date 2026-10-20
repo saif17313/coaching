@@ -1,3 +1,4 @@
+import {domainRpcError,RpcError} from './rpc-errors.mjs';
 import 'server-only';
 import { createProtectedMutationEndpoint, type MutationKind, type MutationCommand } from './protected-mutations.mjs';
 import { verifyActiveActor } from './production-read-adapter';
@@ -10,7 +11,7 @@ const rpcNames:Record<MutationKind,string>={
 };
 /** Explicitly disabled by default until migration, RLS and real Auth are verified. */
 async function executeRpc(kind:MutationKind,c:MutationCommand):Promise<unknown>{
-  if(process.env.COACHING_ENABLE_MUTATION_APIS!=='enabled-after-db-verification')throw new Error('MUTATIONS_DISABLED');
+  if(process.env.COACHING_ENABLE_MUTATION_APIS!=='enabled-after-db-verification')throw new RpcError('MUTATIONS_DISABLED',503);
   const raw=process.env.SUPABASE_URL, key=process.env.SUPABASE_ANON_KEY;
   if(!raw||!key||/[\r\n]/.test(key)||key.length>4096)throw new Error('DB_NOT_CONFIGURED');
   let root:URL;
@@ -30,7 +31,7 @@ async function executeRpc(kind:MutationKind,c:MutationCommand):Promise<unknown>{
     method:'POST',headers:{'apikey':key,Authorization:`Bearer ${c.token}`,'Content-Type':'application/json',Accept:'application/json'},
     body:JSON.stringify(payload),cache:'no-store',redirect:'error',signal:AbortSignal.timeout(10000),
   });
-  if(!response.ok)throw new Error('DB_RPC_REJECTED');
+  if(!response.ok)await domainRpcError(response);
   return response.json();
 }
 export function protectedMutationRoute(kind:MutationKind){

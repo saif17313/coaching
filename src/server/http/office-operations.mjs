@@ -1,3 +1,4 @@
+import {RpcError} from './rpc-errors.mjs';
 /** Part K Office operations: teacher JWT, transactional writes and complete-only report exports. */
 const UUID=/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const JWT=/^[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+$/;
@@ -106,12 +107,20 @@ export function createOfficeOperationsRoute(kind,{verify,call}={}){
   if(isPost){const v=resultMutation(kind,target,d,await call(kind,args));return send(201,{success:true,data:v});}
   if(kind==='expenseDetail'){const v=await call(kind,args);if(v===null)return send(404,{success:false,error:{code:'NOT_FOUND'}});return send(200,{success:true,data:checkExpense(v,{detail:true,target})});}
   if(['statement','statementCsv'].includes(kind)){const v=checkReport(await call('statement',args),target,per);return kind==='statementCsv'?statementCsv(v):send(200,{success:true,data:v});}
-  const max=kind==='expensesCsv'?1000:limit;
+  const max=kind==='expensesCsv'?100:limit;
   const v=checkList(await call('expenseList',{...args,limit:max,offset:kind==='expensesCsv'?0:offset}),target,per,max,kind==='expensesCsv'?0:offset);
   if(kind==='expensesCsv'){
    if(v.total>1000)return send(409,{success:false,error:{code:'EXPORT_ROW_LIMIT',message:'Filter to a smaller period; export must be complete.'}});
+   const seen=new Set(v.items.map(row=>row.id));
+   while(v.items.length<v.total){
+    const next=checkList(await call('expenseList',{...args,limit:100,offset:v.items.length}),target,per,100,v.items.length);
+    if(next.total!==v.total)return send(409,{success:false,error:{code:'EXPORT_CHANGED',message:'Expense records changed during export. Reload and export again.'}});
+    if(!next.items.length)fail(502,'UPSTREAM_DATA_INVALID');
+    for(const row of next.items){if(seen.has(row.id))fail(502,'UPSTREAM_DATA_INVALID');seen.add(row.id);}
+    v.items.push(...next.items);
+   }
    if(v.items.length!==v.total)fail(502,'UPSTREAM_DATA_INVALID');return expensesCsv(v);
   }
   return send(200,{success:true,data:v});
- }catch(e){if(e&&[400,401,403,404,405,409,413,415,502].includes(e.status)&&e.code)return send(e.status,{success:false,error:{code:e.code}});return send(503,{success:false,error:{code:'SERVICE_UNAVAILABLE'}});}};
+ }catch(e){if(e instanceof RpcError)return send(e.status,{success:false,error:{code:e.code}});if(e&&[400,401,403,404,405,409,413,415,502].includes(e.status)&&e.code)return send(e.status,{success:false,error:{code:e.code}});return send(503,{success:false,error:{code:'SERVICE_UNAVAILABLE'}});}};
 }

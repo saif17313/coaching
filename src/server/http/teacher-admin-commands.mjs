@@ -1,3 +1,4 @@
+import {RpcError} from './rpc-errors.mjs';
 /** Strict verified teacher-only HTTP boundary for student profile and enrollment request commands. */
 const UUID=/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const TOKEN=/^[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+$/;
@@ -50,7 +51,7 @@ export function createTeacherAdminCommandEndpoint(kind,{verify,execute}={}){
    if(!actor||actor.verified!==true||!isUUID(actor.userId)||actor.role!=='teacher'||actor.accountStatus!=='active'||actor.accessToken!==token)deny(403,'FORBIDDEN');
    const result=await execute(kind,{token,operationId,target,data:Object.freeze(data),actorId:actor.userId});
    return respond(kind==='enrollment-request'?201:200,{success:true,data:validateResult(kind,result,target,data)});
-  }catch(error){
+  }catch(error){if(error instanceof RpcError)return respond(error.status,{success:false,error:{code:error.code}});
    if(error?.code&&[400,401,403,405,413,415,502].includes(error.status))return respond(error.status,{success:false,error:{code:error.code}});
    return respond(503,{success:false,error:{code:'SERVICE_UNAVAILABLE'}});
   }

@@ -1,3 +1,4 @@
+import {RpcError} from './rpc-errors.mjs';
 /** Student assignment and notification workflows; no direct student submission-table read. */
 const ID=/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const JWT=/^[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+$/;
@@ -50,7 +51,7 @@ function project(kind,v,target,actor){
  }
  if(kind==='submissionList'){
   if(!exact(v,['items'])||!Array.isArray(v.items)||v.items.length>50)fail(502,'UPSTREAM_DATA_INVALID');
-  const ids=new Set();for(const item of v.items){if(!exact(item,['id','assignmentId','studentId','submittedAt','gradeStatus','points','feedback'])||!uuid(item.id)||item.assignmentId!==target||!uuid(item.studentId)||!iso(item.submittedAt)||!['ungraded','draft','published'].includes(item.gradeStatus)||(item.gradeStatus==='ungraded'?(item.points!==null||item.feedback!==null):(!Number.isSafeInteger(item.points)||item.points<0||item.points>1000||typeof item.feedback!=='string'||item.feedback.length>2000))||ids.has(item.id))fail(502,'UPSTREAM_DATA_INVALID');ids.add(item.id);}
+  const ids=new Set();for(const item of v.items){if(!exact(item,['id','assignmentId','studentId','submittedAt','gradeStatus','points','feedback','answerText'])||!uuid(item.id)||item.assignmentId!==target||typeof item.answerText!=='string'||item.answerText.length>20000||!uuid(item.studentId)||!iso(item.submittedAt)||!['ungraded','draft','published'].includes(item.gradeStatus)||(item.gradeStatus==='ungraded'?(item.points!==null||item.feedback!==null):(!Number.isSafeInteger(item.points)||item.points<0||item.points>1000||typeof item.feedback!=='string'||item.feedback.length>2000))||ids.has(item.id))fail(502,'UPSTREAM_DATA_INVALID');ids.add(item.id);}
   return v;
  }
  const keys=kinds[kind].out;
@@ -76,6 +77,6 @@ export function createStudentWorkflow(kind,{verify,execute}={}){
    if(!actor||actor.verified!==true||!uuid(actor.userId)||actor.role!==cfg.role||actor.accountStatus!=='active'||actor.accessToken!==token)fail(403,'FORBIDDEN');
    const raw=await execute(kind,{token,actorId:actor.userId,operationId,target,data:Object.freeze(data)});
    return send(200,{success:true,data:project(kind,raw,target,actor)});
-  }catch(e){if(e&&[400,401,403,404,405,413,415,502].includes(e.status)&&e.code)return send(e.status,{success:false,error:{code:e.code}});return send(503,{success:false,error:{code:'SERVICE_UNAVAILABLE'}});}
+  }catch(e){if(e instanceof RpcError)return send(e.status,{success:false,error:{code:e.code}});if(e&&[400,401,403,404,405,413,415,502].includes(e.status)&&e.code)return send(e.status,{success:false,error:{code:e.code}});return send(503,{success:false,error:{code:'SERVICE_UNAVAILABLE'}});}
  };
 }

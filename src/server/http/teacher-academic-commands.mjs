@@ -1,3 +1,4 @@
+import {RpcError} from './rpc-errors.mjs';
 /** Teacher academic transaction boundary; the database RPC performs the authoritative write. */
 const UUID=/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const JWT=/^[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+$/;
@@ -72,6 +73,6 @@ export function createAcademicCommand(kind,{verify,execute}={}){
    const actor=await verify(token);if(!actor||actor.verified!==true||!id(actor.userId)||actor.role!=='teacher'||actor.accountStatus!=='active'||actor.accessToken!==token)deny(403,'FORBIDDEN');
    const result=await execute(kind,{token,operationId:op,target,data:Object.freeze(data),actorId:actor.userId});
    return response(201,{success:true,data:validateResult(kind,result,target,data)});
-  }catch(e){if([400,401,403,405,413,415,502].includes(e?.status)&&e?.code)return response(e.status,{success:false,error:{code:e.code}});return response(503,{success:false,error:{code:'SERVICE_UNAVAILABLE'}});}
+  }catch(e){if(e instanceof RpcError)return response(e.status,{success:false,error:{code:e.code}});if([400,401,403,405,413,415,502].includes(e?.status)&&e?.code)return response(e.status,{success:false,error:{code:e.code}});return response(503,{success:false,error:{code:'SERVICE_UNAVAILABLE'}});}
  };
 }

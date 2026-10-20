@@ -1,3 +1,4 @@
+import {domainRpcError,RpcError} from './rpc-errors.mjs';
 import 'server-only';
 import {createAcademicCommand,type AcademicKind,type AcademicCommand} from './teacher-academic-commands.mjs';
 import {verifyActiveActor} from './production-read-adapter';
@@ -10,7 +11,7 @@ const names:Record<AcademicKind,string>={
  'result-draft':'coaching_save_exam_result_draft',
 };
 async function execute(kind:AcademicKind,c:AcademicCommand):Promise<unknown>{
- if(process.env.COACHING_ENABLE_MUTATION_APIS!=='enabled-after-db-verification')throw Error('MUTATIONS_DISABLED');
+ if(process.env.COACHING_ENABLE_MUTATION_APIS!=='enabled-after-db-verification')throw new RpcError('MUTATIONS_DISABLED',503);
  const raw=process.env.SUPABASE_URL,key=process.env.SUPABASE_ANON_KEY;
  if(!raw||!key||/[^\x21-\x7e]/.test(key)||key.length>4096)throw Error('INVALID_DB_CONFIG');
  let root:URL;try{root=new URL(raw);}catch{throw Error('INVALID_DB_CONFIG');}
@@ -28,7 +29,7 @@ async function execute(kind:AcademicKind,c:AcademicCommand):Promise<unknown>{
  };
  const url=new URL(`/rest/v1/rpc/${names[kind]}`,root);
  const res=await fetch(url,{method:'POST',headers:{apikey:key,Authorization:`Bearer ${c.token}`,'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify({...args[kind],p_operation_id:c.operationId}),cache:'no-store',redirect:'error',signal:AbortSignal.timeout(10000)});
- if(!res.ok)throw Error('DB_RPC_REJECTED');return res.json();
+ if(!res.ok)await domainRpcError(res);return res.json();
 }
 export const academicSubjectCreate=createAcademicCommand('subject-create',{verify:verifyActiveActor,execute});
 export const academicSyllabusAdd=createAcademicCommand('syllabus-add',{verify:verifyActiveActor,execute});

@@ -1,9 +1,10 @@
+import {domainRpcError,RpcError} from './rpc-errors.mjs';
 import 'server-only';
 import {createOfficeCommand,type OfficeKind,type OfficeCommand} from './office-commands.mjs';
 import {verifyActiveActor} from './production-read-adapter';
 const fn:Record<OfficeKind,string>={plan:'coaching_create_fee_plan',dues:'coaching_generate_monthly_dues',payment:'coaching_post_payment',waiver:'coaching_waive_due',refund:'coaching_refund_payment',announcement:'coaching_create_announcement',publish:'coaching_publish_announcement',notify:'coaching_dispatch_batch_notification'};
 async function execute(kind:OfficeKind,c:OfficeCommand):Promise<unknown>{
- if(process.env.COACHING_ENABLE_MUTATION_APIS!=='enabled-after-db-verification')throw Error('MUTATIONS_DISABLED');
+ if(process.env.COACHING_ENABLE_MUTATION_APIS!=='enabled-after-db-verification')throw new RpcError('MUTATIONS_DISABLED',503);
  const raw=process.env.SUPABASE_URL,key=process.env.SUPABASE_ANON_KEY;
  if(!raw||!key||/[^\x21-\x7e]/.test(key)||key.length>4096)throw Error('DB_NOT_CONFIGURED');
  let root:URL;try{root=new URL(raw);}catch{throw Error('DB_NOT_CONFIGURED');}
@@ -22,6 +23,6 @@ async function execute(kind:OfficeKind,c:OfficeCommand):Promise<unknown>{
   notify:{p_batch_id:c.target,p_event_id:d.eventId,p_title:d.title,p_body:d.body},
  };
  const res=await fetch(new URL(`/rest/v1/rpc/${fn[kind]}`,root),{method:'POST',headers:{apikey:key,Authorization:`Bearer ${c.token}`,'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify({...args[kind],p_operation_id:c.operationId}),cache:'no-store',redirect:'error',signal:AbortSignal.timeout(10000)});
- if(!res.ok)throw Error('OFFICE_RPC_REJECTED');return res.json();
+ if(!res.ok)await domainRpcError(res);return res.json();
 }
 export const officeCommand=(kind:OfficeKind)=>createOfficeCommand(kind,{verify:verifyActiveActor,execute});

@@ -1,0 +1,9 @@
+.portal-shell .portal-top-eyebrow,.portal-shell .portal-online,.portal-shell .portal-heading p,.portal-shell .portal-footnote,.portal-shell .academic-heading p,.portal-shell .teacher-ops-pagination>span{color:#526b74}
+.portal-shell .portal-kicker{color:#126d62}
+.portal-shell .student-toolbar p,.portal-shell .student-limited{color:#526b74}
+@media(max-width:600px){
+ .portal-shell .portal-topbar{height:auto;min-height:86px;flex-direction:column;align-items:stretch;gap:12px}
+ .portal-shell .portal-top-actions{width:100%;justify-content:space-between;gap:12px;min-width:0}
+ .portal-shell .portal-workspace-switch{min-width:0;flex:1;max-width:280px;margin-left:0}
+ .portal-shell .portal-workspace-switch button{flex:1;padding:9px 7px;font-size:11px}
+}

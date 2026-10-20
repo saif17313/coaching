@@ -1,3 +1,4 @@
+import {RpcError} from './rpc-errors.mjs';
 /** Student portal completion: signed JWT, strict DTOs, no direct finance table grants. */
 const UUID=/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const JWT=/^[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+$/;
@@ -54,5 +55,5 @@ export function createStudentCompletionRoute(kind,{verify,call}={}){
   let data=kind==='profile'||kind==='profileUpdate'?validProfile(rawData,actor.userId,kind==='profileUpdate'):kind==='dashboard'?validDashboard(rawData,actor.userId):kind==='billing'||kind==='billingCsv'?validBilling(rawData,actor.userId,p):kind==='calendar'?validCalendar(rawData,from,to):validProgress(rawData,actor.userId);
   if(kind==='billingCsv')return new Response(csv(data),{status:200,headers:{...headers,'Content-Type':'text/csv; charset=utf-8','Content-Disposition':'attachment; filename="student-billing.csv"'}});
   return result(200,{success:true,data});
- }catch(e){if(e&&[400,401,403,405,413,415,502].includes(e.status)&&e.code)return result(e.status,{success:false,error:{code:e.code}});return result(503,{success:false,error:{code:'SERVICE_UNAVAILABLE'}});}}
+ }catch(e){if(e instanceof RpcError)return result(e.status,{success:false,error:{code:e.code}});if(e&&[400,401,403,405,413,415,502].includes(e.status)&&e.code)return result(e.status,{success:false,error:{code:e.code}});return result(503,{success:false,error:{code:'SERVICE_UNAVAILABLE'}});}}
 }
