@@ -37,10 +37,16 @@
 - Historical admission/photo/academic/financial evidence preserved. Do not replay permanent admission or financial fixtures. Existing approved DEMO Student admission revision is 4.
 
 ## Release Check
-Full npm run verify passed: structure, lint (zero errors/17 existing warnings), typecheck, 725 tests, zero production dependency vulnerabilities and optimized production build. The optimized runtime was then started locally; signed Teacher/Student reads, public HTML and final mobile audit keyboard scrolling/contrast/overflow checks PASS. This is a local production-build smoke, not a hosted deployment. Restore the reviewed local DEV launcher after stopping that smoke server.
+Full npm run verify passed: structure, lint (zero errors/17 existing warnings), typecheck, 725 tests, zero production dependency vulnerabilities and optimized production build. The optimized runtime was then started locally; signed Teacher/Student reads, public HTML and final mobile audit keyboard scrolling/contrast/overflow checks PASS. This is a local production-build smoke, not a hosted deployment. The reviewed local DEV launcher is restored and its non-mutating dry run passes.
 
 ## Deployment Blocker
 No repository-linked project exists in connected Vercel account. Only an unrelated project is connected. No `.vercel` link, authenticated Vercel CLI, release workflow, established production domain or production DB target exists in this workspace. Existing GitHub workflow verifies feature pushes; it does not deploy. Do not deploy to the unrelated project or claim live production verification.
 
-## Next Exact Action
-All release verification and final mobile audit checks passed. Local DEV server restored with reviewed gates. API/schema milestone committed as 338dc6d. Scope staging to this task's source/assets/migrations/tests/evidence/docs, excluding payloads, environment files and diagnostics. Scan staged content for credentials without printing them. Commit, push normally, verify remote SHA, update this file and report the genuine hosting blocker.
+## Commit / Push / CI Status
+- API/schema milestone: 338dc6d. Premium UI/workflow/evidence milestone: fd5f86f.
+- Both pushed normally to feature/p00-foundation; remote full SHA matched fd5f86fd532383ba2717ca7ba07119bfb7260ec8.
+- GitHub Verify run 39513975649, job 118941555824: completed SUCCESS; npm run verify completed 2026-10-20T23:18:00Z. Evidence saved under premium/github-verification.json.
+- Final documentation and reviewed DEV launcher are being committed as the handoff. All source changes and live DEV/local production-build verification are complete. Remaining installer ZIPs/payloads and diagnostic failure artifacts are unrelated and remain unstaged.
+
+## Remaining External Blocker
+Hosted production deployment and live-domain verification require an authorized hosting project linked to this repository and an established production configuration. None is available through current access. Do not create an unrelated deployment or claim success. No further permission is required for the completed code/DEV work.
