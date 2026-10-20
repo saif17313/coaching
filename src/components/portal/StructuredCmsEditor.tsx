@@ -1,11 +1,12 @@
 'use client';
 import {useEffect,useState} from 'react';
 import './structured-cms.css';
-import {CMS_FORMS,validateCmsFields,type FieldSchema} from '@/client/cms-fields.mjs';
+import {CMS_FORMS,validateCmsFields,validateSchema,type FieldSchema} from '@/client/cms-fields.mjs';
 type Choice={id:string;title:string};
 type Media={id:string;alt:string;status:string};
-function initial(schema:FieldSchema):unknown{return schema.type==='object'?{}:schema.type==='array'?[]:schema.type==='boolean'?false:schema.type==='integer'?schema.minimum??0:'';}
+function initial(schema:FieldSchema):unknown{if(schema.oneOf)return initial(schema.oneOf[0]);return schema.type==='object'?{}:schema.type==='array'?[]:schema.type==='boolean'?false:schema.type==='integer'?schema.minimum??0:'';}
 function Fields({schema,value,onChange,path,media,choices}:{schema:FieldSchema;value:unknown;onChange:(value:unknown)=>void;path:string;media:Media[];choices:Choice[]}){
+ if(schema.oneOf){const branch=schema.oneOf.find(x=>validateSchema(value,x))??schema.oneOf[0];return <Fields schema={branch} value={value} onChange={onChange} path={path} media={media} choices={choices}/>;}
  if(schema.type==='object'){
   const current=(value&&typeof value==='object'&&!Array.isArray(value)?value:{}) as Record<string,unknown>;
   return <div className="studio-form">{Object.entries(schema.properties??{}).map(([key,field])=><Fields key={key} schema={field} value={current[key]??initial(field)} path={`${path} ${field.title??key}`} media={media} choices={choices} onChange={next=>onChange({...current,[key]:next})}/>)}</div>;
@@ -25,6 +26,7 @@ function Fields({schema,value,onChange,path,media,choices}:{schema:FieldSchema;v
 }
 function DraftFields({schema,value}:{schema:FieldSchema;value:unknown}){
  if(value===undefined||value===null||value==='')return null;
+ if(schema.oneOf){const branch=schema.oneOf.find(x=>validateSchema(value,x));return branch?<DraftFields schema={branch} value={value}/>:null;}
  if(schema.type==='object'&&typeof value==='object'&&!Array.isArray(value))return <div>{Object.entries(value).map(([key,next])=>schema.properties?.[key]?<DraftFields key={key} schema={schema.properties[key]} value={next}/>:null)}</div>;
  if(schema.type==='array'&&Array.isArray(value)&&schema.items){const child=schema.items;return <div><strong>{schema.title}</strong>{value.map((entry,i)=><DraftFields key={i} schema={child} value={entry}/>)}</div>;}
  if(schema.media||schema.title==='Published record ID')return <p>{schema.title}: {value?'Selected':'None'}</p>;

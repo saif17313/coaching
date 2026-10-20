@@ -25,6 +25,18 @@ test('every content sidebar target resolves its dedicated semantic schema and ki
  assert.equal(getWebsiteTarget('about-page-industrial-training-banner').schemaKey,'ABOUT_TRAINING');
  assert.equal(getWebsiteTarget('about-page-projects-grid').schemaKey,'ABOUT_PROJECTS');
 });
+
+test('portfolio schemas retain reference nesting and legacy training without accepting unsafe media',()=>{
+ assert.ok(validateCmsFields('ABOUT_EDUCATION',{education:[{id:'DEMO education',degree:'DEMO degree',institution:'DEMO institute',year:'2026',gpa:'DEMO grade',status:'DEMO',displayOrder:1}]}));
+ assert.ok(validateCmsFields('ABOUT_RESEARCH_EXP',{researchData:[{title:'DEMO research',type:'Thesis',supervisor:'DEMO supervisor',coSupervisors:'DEMO',summary:'DEMO',focusArea:'DEMO',techniques:'DEMO',outcome:'DEMO',iconName:'Book'}]}));
+ assert.ok(validateCmsFields('ABOUT_PUBLICATIONS',{publications:[{title:'DEMO paper',type:'Journal Article',venue:'DEMO journal',doiLink:'https://doi.org/10.0000/demo',summary:'DEMO'}]}));
+ assert.ok(validateCmsFields('ABOUT_PROJECTS',{projects:[{title:'DEMO project',imageUrl:page,technologies:['Physics'],metrics:[{label:'DEMO',value:'1'}],actionLinks:[{label:'Read',url:'/site/projects',variant:'outline'}],displayOrder:1}]}));
+ assert.ok(validateCmsFields('ABOUT_SKILLS',{skills:[{title:'DEMO skills',skills:['Physics','Mathematics'],progress:'DEMO'}]}));
+ assert.ok(validateCmsFields('ABOUT_TRAINING',{training:{title:'DEMO training',organization:'DEMO institute',features:[{label:'DEMO feature',iconName:'Book'}],certificateUrl:page}}));
+ assert.ok(validateCmsFields('ABOUT_TRAINING',{training:[{title:'Legacy training entry',description:'Preserved'}]}));
+ assert.equal(validateCmsFields('ABOUT_TRAINING',{training:{certificateUrl:'https://external.test/certificate.png'}}),false);
+ assert.equal(validateCmsFields('ABOUT_PUBLICATIONS',{publications:[{doiLink:'javascript:alert(1)'}]}),false);
+});
 test('typed fields reject foreign keys, unsafe links, forged media, unknown data, overlong text and rating range',()=>{
  for(const content of [{headline:'x'.repeat(161)},{headline:'\u0000'},{teacherImage:'https://example.com/fake-person.png'},{primaryCtaUrl:'javascript:alert(1)'},{primaryCtaUrl:'//external.test'},{primaryCtaUrl:'https://user:password@example.com'},{password:'unexpected'}])assert.equal(validateCmsFields('HOME_HERO',content),false);
  assert.equal(validateCmsFields('HOME_FEATURED_COURSES',{selectedCourseIds:[page,page]}),false);

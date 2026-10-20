@@ -1,12 +1,14 @@
 import Image from 'next/image';
 import './typed-content.css';
 import Link from 'next/link';
-import {CMS_FORMS,safeContentUrl,type FieldSchema} from '@/client/cms-fields.mjs';
+import {CMS_FORMS,safeContentUrl,validateSchema,type FieldSchema} from '@/client/cms-fields.mjs';
 import type {SiteSection} from '@/server/website/public-site';
 import {PublishedVideo} from './PublishedVideo';
 import {youtubeVideoId} from '@/client/cms-video.mjs';
 const mediaId=(value:unknown):value is string=>typeof value==='string'&&/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(value);
 function Value({value,schema,name}:{value:unknown;schema:FieldSchema;name:string}){
+ if(schema.oneOf){const branch=schema.oneOf.find(x=>validateSchema(value,x));return branch?<Value value={value} schema={branch} name={name}/>:null;}
+ if(['id','displayOrder','icon','iconName','colorTheme','variant'].includes(name))return null;
  if(value===null||value===undefined||value===''||typeof value==='boolean'||schema.relation||name==='featuredId')return null;
  if(schema.media)return mediaId(value)?<Image unoptimized src={`/api/v1/public/media/${value}`} alt={schema.title??''} width={640} height={480} className="tale-media-picture"/>:null;
  if(schema.type==='array'&&schema.items){const itemSchema=schema.items;return Array.isArray(value)&&value.length>0?<div className="tale-typed-list">{value.map((entry,i)=><div className="tale-typed-entry" key={i}><Value value={entry} schema={itemSchema} name={name}/></div>)}</div>:null;}
