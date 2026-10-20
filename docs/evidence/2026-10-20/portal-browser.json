@@ -1,0 +1,190 @@
+{
+  "time": "2026-10-20T16:01:27.296Z",
+  "checks": [
+    {
+      "name": "Teacher creates announcement through dedicated editor",
+      "status": "Pass"
+    },
+    {
+      "name": "Teacher updates announcement draft through editor",
+      "status": "Pass"
+    },
+    {
+      "name": "Student cannot read edited draft",
+      "status": "Pass"
+    },
+    {
+      "name": "Teacher publishes announcement from editor",
+      "status": "Pass"
+    },
+    {
+      "name": "Student reads exact multiline published notice",
+      "status": "Pass"
+    },
+    {
+      "name": "Teacher dispatches notification from notice UI",
+      "status": "Pass"
+    },
+    {
+      "name": "Teacher archives notice through editor",
+      "status": "Pass"
+    },
+    {
+      "name": "archived announcement disappears from Student read",
+      "status": "Pass"
+    },
+    {
+      "name": "Student saves profile edit",
+      "status": "Pass"
+    },
+    {
+      "name": "Student profile independent read-back DEMO Audit Student Reviewed",
+      "status": "Pass"
+    },
+    {
+      "name": "Student saves profile restoration",
+      "status": "Pass"
+    },
+    {
+      "name": "Student profile independent read-back DEMO Audit Student",
+      "status": "Pass"
+    },
+    {
+      "name": "teacher desktop no horizontal overflow",
+      "status": "Pass"
+    },
+    {
+      "name": "teacher tablet no horizontal overflow",
+      "status": "Pass"
+    }
+  ],
+  "viewports": [
+    {
+      "role": "teacher",
+      "label": "desktop",
+      "width": 1440,
+      "height": 1000,
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": [
+            {
+              "target": [
+                ".portal-top-eyebrow"
+              ],
+              "summary": "Fix any of the following:\n  Element has insufficient color contrast of 2.32 (foreground color: #9aabaf, background color: #fefcf8, font size: 7.5pt (10px), font weight: bold). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".portal-online"
+              ],
+              "summary": "Fix any of the following:\n  Element has insufficient color contrast of 4.17 (foreground color: #647f83, background color: #fefcf8, font size: 8.3pt (11px), font weight: bold). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".portal-kicker"
+              ],
+              "summary": "Fix any of the following:\n  Element has insufficient color contrast of 4.02 (foreground color: #148879, background color: #f3f7f5, font size: 8.3pt (11px), font weight: bold). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".portal-heading > div > p"
+              ],
+              "summary": "Fix any of the following:\n  Element has insufficient color contrast of 3.91 (foreground color: #697e8b, background color: #f3f7f5, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".academic-heading > div > p"
+              ],
+              "summary": "Fix any of the following:\n  Element has insufficient color contrast of 3.51 (foreground color: #778d8c, background color: #ffffff, font size: 9.8pt (13px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".teacher-ops-pagination > span"
+              ],
+              "summary": "Fix any of the following:\n  Element has insufficient color contrast of 4.3 (foreground color: #667e84, background color: #ffffff, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".portal-footnote"
+              ],
+              "summary": "Fix any of the following:\n  Element has insufficient color contrast of 2.3 (foreground color: #97a7aa, background color: #f3f7f5, font size: 8.3pt (11px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".portal-footnote > span"
+              ],
+              "summary": "Fix any of the following:\n  Element has insufficient color contrast of 2.3 (foreground color: #97a7aa, background color: #f3f7f5, font size: 8.3pt (11px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "role": "teacher",
+      "label": "tablet",
+      "width": 820,
+      "height": 1180,
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": [
+            {
+              "target": [
+                ".portal-top-eyebrow"
+              ],
+              "summary": "Fix any of the following:\n  Element has insufficient color contrast of 2.32 (foreground color: #9aabaf, background color: #fefcf8, font size: 7.5pt (10px), font weight: bold). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".portal-online"
+              ],
+              "summary": "Fix any of the following:\n  Element has insufficient color contrast of 4.17 (foreground color: #647f83, background color: #fefcf8, font size: 8.3pt (11px), font weight: bold). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".portal-kicker"
+              ],
+              "summary": "Fix any of the following:\n  Element has insufficient color contrast of 4.02 (foreground color: #148879, background color: #f3f7f5, font size: 8.3pt (11px), font weight: bold). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".portal-heading > div > p"
+              ],
+              "summary": "Fix any of the following:\n  Element has insufficient color contrast of 3.91 (foreground color: #697e8b, background color: #f3f7f5, font size: 10.5pt (14px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".academic-heading > div > p"
+              ],
+              "summary": "Fix any of the following:\n  Element has insufficient color contrast of 3.51 (foreground color: #778d8c, background color: #ffffff, font size: 9.8pt (13px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".teacher-ops-pagination > span"
+              ],
+              "summary": "Fix any of the following:\n  Element has insufficient color contrast of 4.3 (foreground color: #667e84, background color: #ffffff, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".portal-footnote"
+              ],
+              "summary": "Fix any of the following:\n  Element has insufficient color contrast of 2.3 (foreground color: #97a7aa, background color: #f3f7f5, font size: 8.3pt (11px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".portal-footnote > span"
+              ],
+              "summary": "Fix any of the following:\n  Element has insufficient color contrast of 2.3 (foreground color: #97a7aa, background color: #f3f7f5, font size: 8.3pt (11px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "announcementId": "bbaaab82-12f3-49bd-adfa-68d8ac73f634",
+  "status": "Fail",
+  "failure": "teacher mobile no horizontal overflow\n\nfalse !== true\n"
+}

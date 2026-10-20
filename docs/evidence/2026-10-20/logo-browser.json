@@ -1,0 +1,56 @@
+{
+  "time": "2026-10-20T15:33:05.329Z",
+  "checks": [
+    {
+      "name": "settings start with no unpublished changes",
+      "status": "Pass"
+    },
+    {
+      "name": "verified DEMO logo is available in Teacher library",
+      "status": "Pass"
+    },
+    {
+      "name": "logo draft saved through real form",
+      "status": "Pass"
+    },
+    {
+      "name": "logo draft read-back",
+      "status": "Pass"
+    },
+    {
+      "name": "draft logo does not change public identity",
+      "status": "Pass"
+    },
+    {
+      "name": "draft logo bytes remain private",
+      "status": "Pass"
+    },
+    {
+      "name": "draft logo cannot be archived",
+      "status": "Pass"
+    },
+    {
+      "name": "logo settings publish through UI",
+      "status": "Pass"
+    },
+    {
+      "name": "published logo ID exposed",
+      "status": "Pass"
+    },
+    {
+      "name": "published logo bytes delivered",
+      "status": "Pass"
+    },
+    {
+      "name": "public header uses published logo",
+      "status": "Pass"
+    }
+  ],
+  "mediaId": "10829529-ea49-454a-8adf-2cd7f998660d",
+  "status": "Pass",
+  "restored": true,
+  "cleanup": {
+    "publicMediaStatus": 404,
+    "archiveStatus": 200
+  }
+}

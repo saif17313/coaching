@@ -1,0 +1,21 @@
+{
+  "time": "2026-10-20T15:36:59.814Z",
+  "studentId": "e6b148e2-dfe4-4f3a-8b35-6046e2fa57de",
+  "batchId": "41dcc8f0-a3a9-4ef1-91bd-aa82e824edb8",
+  "checks": [
+    {
+      "name": "Teacher activates confirmed DEMO Student through UI",
+      "status": "Pass"
+    },
+    {
+      "name": "Teacher requests DEMO enrollment through UI",
+      "status": "Pass"
+    },
+    {
+      "name": "Teacher approves DEMO enrollment through UI",
+      "status": "Pass"
+    }
+  ],
+  "enrollmentId": "a8c079bb-756e-44a7-a383-e36d5e79a8a8",
+  "status": "Pass"
+}

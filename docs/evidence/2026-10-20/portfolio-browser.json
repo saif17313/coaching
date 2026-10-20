@@ -1,0 +1,136 @@
+{
+  "time": "2026-10-20T16:49:20.360Z",
+  "project": "rkpwqgwceekuvlizfpeb",
+  "records": {
+    "pageId": "e83388bf-6f56-45de-bcb2-1e5dc58c66ee",
+    "slug": "demo-portfolio-mvgx4jc9",
+    "sections": {
+      "ABOUT_EDUCATION": "d9b09b49-9a02-4883-aa4f-b75a53e1a7f0",
+      "ABOUT_RESEARCH_EXP": "f10b5880-af2a-4c44-9b37-5ad5e663cd8e",
+      "ABOUT_PUBLICATIONS": "44c65f96-4f22-4372-92a1-4ca397869833",
+      "ABOUT_PROJECTS": "d831cb87-7389-45ef-8daa-82f70c822e12",
+      "ABOUT_SKILLS": "74a7f937-b0cc-4a9a-97e5-5ca21314f070",
+      "ABOUT_TRAINING": "9400d660-98fe-43f4-9263-8cb616de38c5",
+      "ABOUT_ECA": "2e695523-afa0-4c9c-9493-44c899072bbb"
+    }
+  },
+  "checks": [
+    {
+      "name": "Teacher creates isolated DEMO portfolio page",
+      "status": "Pass"
+    },
+    {
+      "name": "ABOUT_EDUCATION section create",
+      "status": "Pass"
+    },
+    {
+      "name": "ABOUT_EDUCATION typed reference fields persist",
+      "status": "Pass"
+    },
+    {
+      "name": "ABOUT_RESEARCH_EXP section create",
+      "status": "Pass"
+    },
+    {
+      "name": "ABOUT_RESEARCH_EXP typed reference fields persist",
+      "status": "Pass"
+    },
+    {
+      "name": "ABOUT_PUBLICATIONS section create",
+      "status": "Pass"
+    },
+    {
+      "name": "ABOUT_PUBLICATIONS typed reference fields persist",
+      "status": "Pass"
+    },
+    {
+      "name": "ABOUT_PROJECTS section create",
+      "status": "Pass"
+    },
+    {
+      "name": "ABOUT_PROJECTS typed reference fields persist",
+      "status": "Pass"
+    },
+    {
+      "name": "ABOUT_SKILLS section create",
+      "status": "Pass"
+    },
+    {
+      "name": "ABOUT_SKILLS typed reference fields persist",
+      "status": "Pass"
+    },
+    {
+      "name": "ABOUT_TRAINING section create",
+      "status": "Pass"
+    },
+    {
+      "name": "ABOUT_TRAINING typed reference fields persist",
+      "status": "Pass"
+    },
+    {
+      "name": "ABOUT_ECA section create",
+      "status": "Pass"
+    },
+    {
+      "name": "ABOUT_ECA typed reference fields persist",
+      "status": "Pass"
+    },
+    {
+      "name": "ABOUT_EDUCATION independent read-back",
+      "status": "Pass"
+    },
+    {
+      "name": "ABOUT_RESEARCH_EXP independent read-back",
+      "status": "Pass"
+    },
+    {
+      "name": "ABOUT_PUBLICATIONS independent read-back",
+      "status": "Pass"
+    },
+    {
+      "name": "ABOUT_PROJECTS independent read-back",
+      "status": "Pass"
+    },
+    {
+      "name": "ABOUT_SKILLS independent read-back",
+      "status": "Pass"
+    },
+    {
+      "name": "ABOUT_TRAINING independent read-back",
+      "status": "Pass"
+    },
+    {
+      "name": "ABOUT_ECA independent read-back",
+      "status": "Pass"
+    },
+    {
+      "name": "Teacher education degree field saves through UI",
+      "status": "Pass"
+    },
+    {
+      "name": "UI degree independently persisted",
+      "status": "Pass"
+    },
+    {
+      "name": "Draft portfolio remains private",
+      "status": "Pass"
+    },
+    {
+      "name": "Teacher publishes typed portfolio",
+      "status": "Pass"
+    },
+    {
+      "name": "Public portfolio read succeeds",
+      "status": "Pass"
+    },
+    {
+      "name": "Training retains reference object shape",
+      "status": "Pass"
+    },
+    {
+      "name": "Published degree and industrial training render",
+      "status": "Pass"
+    }
+  ],
+  "status": "Pass"
+}

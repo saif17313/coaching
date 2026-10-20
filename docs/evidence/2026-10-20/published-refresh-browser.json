@@ -1,0 +1,26 @@
+{
+  "time": "2026-10-20T15:54:00.568Z",
+  "checks": [
+    {
+      "name": "save isolated refresh draft",
+      "status": "Pass"
+    },
+    {
+      "name": "public revision unchanged before publish",
+      "status": "Pass"
+    },
+    {
+      "name": "open public page does not render unpublished heading",
+      "status": "Pass"
+    },
+    {
+      "name": "publish refresh draft",
+      "status": "Pass"
+    },
+    {
+      "name": "already-open public page refreshes after publication",
+      "status": "Pass"
+    }
+  ],
+  "status": "Pass"
+}

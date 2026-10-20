@@ -1,0 +1,93 @@
+{
+  "time": "2026-10-20T17:21:26.051Z",
+  "transport": "Visible 30-second HTTP polling; no WebSocket",
+  "checks": [
+    {
+      "name": "Student view is visible",
+      "status": "Pass"
+    },
+    {
+      "name": "Teacher creates isolated notice",
+      "status": "Pass"
+    },
+    {
+      "name": "Teacher publishes isolated notice",
+      "status": "Pass"
+    },
+    {
+      "name": "Existing Student view updates without navigation or Refresh click",
+      "status": "Pass"
+    },
+    {
+      "name": "DEMO refresh notice archived",
+      "status": "Pass"
+    },
+    {
+      "name": "Earlier DEMO refresh fixture archived",
+      "status": "Pass"
+    }
+  ],
+  "pollRequests": [
+    29333
+  ],
+  "announcementId": "e4601efa-3115-4893-b76f-44f6eb13d21d",
+  "appearedAfterMs": 30623,
+  "status": "Pass",
+  "previousAttempt": {
+    "time": "2026-10-20T17:19:06.306Z",
+    "transport": "Visible 30-second HTTP polling; no WebSocket",
+    "checks": [
+      {
+        "name": "Student view is visible",
+        "status": "Pass"
+      },
+      {
+        "name": "Teacher creates isolated notice",
+        "status": "Pass"
+      },
+      {
+        "name": "Teacher publishes isolated notice",
+        "status": "Pass"
+      }
+    ],
+    "announcementId": "9ca97117-e42e-4c5f-ac22-4855ee3812b8",
+    "status": "Fail",
+    "failure": "locator.waitFor: Timeout 45000ms exceeded.\nCall log:\n\u001b[2m  - waiting for getByRole('heading', { name: 'DEMO automatic notice refresh mvgy6ua1', exact: true }) to be visible\u001b[22m\n",
+    "previousAttempt": {
+      "time": "2026-10-20T17:14:19.365Z",
+      "transport": "Visible 30-second HTTP polling; no WebSocket",
+      "checks": [],
+      "status": "Fail",
+      "failure": "teacher session required",
+      "previousAttempt": {
+        "time": "2026-10-20T17:12:57.700Z",
+        "transport": "Visible 30-second HTTP polling; no WebSocket",
+        "checks": [
+          {
+            "name": "Student view is visible",
+            "status": "Pass"
+          },
+          {
+            "name": "Teacher creates isolated notice",
+            "status": "Pass"
+          },
+          {
+            "name": "Teacher publishes isolated notice",
+            "status": "Pass"
+          },
+          {
+            "name": "Existing Student view updates without navigation or Refresh click",
+            "status": "Pass"
+          }
+        ],
+        "announcementId": "1c625b7c-c3e6-47ff-96e3-82b3515bdd66",
+        "appearedAfterMs": 28569,
+        "pollRequests": [
+          27421
+        ],
+        "status": "Fail",
+        "failure": "DEMO refresh notice archived\n\n201 !== 200\n"
+      }
+    }
+  }
+}

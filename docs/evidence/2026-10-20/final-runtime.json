@@ -1,0 +1,39 @@
+{
+  "time": "2026-10-20T17:24:44.989Z",
+  "next": "16.4.2",
+  "checks": [
+    {
+      "role": "teacher",
+      "path": "/api/portal/auth/session",
+      "status": 200
+    },
+    {
+      "role": "teacher",
+      "path": "/api/v1/teacher/website/write-status",
+      "status": 200,
+      "writable": true,
+      "mutationVerified": false
+    },
+    {
+      "role": "teacher",
+      "path": "/api/v1/teacher/overview",
+      "status": 200
+    },
+    {
+      "role": "student",
+      "path": "/api/portal/auth/session",
+      "status": 200
+    },
+    {
+      "role": "student",
+      "path": "/api/v1/student/progress",
+      "status": 200
+    },
+    {
+      "role": "student",
+      "path": "/api/v1/student/batches/41dcc8f0-a3a9-4ef1-91bd-aa82e824edb8/materials",
+      "status": 200
+    }
+  ],
+  "status": "Pass"
+}

@@ -1,0 +1,36 @@
+{
+  "time": "2026-10-20T16:59:19.425Z",
+  "project": "rkpwqgwceekuvlizfpeb",
+  "records": {
+    "batchId": "41dcc8f0-a3a9-4ef1-91bd-aa82e824edb8",
+    "uploadId": "112e399a-7dbc-4254-b996-0b2a2cf85551",
+    "materialId": "99287808-6ec6-4b0d-94de-af35080bb797"
+  },
+  "checks": [
+    {
+      "name": "Published PDF is authorized for enrolled Student",
+      "status": "Pass"
+    },
+    {
+      "name": "Student UI saves exact verified PDF",
+      "status": "Pass"
+    },
+    {
+      "name": "Archive labeled DEMO PDF 99287808-6ec6-4b0d-94de-af35080bb797",
+      "status": "Pass"
+    },
+    {
+      "name": "Archive labeled DEMO PDF 586b57e2-48af-4a0b-89c5-ac5bbdee8755",
+      "status": "Pass"
+    },
+    {
+      "name": "Archive labeled DEMO PDF 1663775b-0c8e-4b54-8f96-fec5f509aa86",
+      "status": "Pass"
+    },
+    {
+      "name": "Archived PDF access revoked",
+      "status": "Pass"
+    }
+  ],
+  "status": "Pass"
+}

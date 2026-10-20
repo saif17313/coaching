@@ -1,0 +1,25 @@
+{
+  "originalTitle": "Musa Sir • Demo Preview",
+  "draft": {
+    "status": 200,
+    "body": {
+      "success": true,
+      "data": {
+        "revision": 2,
+        "publishedRevision": 1
+      }
+    }
+  },
+  "published": {
+    "status": 200,
+    "body": {
+      "success": true,
+      "data": {
+        "revision": 2,
+        "publishedRevision": 2
+      }
+    }
+  },
+  "publicBefore": "Musa Sir • Demo Preview",
+  "publicAfter": "EduCentre"
+}

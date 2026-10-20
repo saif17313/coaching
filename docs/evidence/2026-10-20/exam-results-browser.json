@@ -1,0 +1,44 @@
+{
+  "time": "2026-10-20T15:56:27.578Z",
+  "records": {
+    "batchId": "41dcc8f0-a3a9-4ef1-91bd-aa82e824edb8",
+    "subjectId": "5cad1cee-8a84-4b36-ae86-a2793f774bbc",
+    "studentId": "e6b148e2-dfe4-4f3a-8b35-6046e2fa57de",
+    "examId": "fe6888f8-23cf-4576-9a27-023c50f51a71"
+  },
+  "checks": [
+    {
+      "name": "Teacher creates isolated completed DEMO exam",
+      "status": "Pass"
+    },
+    {
+      "name": "Teacher publishes DEMO exam",
+      "status": "Pass"
+    },
+    {
+      "name": "Teacher saves DEMO marks through UI",
+      "status": "Pass"
+    },
+    {
+      "name": "draft exam result absent from Student results",
+      "status": "Pass"
+    },
+    {
+      "name": "Teacher publishes exam results through UI",
+      "status": "Pass"
+    },
+    {
+      "name": "Student sees own published score",
+      "status": "Pass"
+    },
+    {
+      "name": "single DEMO Student rank",
+      "status": "Pass"
+    },
+    {
+      "name": "Student results UI displays persisted published score",
+      "status": "Pass"
+    }
+  ],
+  "status": "Pass"
+}

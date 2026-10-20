@@ -1,0 +1,157 @@
+> coaching-management-system@0.1.0 build
+> next build
+
+▲ Next.js 16.4.2 (Turbopack)
+- Environments: .env.local
+✓ Running next.config.ts took 35ms
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 3.0s
+  Running TypeScript ...
+  Finished TypeScript in 3.8s ...
+  Collecting page data using 15 workers ...
+  Generating static pages using 15 workers (0/22) ...
+  Generating static pages using 15 workers (5/22)
+  Generating static pages using 15 workers (10/22)
+  Generating static pages using 15 workers (16/22)
+✓ Generating static pages using 15 workers (22/22) in 396ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ƒ /
+├ ○ /_not-found
+├ ƒ /api/portal/auth/accept-invite
+├ ƒ /api/portal/auth/login
+├ ƒ /api/portal/auth/logout
+├ ƒ /api/portal/auth/session
+├ ƒ /api/v1/health
+├ ƒ /api/v1/public/media/[mediaId]
+├ ƒ /api/v1/public/site-navigation
+├ ƒ /api/v1/public/site-pages/[slug]
+├ ƒ /api/v1/public/site-revisions
+├ ƒ /api/v1/public/site-settings
+├ ƒ /api/v1/student/assignments/[assignmentId]
+├ ƒ /api/v1/student/assignments/[assignmentId]/submission
+├ ƒ /api/v1/student/assignments/[assignmentId]/submit
+├ ƒ /api/v1/student/batches
+├ ƒ /api/v1/student/batches/[batchId]
+├ ƒ /api/v1/student/batches/[batchId]/announcements
+├ ƒ /api/v1/student/batches/[batchId]/assignments
+├ ƒ /api/v1/student/batches/[batchId]/exams
+├ ƒ /api/v1/student/batches/[batchId]/materials
+├ ƒ /api/v1/student/batches/[batchId]/routine
+├ ƒ /api/v1/student/batches/[batchId]/subjects
+├ ƒ /api/v1/student/billing
+├ ƒ /api/v1/student/billing/export
+├ ƒ /api/v1/student/calendar
+├ ƒ /api/v1/student/dashboard
+├ ƒ /api/v1/student/dues
+├ ƒ /api/v1/student/enrollments
+├ ƒ /api/v1/student/exams/[examId]
+├ ƒ /api/v1/student/materials/[materialId]/file
+├ ƒ /api/v1/student/me
+├ ƒ /api/v1/student/notifications
+├ ƒ /api/v1/student/notifications/[notificationId]/read
+├ ƒ /api/v1/student/notifications/unread-count
+├ ƒ /api/v1/student/payments
+├ ƒ /api/v1/student/profile
+├ ƒ /api/v1/student/profile/update
+├ ƒ /api/v1/student/progress
+├ ƒ /api/v1/student/results
+├ ƒ /api/v1/student/subjects/[subjectId]/syllabus
+├ ƒ /api/v1/teacher/announcements/[announcementId]/archive
+├ ƒ /api/v1/teacher/announcements/[announcementId]/edit
+├ ƒ /api/v1/teacher/announcements/[announcementId]/publish
+├ ƒ /api/v1/teacher/assignments/[assignmentId]/grades/publish
+├ ƒ /api/v1/teacher/assignments/[assignmentId]/publish
+├ ƒ /api/v1/teacher/assignments/[assignmentId]/submissions
+├ ƒ /api/v1/teacher/audit-logs
+├ ƒ /api/v1/teacher/batch-commands
+├ ƒ /api/v1/teacher/batch-commands/[batchId]
+├ ƒ /api/v1/teacher/batches
+├ ƒ /api/v1/teacher/batches/[batchId]
+├ ƒ /api/v1/teacher/batches/[batchId]/announcements
+├ ƒ /api/v1/teacher/batches/[batchId]/announcements/create
+├ ƒ /api/v1/teacher/batches/[batchId]/assignment-drafts
+├ ƒ /api/v1/teacher/batches/[batchId]/assignments
+├ ƒ /api/v1/teacher/batches/[batchId]/cashflow
+├ ƒ /api/v1/teacher/batches/[batchId]/cashflow/export
+├ ƒ /api/v1/teacher/batches/[batchId]/dues
+├ ƒ /api/v1/teacher/batches/[batchId]/exam-drafts
+├ ƒ /api/v1/teacher/batches/[batchId]/exams
+├ ƒ /api/v1/teacher/batches/[batchId]/expenses
+├ ƒ /api/v1/teacher/batches/[batchId]/expenses/create
+├ ƒ /api/v1/teacher/batches/[batchId]/expenses/export
+├ ƒ /api/v1/teacher/batches/[batchId]/fee-plans
+├ ƒ /api/v1/teacher/batches/[batchId]/fee-plans/create
+├ ƒ /api/v1/teacher/batches/[batchId]/finance-report
+├ ƒ /api/v1/teacher/batches/[batchId]/materials
+├ ƒ /api/v1/teacher/batches/[batchId]/materials/upload
+├ ƒ /api/v1/teacher/batches/[batchId]/materials/write
+├ ƒ /api/v1/teacher/batches/[batchId]/notifications/dispatch
+├ ƒ /api/v1/teacher/batches/[batchId]/occupancy
+├ ƒ /api/v1/teacher/batches/[batchId]/roster
+├ ƒ /api/v1/teacher/batches/[batchId]/routine
+├ ƒ /api/v1/teacher/batches/[batchId]/routine-slots
+├ ƒ /api/v1/teacher/batches/[batchId]/subjects
+├ ƒ /api/v1/teacher/batches/[batchId]/subjects/create
+├ ƒ /api/v1/teacher/dues/[dueId]/adjustments
+├ ƒ /api/v1/teacher/dues/[dueId]/payments
+├ ƒ /api/v1/teacher/dues/[dueId]/payments/post
+├ ƒ /api/v1/teacher/dues/[dueId]/waive
+├ ƒ /api/v1/teacher/enrollment-requests
+├ ƒ /api/v1/teacher/enrollments
+├ ƒ /api/v1/teacher/enrollments/[enrollmentId]
+├ ƒ /api/v1/teacher/enrollments/[enrollmentId]/decision
+├ ƒ /api/v1/teacher/exams/[examId]/publish
+├ ƒ /api/v1/teacher/exams/[examId]/results
+├ ƒ /api/v1/teacher/exams/[examId]/results/draft
+├ ƒ /api/v1/teacher/exams/[examId]/results/publish
+├ ƒ /api/v1/teacher/expenses/[expenseId]
+├ ƒ /api/v1/teacher/expenses/[expenseId]/reverse
+├ ƒ /api/v1/teacher/fee-plans/[planId]/dues/generate
+├ ƒ /api/v1/teacher/materials/[materialId]/file
+├ ƒ /api/v1/teacher/notifications
+├ ƒ /api/v1/teacher/overview
+├ ƒ /api/v1/teacher/payments/[paymentId]/refund
+├ ƒ /api/v1/teacher/students
+├ ƒ /api/v1/teacher/students/[studentId]
+├ ƒ /api/v1/teacher/students/[studentId]/dues
+├ ƒ /api/v1/teacher/students/[studentId]/management
+├ ƒ /api/v1/teacher/students/[studentId]/payments
+├ ƒ /api/v1/teacher/students/[studentId]/profile
+├ ƒ /api/v1/teacher/students/[studentId]/status
+├ ƒ /api/v1/teacher/students/directory
+├ ƒ /api/v1/teacher/students/invite
+├ ƒ /api/v1/teacher/students/onboard
+├ ƒ /api/v1/teacher/subjects/[subjectId]/syllabus
+├ ƒ /api/v1/teacher/subjects/[subjectId]/syllabus/add
+├ ƒ /api/v1/teacher/submissions/[submissionId]/grade
+├ ƒ /api/v1/teacher/website/media
+├ ƒ /api/v1/teacher/website/media/[mediaId]/archive
+├ ƒ /api/v1/teacher/website/media/upload
+├ ƒ /api/v1/teacher/website/pages
+├ ƒ /api/v1/teacher/website/pages/[pageId]
+├ ƒ /api/v1/teacher/website/pages/[pageId]/archive
+├ ƒ /api/v1/teacher/website/pages/[pageId]/edit
+├ ƒ /api/v1/teacher/website/pages/[pageId]/items/[itemId]/media
+├ ƒ /api/v1/teacher/website/pages/[pageId]/organize
+├ ƒ /api/v1/teacher/website/pages/[pageId]/publish
+├ ƒ /api/v1/teacher/website/pages/[pageId]/sections/[sectionId]
+├ ƒ /api/v1/teacher/website/pages/[pageId]/sections/[sectionId]/fields
+├ ƒ /api/v1/teacher/website/pages/[pageId]/sections/[sectionId]/items/[itemId]
+├ ƒ /api/v1/teacher/website/pages/create
+├ ƒ /api/v1/teacher/website/settings
+├ ƒ /api/v1/teacher/website/settings/draft
+├ ƒ /api/v1/teacher/website/settings/publish
+├ ƒ /api/v1/teacher/website/write-status
+├ ○ /portal
+├ ○ /portal/accept-invite
+├ ƒ /site/[slug]
+└ ƒ /site/[slug]/[itemId]
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand

@@ -1,0 +1,63 @@
+{
+  "time": "2026-10-20T14:34:47.563Z",
+  "project": "rkpwqgwceekuvlizfpeb",
+  "testPage": {
+    "id": "616db242-a2e6-4504-87c8-293d56d43c61",
+    "slug": "demo-audit-mvgrjh34"
+  },
+  "checks": [
+    {
+      "name": "typed form saves through real Teacher gateway",
+      "status": "Pass"
+    },
+    {
+      "name": "typed field independently read back",
+      "status": "Pass"
+    },
+    {
+      "name": "typed draft does not alter published snapshot",
+      "status": "Pass"
+    },
+    {
+      "name": "typed unknown fields rejected by HTTP contract",
+      "status": "Pass"
+    },
+    {
+      "name": "verified PNG uploads to private Supabase Storage",
+      "status": "Pass"
+    },
+    {
+      "name": "same image operation safely replays without overwrite",
+      "status": "Pass"
+    },
+    {
+      "name": "unpublished image absent from public media route",
+      "status": "Pass"
+    },
+    {
+      "name": "create media attachment item",
+      "status": "Pass"
+    },
+    {
+      "name": "attach verified image to draft",
+      "status": "Pass"
+    },
+    {
+      "name": "attached unpublished image remains private",
+      "status": "Pass"
+    },
+    {
+      "name": "publish typed fields and verified media atomically",
+      "status": "Pass"
+    },
+    {
+      "name": "public snapshot contains typed fields",
+      "status": "Pass"
+    }
+  ],
+  "mediaId": "96d089cc-a9f1-4038-ba70-24d92ef27e0b",
+  "itemId": "77e39f3f-fd27-4320-b7b0-2c3e3100df86",
+  "sectionId": "4422329c-1970-40d4-b456-abf4582b8585",
+  "status": "Fail",
+  "failure": "published image delivered through public route\n\n503 !== 200\n"
+}

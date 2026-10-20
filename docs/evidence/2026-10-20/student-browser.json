@@ -1,0 +1,99 @@
+{
+  "time": "2026-10-20T15:47:34.887Z",
+  "project": "rkpwqgwceekuvlizfpeb",
+  "records": {
+    "cmsPageId": "616db242-a2e6-4504-87c8-293d56d43c61",
+    "mediaId": "96d089cc-a9f1-4038-ba70-24d92ef27e0b",
+    "batchId": "41dcc8f0-a3a9-4ef1-91bd-aa82e824edb8",
+    "subjectId": "5cad1cee-8a84-4b36-ae86-a2793f774bbc",
+    "assignmentId": "4b8ccec3-fd66-463a-a6bf-570bb016b682",
+    "examId": "026f68b7-b8f7-4eaf-867e-8c82f9edac97",
+    "studentId": "e6b148e2-dfe4-4f3a-8b35-6046e2fa57de",
+    "submissionId": "22033684-af3e-442b-89aa-faaa221c1b5a",
+    "announcementId": "9f49b6d7-ac34-46fd-924c-e0073a9ce6f5"
+  },
+  "checks": [
+    {
+      "name": "Student dashboard API",
+      "status": "Pass"
+    },
+    {
+      "name": "Student denied /api/v1/teacher/overview",
+      "status": "Pass"
+    },
+    {
+      "name": "Student denied /api/v1/teacher/website/pages",
+      "status": "Pass"
+    },
+    {
+      "name": "Student denied /api/v1/teacher/website/write-status",
+      "status": "Pass"
+    },
+    {
+      "name": "Student cannot mutate Teacher batch",
+      "status": "Pass"
+    },
+    {
+      "name": "Student sees approved DEMO enrollment",
+      "status": "Pass"
+    },
+    {
+      "name": "Student denied unenrolled batch",
+      "status": "Pass"
+    },
+    {
+      "name": "Student reads enrolled subjects",
+      "status": "Pass"
+    },
+    {
+      "name": "Student submits answer through real UI",
+      "status": "Pass"
+    },
+    {
+      "name": "submission belongs to signed-in Student",
+      "status": "Pass"
+    },
+    {
+      "name": "ungraded feedback stays private",
+      "status": "Pass"
+    },
+    {
+      "name": "Teacher can read submitted answer in review UI",
+      "status": "Pass"
+    },
+    {
+      "name": "Teacher saves grade through UI",
+      "status": "Pass"
+    },
+    {
+      "name": "draft points remain hidden from Student",
+      "status": "Pass"
+    },
+    {
+      "name": "draft feedback remains hidden from Student",
+      "status": "Pass"
+    },
+    {
+      "name": "Teacher publishes assignment grades through UI",
+      "status": "Pass"
+    },
+    {
+      "name": "Student sees published points",
+      "status": "Pass"
+    },
+    {
+      "name": "Student sees published feedback",
+      "status": "Pass"
+    },
+    {
+      "name": "Teacher creates announcement draft",
+      "status": "Pass"
+    },
+    {
+      "name": "draft announcement is private",
+      "status": "Pass"
+    }
+  ],
+  "status": "Fail",
+  "failure": "Teacher publishes announcement\n\n201 !== 200\n"
+}

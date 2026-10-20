@@ -1,0 +1,4 @@
+> coaching-management-system@0.1.0 audit:prod
+> npm audit --omit=dev --audit-level=high
+
+found 0 vulnerabilities

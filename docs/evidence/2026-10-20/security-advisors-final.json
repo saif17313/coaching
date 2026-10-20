@@ -1,0 +1,1014 @@
+{
+  "lints": [
+    {
+      "name": "rls_enabled_no_policy",
+      "title": "RLS Enabled No Policy",
+      "level": "INFO",
+      "facing": "EXTERNAL",
+      "categories": [
+        "SECURITY"
+      ],
+      "description": "Detects cases where row level security (RLS) has been enabled on a table but no RLS policies have been created.",
+      "remediation": "https://supabase.com/docs/guides/database/database-linter?lint=0008_rls_enabled_no_policy",
+      "count": 11,
+      "findings": [
+        {
+          "detail": "Table \\`public.app_settings\\` has RLS enabled, but no policies exist",
+          "metadata": {
+            "name": "app_settings",
+            "type": "table",
+            "schema": "public"
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Table \\`public.coaching_mutation_receipts\\` has RLS enabled, but no policies exist",
+          "metadata": {
+            "name": "coaching_mutation_receipts",
+            "type": "table",
+            "schema": "public"
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Table \\`public.financial_operations\\` has RLS enabled, but no policies exist",
+          "metadata": {
+            "name": "financial_operations",
+            "type": "table",
+            "schema": "public"
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Table \\`public.learning_material_uploads\\` has RLS enabled, but no policies exist",
+          "metadata": {
+            "name": "learning_material_uploads",
+            "type": "table",
+            "schema": "public"
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Table \\`public.media_assets\\` has RLS enabled, but no policies exist",
+          "metadata": {
+            "name": "media_assets",
+            "type": "table",
+            "schema": "public"
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Table \\`public.notification_dispatches\\` has RLS enabled, but no policies exist",
+          "metadata": {
+            "name": "notification_dispatches",
+            "type": "table",
+            "schema": "public"
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Table \\`public.site_page_sections\\` has RLS enabled, but no policies exist",
+          "metadata": {
+            "name": "site_page_sections",
+            "type": "table",
+            "schema": "public"
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Table \\`public.site_pages\\` has RLS enabled, but no policies exist",
+          "metadata": {
+            "name": "site_pages",
+            "type": "table",
+            "schema": "public"
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Table \\`public.site_section_items\\` has RLS enabled, but no policies exist",
+          "metadata": {
+            "name": "site_section_items",
+            "type": "table",
+            "schema": "public"
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Table \\`public.teacher_preferences\\` has RLS enabled, but no policies exist",
+          "metadata": {
+            "name": "teacher_preferences",
+            "type": "table",
+            "schema": "public"
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Table \\`public.teacher_profiles\\` has RLS enabled, but no policies exist",
+          "metadata": {
+            "name": "teacher_profiles",
+            "type": "table",
+            "schema": "public"
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        }
+      ]
+    },
+    {
+      "name": "extension_in_public",
+      "title": "Extension in Public",
+      "level": "WARN",
+      "facing": "EXTERNAL",
+      "categories": [
+        "SECURITY"
+      ],
+      "description": "Detects extensions installed in the \\`public\\` schema.",
+      "remediation": "https://supabase.com/docs/guides/database/database-linter?lint=0014_extension_in_public",
+      "count": 1,
+      "findings": [
+        {
+          "detail": "Extension \\`btree_gist\\` is installed in the public schema. Move it to another schema.",
+          "metadata": {
+            "name": "btree_gist",
+            "type": "extension",
+            "schema": "public"
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        }
+      ]
+    },
+    {
+      "name": "anon_security_definer_function_executable",
+      "title": "Public Can Execute SECURITY DEFINER Function",
+      "level": "WARN",
+      "facing": "EXTERNAL",
+      "categories": [
+        "SECURITY"
+      ],
+      "description": "Detects `SECURITY DEFINER` functions that are callable without signing in. Revoke `EXECUTE`, switch the function to `SECURITY INVOKER`, or move it out of your exposed API schema if it is not meant to be public.",
+      "remediation": "https://supabase.com/docs/guides/database/database-linter?lint=0028_anon_security_definer_function_executable",
+      "count": 6,
+      "findings": [
+        {
+          "detail": "Function `public.coaching_cms_get_published_page(p_slug text)` can be executed by the `anon` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_cms_get_published_page`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_cms_get_published_page",
+            "schema": "public",
+            "language": "sql",
+            "arguments": "p_slug text",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_cms_get_published_settings()` can be executed by the `anon` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_cms_get_published_settings`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_cms_get_published_settings",
+            "schema": "public",
+            "language": "sql",
+            "arguments": "",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_cms_public_fingerprint()` can be executed by the `anon` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_cms_public_fingerprint`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_cms_public_fingerprint",
+            "schema": "public",
+            "language": "sql",
+            "arguments": "",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_cms_public_navigation()` can be executed by the `anon` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_cms_public_navigation`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_cms_public_navigation",
+            "schema": "public",
+            "language": "plpgsql",
+            "arguments": "",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_media_is_published_path(p_name text)` can be executed by the `anon` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_media_is_published_path`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_media_is_published_path",
+            "schema": "public",
+            "language": "sql",
+            "arguments": "p_name text",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_media_resolve(p_media_id uuid)` can be executed by the `anon` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_media_resolve`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_media_resolve",
+            "schema": "public",
+            "language": "plpgsql",
+            "arguments": "p_media_id uuid",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        }
+      ]
+    },
+    {
+      "name": "authenticated_security_definer_function_executable",
+      "title": "Signed-In Users Can Execute SECURITY DEFINER Function",
+      "level": "WARN",
+      "facing": "EXTERNAL",
+      "categories": [
+        "SECURITY"
+      ],
+      "description": "Detects `SECURITY DEFINER` functions that are callable by signed-in users. Revoke `EXECUTE`, switch the function to `SECURITY INVOKER`, or move it out of your exposed API schema if signed-in users should not call it.",
+      "remediation": "https://supabase.com/docs/guides/database/database-linter?lint=0029_authenticated_security_definer_function_executable",
+      "count": 69,
+      "findings": [
+        {
+          "detail": "Function `public.coaching_add_syllabus_unit(p_subject_id uuid, p_title text, p_position integer, p_operation_id uuid)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_add_syllabus_unit`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_add_syllabus_unit",
+            "schema": "public",
+            "language": "plpgsql",
+            "arguments": "p_subject_id uuid, p_title text, p_position integer, p_operation_id uuid",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_archive_announcement(p_announcement_id uuid, p_operation_id uuid)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_archive_announcement`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_archive_announcement",
+            "schema": "public",
+            "language": "plpgsql",
+            "arguments": "p_announcement_id uuid, p_operation_id uuid",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_change_student_status(p_student_id uuid, p_next_status text, p_operation_id uuid)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_change_student_status`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_change_student_status",
+            "schema": "public",
+            "language": "plpgsql",
+            "arguments": "p_student_id uuid, p_next_status text, p_operation_id uuid",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_cms_archive_page(p_page_id uuid, p_expected_revision bigint, p_operation_id uuid)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_cms_archive_page`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_cms_archive_page",
+            "schema": "public",
+            "language": "plpgsql",
+            "arguments": "p_page_id uuid, p_expected_revision bigint, p_operation_id uuid",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_cms_fields_write(p_page_id uuid, p_section_id uuid, p_item_id uuid, p_section_key text, p_content jsonb, p_expected_revision bigint, p_operation_id uuid)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_cms_fields_write`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_cms_fields_write",
+            "schema": "public",
+            "language": "plpgsql",
+            "arguments": "p_page_id uuid, p_section_id uuid, p_item_id uuid, p_section_key text, p_content jsonb, p_expected_revision bigint, p_operation_id uuid",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_cms_get_page(p_page_id uuid)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_cms_get_page`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_cms_get_page",
+            "schema": "public",
+            "language": "plpgsql",
+            "arguments": "p_page_id uuid",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_cms_get_published_page(p_slug text)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_cms_get_published_page`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_cms_get_published_page",
+            "schema": "public",
+            "language": "sql",
+            "arguments": "p_slug text",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_cms_get_published_settings()` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_cms_get_published_settings`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_cms_get_published_settings",
+            "schema": "public",
+            "language": "sql",
+            "arguments": "",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_cms_get_settings_draft()` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_cms_get_settings_draft`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_cms_get_settings_draft",
+            "schema": "public",
+            "language": "plpgsql",
+            "arguments": "",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_cms_list_pages()` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_cms_list_pages`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_cms_list_pages",
+            "schema": "public",
+            "language": "plpgsql",
+            "arguments": "",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_cms_media_mutation(p_action text, p_media_id uuid, p_page_id uuid, p_item_id uuid, p_expected_revision bigint, p_operation_id uuid)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_cms_media_mutation`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_cms_media_mutation",
+            "schema": "public",
+            "language": "plpgsql",
+            "arguments": "p_action text, p_media_id uuid, p_page_id uuid, p_item_id uuid, p_expected_revision bigint, p_operation_id uuid",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_cms_organize(p_action text, p_page_id uuid, p_section_id uuid, p_item_id uuid, p_order_ids uuid[], p_expected_revision bigint, p_operation_id uuid)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_cms_organize`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_cms_organize",
+            "schema": "public",
+            "language": "plpgsql",
+            "arguments": "p_action text, p_page_id uuid, p_section_id uuid, p_item_id uuid, p_order_ids uuid[], p_expected_revision bigint, p_operation_id uuid",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_cms_public_fingerprint()` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_cms_public_fingerprint`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_cms_public_fingerprint",
+            "schema": "public",
+            "language": "sql",
+            "arguments": "",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_cms_public_navigation()` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_cms_public_navigation`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_cms_public_navigation",
+            "schema": "public",
+            "language": "plpgsql",
+            "arguments": "",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_cms_settings_write(p_action text, p_expected_revision bigint, p_settings jsonb, p_operation_id uuid)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_cms_settings_write`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_cms_settings_write",
+            "schema": "public",
+            "language": "plpgsql",
+            "arguments": "p_action text, p_expected_revision bigint, p_settings jsonb, p_operation_id uuid",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_cms_write(p_action text, p_target uuid, p_parent uuid, p_expected_revision bigint, p_data jsonb, p_operation_id uuid)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_cms_write`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_cms_write",
+            "schema": "public",
+            "language": "plpgsql",
+            "arguments": "p_action text, p_target uuid, p_parent uuid, p_expected_revision bigint, p_data jsonb, p_operation_id uuid",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_count_my_unread_notifications()` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_count_my_unread_notifications`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_count_my_unread_notifications",
+            "schema": "public",
+            "language": "plpgsql",
+            "arguments": "",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_create_announcement(p_batch_id uuid, p_title text, p_body text, p_visible_from timestamp with time zone, p_operation_id uuid)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_create_announcement`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_create_announcement",
+            "schema": "public",
+            "language": "plpgsql",
+            "arguments": "p_batch_id uuid, p_title text, p_body text, p_visible_from timestamp with time zone, p_operation_id uuid",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_create_assignment_draft(p_batch_id uuid, p_subject_id uuid, p_title text, p_instructions text, p_release_at timestamp with time zone, p_due_at timestamp with time zone, p_max_points integer, p_allow_resubmit boolean, p_operation_id uuid)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_create_assignment_draft`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_create_assignment_draft",
+            "schema": "public",
+            "language": "plpgsql",
+            "arguments": "p_batch_id uuid, p_subject_id uuid, p_title text, p_instructions text, p_release_at timestamp with time zone, p_due_at timestamp with time zone, p_max_points integer, p_allow_resubmit boolean, p_operation_id uuid",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_create_batch(p_code text, p_name text, p_capacity integer, p_operation_id uuid)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_create_batch`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_create_batch",
+            "schema": "public",
+            "language": "plpgsql",
+            "arguments": "p_code text, p_name text, p_capacity integer, p_operation_id uuid",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_create_exam_draft(p_batch_id uuid, p_subject_id uuid, p_title text, p_scheduled_at timestamp with time zone, p_max_marks integer, p_operation_id uuid)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_create_exam_draft`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_create_exam_draft",
+            "schema": "public",
+            "language": "plpgsql",
+            "arguments": "p_batch_id uuid, p_subject_id uuid, p_title text, p_scheduled_at timestamp with time zone, p_max_marks integer, p_operation_id uuid",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_create_fee_plan(p_batch_id uuid, p_period text, p_amount_minor bigint, p_due_on date, p_label text, p_operation_id uuid)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_create_fee_plan`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_create_fee_plan",
+            "schema": "public",
+            "language": "plpgsql",
+            "arguments": "p_batch_id uuid, p_period text, p_amount_minor bigint, p_due_on date, p_label text, p_operation_id uuid",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_create_routine_slot(p_batch_id uuid, p_subject_id uuid, p_day_of_week integer, p_start_minute integer, p_end_minute integer, p_room text, p_operation_id uuid)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_create_routine_slot`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_create_routine_slot",
+            "schema": "public",
+            "language": "plpgsql",
+            "arguments": "p_batch_id uuid, p_subject_id uuid, p_day_of_week integer, p_start_minute integer, p_end_minute integer, p_room text, p_operation_id uuid",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_create_subject(p_batch_id uuid, p_code text, p_title text, p_operation_id uuid)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_create_subject`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_create_subject",
+            "schema": "public",
+            "language": "plpgsql",
+            "arguments": "p_batch_id uuid, p_code text, p_title text, p_operation_id uuid",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_current_user_is_active()` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_current_user_is_active`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_current_user_is_active",
+            "schema": "public",
+            "language": "sql",
+            "arguments": "",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_decide_enrollment(p_enrollment_id uuid, p_decision text, p_operation_id uuid)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_decide_enrollment`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_decide_enrollment",
+            "schema": "public",
+            "language": "plpgsql",
+            "arguments": "p_enrollment_id uuid, p_decision text, p_operation_id uuid",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_dispatch_batch_notification(p_batch_id uuid, p_event_id uuid, p_title text, p_body text, p_operation_id uuid)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_dispatch_batch_notification`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_dispatch_batch_notification",
+            "schema": "public",
+            "language": "plpgsql",
+            "arguments": "p_batch_id uuid, p_event_id uuid, p_title text, p_body text, p_operation_id uuid",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_edit_announcement_draft(p_announcement_id uuid, p_title text, p_body text, p_visible_from timestamp with time zone, p_operation_id uuid)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_edit_announcement_draft`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_edit_announcement_draft",
+            "schema": "public",
+            "language": "plpgsql",
+            "arguments": "p_announcement_id uuid, p_title text, p_body text, p_visible_from timestamp with time zone, p_operation_id uuid",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_export_office_expenses(p_batch_id uuid, p_period text)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_export_office_expenses`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_export_office_expenses",
+            "schema": "public",
+            "language": "plpgsql",
+            "arguments": "p_batch_id uuid, p_period text",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_generate_monthly_dues(p_plan_id uuid, p_operation_id uuid)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_generate_monthly_dues`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_generate_monthly_dues",
+            "schema": "public",
+            "language": "plpgsql",
+            "arguments": "p_plan_id uuid, p_operation_id uuid",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_get_my_assignment_submission(p_assignment_id uuid)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_get_my_assignment_submission`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_get_my_assignment_submission",
+            "schema": "public",
+            "language": "plpgsql",
+            "arguments": "p_assignment_id uuid",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_get_my_published_exam_results(p_limit integer, p_offset integer)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_get_my_published_exam_results`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_get_my_published_exam_results",
+            "schema": "public",
+            "language": "plpgsql",
+            "arguments": "p_limit integer, p_offset integer",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_get_office_expense(p_expense_id uuid)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_get_office_expense`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_get_office_expense",
+            "schema": "public",
+            "language": "plpgsql",
+            "arguments": "p_expense_id uuid",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_grade_assignment_submission(p_submission_id uuid, p_points integer, p_feedback text, p_operation_id uuid)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_grade_assignment_submission`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_grade_assignment_submission",
+            "schema": "public",
+            "language": "plpgsql",
+            "arguments": "p_submission_id uuid, p_points integer, p_feedback text, p_operation_id uuid",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_learning_material_download(p_id uuid)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_learning_material_download`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_learning_material_download",
+            "schema": "public",
+            "language": "plpgsql",
+            "arguments": "p_id uuid",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_learning_material_write(p_action text, p_id uuid, p_batch_id uuid, p_upload_id uuid, p_title text, p_description text, p_release_at timestamp with time zone, p_expected_updated_at timestamp with time zone, p_operation_id uuid)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_learning_material_write`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_learning_material_write",
+            "schema": "public",
+            "language": "plpgsql",
+            "arguments": "p_action text, p_id uuid, p_batch_id uuid, p_upload_id uuid, p_title text, p_description text, p_release_at timestamp with time zone, p_expected_updated_at timestamp with time zone, p_operation_id uuid",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_learning_storage_readable(p_key text)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_learning_storage_readable`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_learning_storage_readable",
+            "schema": "public",
+            "language": "sql",
+            "arguments": "p_key text",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_learning_upload_register(p_id uuid, p_batch_id uuid, p_filename text, p_size_bytes bigint, p_sha256 text, p_operation_id uuid)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_learning_upload_register`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_learning_upload_register",
+            "schema": "public",
+            "language": "plpgsql",
+            "arguments": "p_id uuid, p_batch_id uuid, p_filename text, p_size_bytes bigint, p_sha256 text, p_operation_id uuid",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_list_assignment_submissions(p_assignment_id uuid)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_list_assignment_submissions`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_list_assignment_submissions",
+            "schema": "public",
+            "language": "plpgsql",
+            "arguments": "p_assignment_id uuid",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_list_office_expenses(p_batch_id uuid, p_period text, p_limit integer, p_offset integer)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_list_office_expenses`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_list_office_expenses",
+            "schema": "public",
+            "language": "plpgsql",
+            "arguments": "p_batch_id uuid, p_period text, p_limit integer, p_offset integer",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_mark_notification_read(p_notification_id uuid, p_operation_id uuid)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_mark_notification_read`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_mark_notification_read",
+            "schema": "public",
+            "language": "plpgsql",
+            "arguments": "p_notification_id uuid, p_operation_id uuid",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_media_actor_is_active_teacher()` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_media_actor_is_active_teacher`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_media_actor_is_active_teacher",
+            "schema": "public",
+            "language": "sql",
+            "arguments": "",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_media_is_published_path(p_name text)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_media_is_published_path`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_media_is_published_path",
+            "schema": "public",
+            "language": "sql",
+            "arguments": "p_name text",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_media_list()` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_media_list`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_media_list",
+            "schema": "public",
+            "language": "plpgsql",
+            "arguments": "",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_media_register(p_media_id uuid, p_storage_key text, p_content_type text, p_size_bytes bigint, p_sha256 text, p_alt text, p_operation_id uuid)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_media_register`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_media_register",
+            "schema": "public",
+            "language": "plpgsql",
+            "arguments": "p_media_id uuid, p_storage_key text, p_content_type text, p_size_bytes bigint, p_sha256 text, p_alt text, p_operation_id uuid",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_media_resolve(p_media_id uuid)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_media_resolve`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_media_resolve",
+            "schema": "public",
+            "language": "plpgsql",
+            "arguments": "p_media_id uuid",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_office_cashflow_statement(p_batch_id uuid, p_period text)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_office_cashflow_statement`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_office_cashflow_statement",
+            "schema": "public",
+            "language": "plpgsql",
+            "arguments": "p_batch_id uuid, p_period text",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_post_payment(p_due_id uuid, p_student_id uuid, p_amount_minor bigint, p_method text, p_reference text, p_operation_id uuid)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_post_payment`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_post_payment",
+            "schema": "public",
+            "language": "plpgsql",
+            "arguments": "p_due_id uuid, p_student_id uuid, p_amount_minor bigint, p_method text, p_reference text, p_operation_id uuid",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_publish_announcement(p_announcement_id uuid, p_operation_id uuid)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_publish_announcement`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_publish_announcement",
+            "schema": "public",
+            "language": "plpgsql",
+            "arguments": "p_announcement_id uuid, p_operation_id uuid",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_publish_assignment(p_assignment_id uuid, p_operation_id uuid)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_publish_assignment`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_publish_assignment",
+            "schema": "public",
+            "language": "plpgsql",
+            "arguments": "p_assignment_id uuid, p_operation_id uuid",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_publish_assignment_grades(p_assignment_id uuid, p_operation_id uuid)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_publish_assignment_grades`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_publish_assignment_grades",
+            "schema": "public",
+            "language": "plpgsql",
+            "arguments": "p_assignment_id uuid, p_operation_id uuid",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_publish_exam(p_exam_id uuid, p_operation_id uuid)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_publish_exam`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_publish_exam",
+            "schema": "public",
+            "language": "plpgsql",
+            "arguments": "p_exam_id uuid, p_operation_id uuid",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_publish_exam_results(p_exam_id uuid, p_operation_id uuid)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_publish_exam_results`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_publish_exam_results",
+            "schema": "public",
+            "language": "plpgsql",
+            "arguments": "p_exam_id uuid, p_operation_id uuid",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_record_office_expense(p_batch_id uuid, p_expense_on date, p_category text, p_payee text, p_notes text, p_amount_minor bigint, p_method text, p_reference text, p_operation_id uuid)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_record_office_expense`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_record_office_expense",
+            "schema": "public",
+            "language": "plpgsql",
+            "arguments": "p_batch_id uuid, p_expense_on date, p_category text, p_payee text, p_notes text, p_amount_minor bigint, p_method text, p_reference text, p_operation_id uuid",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_refund_payment(p_payment_id uuid, p_amount_minor bigint, p_reason text, p_operation_id uuid)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_refund_payment`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_refund_payment",
+            "schema": "public",
+            "language": "plpgsql",
+            "arguments": "p_payment_id uuid, p_amount_minor bigint, p_reason text, p_operation_id uuid",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_request_enrollment(p_student_id uuid, p_batch_id uuid, p_operation_id uuid)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_request_enrollment`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_request_enrollment",
+            "schema": "public",
+            "language": "plpgsql",
+            "arguments": "p_student_id uuid, p_batch_id uuid, p_operation_id uuid",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_reverse_office_expense(p_expense_id uuid, p_reason text, p_operation_id uuid)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_reverse_office_expense`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_reverse_office_expense",
+            "schema": "public",
+            "language": "plpgsql",
+            "arguments": "p_expense_id uuid, p_reason text, p_operation_id uuid",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_save_exam_result_draft(p_exam_id uuid, p_student_id uuid, p_marks numeric, p_operation_id uuid)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_save_exam_result_draft`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_save_exam_result_draft",
+            "schema": "public",
+            "language": "plpgsql",
+            "arguments": "p_exam_id uuid, p_student_id uuid, p_marks numeric, p_operation_id uuid",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_student_billing_statement(p_bill_period text)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_student_billing_statement`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_student_billing_statement",
+            "schema": "public",
+            "language": "plpgsql",
+            "arguments": "p_bill_period text",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_student_calendar(p_from date, p_to date)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_student_calendar`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_student_calendar",
+            "schema": "public",
+            "language": "plpgsql",
+            "arguments": "p_from date, p_to date",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_student_dashboard()` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_student_dashboard`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_student_dashboard",
+            "schema": "public",
+            "language": "plpgsql",
+            "arguments": "",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_student_profile()` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_student_profile`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_student_profile",
+            "schema": "public",
+            "language": "plpgsql",
+            "arguments": "",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_student_progress()` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_student_progress`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_student_progress",
+            "schema": "public",
+            "language": "plpgsql",
+            "arguments": "",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_student_update_own_profile(p_full_name text, p_operation_id uuid)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_student_update_own_profile`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_student_update_own_profile",
+            "schema": "public",
+            "language": "plpgsql",
+            "arguments": "p_full_name text, p_operation_id uuid",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_submit_assignment(p_assignment_id uuid, p_answer_text text, p_operation_id uuid)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_submit_assignment`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_submit_assignment",
+            "schema": "public",
+            "language": "plpgsql",
+            "arguments": "p_assignment_id uuid, p_answer_text text, p_operation_id uuid",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_update_batch(p_batch_id uuid, p_name text, p_capacity integer, p_archived boolean, p_operation_id uuid)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_update_batch`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_update_batch",
+            "schema": "public",
+            "language": "plpgsql",
+            "arguments": "p_batch_id uuid, p_name text, p_capacity integer, p_archived boolean, p_operation_id uuid",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_update_student_profile(p_student_id uuid, p_full_name text, p_operation_id uuid)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_update_student_profile`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_update_student_profile",
+            "schema": "public",
+            "language": "plpgsql",
+            "arguments": "p_student_id uuid, p_full_name text, p_operation_id uuid",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.coaching_waive_due(p_due_id uuid, p_amount_minor bigint, p_reason text, p_operation_id uuid)` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/coaching_waive_due`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "coaching_waive_due",
+            "schema": "public",
+            "language": "plpgsql",
+            "arguments": "p_due_id uuid, p_amount_minor bigint, p_reason text, p_operation_id uuid",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        },
+        {
+          "detail": "Function `public.current_user_is_teacher()` can be executed by the `authenticated` role as a `SECURITY DEFINER` function via `/rest/v1/rpc/current_user_is_teacher`. Revoke `EXECUTE` or switch it to `SECURITY INVOKER` if that is not intentional.",
+          "metadata": {
+            "name": "current_user_is_teacher",
+            "schema": "public",
+            "language": "sql",
+            "arguments": "",
+            "security_definer": true
+          },
+          "observed_at": "2026-10-20T16:55:20.635Z"
+        }
+      ]
+    },
+    {
+      "name": "auth_leaked_password_protection",
+      "title": "Leaked Password Protection Disabled",
+      "level": "WARN",
+      "facing": "EXTERNAL",
+      "categories": [
+        "SECURITY"
+      ],
+      "description": "Leaked password protection is currently disabled.",
+      "remediation": "https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection",
+      "count": 1,
+      "findings": [
+        {
+          "detail": "Supabase Auth prevents the use of compromised passwords by checking against HaveIBeenPwned.org. Enable this feature to enhance security.",
+          "metadata": {
+            "type": "auth",
+            "entity": "Auth"
+          }
+        }
+      ]
+    }
+  ]
+}

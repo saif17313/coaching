@@ -1,0 +1,23 @@
+{
+  "time": "2026-10-20T17:18:50.624Z",
+  "checks": [
+    {
+      "name": "Backend outage shows retry instead of a password form",
+      "status": "Pass"
+    },
+    {
+      "name": "Retry recovers existing real Teacher session",
+      "status": "Pass"
+    },
+    {
+      "name": "Actual session endpoint verifies Teacher",
+      "status": "Pass"
+    },
+    {
+      "name": "No token is included in the session projection",
+      "status": "Pass"
+    }
+  ],
+  "faultInjection": "Only the temporary page intercepts session responses; recovery uses the real cookie and backend.",
+  "status": "Pass"
+}

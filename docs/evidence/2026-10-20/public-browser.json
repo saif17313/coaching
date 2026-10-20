@@ -1,0 +1,103 @@
+{
+  "time": "2026-10-20T17:09:41.442Z",
+  "checks": [
+    {
+      "name": "desktop public page has main heading",
+      "status": "Pass"
+    },
+    {
+      "name": "desktop no horizontal page overflow",
+      "status": "Pass"
+    },
+    {
+      "name": "tablet public page has main heading",
+      "status": "Pass"
+    },
+    {
+      "name": "tablet no horizontal page overflow",
+      "status": "Pass"
+    },
+    {
+      "name": "mobile public page has main heading",
+      "status": "Pass"
+    },
+    {
+      "name": "mobile no horizontal page overflow",
+      "status": "Pass"
+    },
+    {
+      "name": "Three.js renders real GPU canvas",
+      "status": "Pass"
+    },
+    {
+      "name": "molecular scene keyboard focus",
+      "status": "Pass"
+    },
+    {
+      "name": "course carousel advances",
+      "status": "Pass"
+    },
+    {
+      "name": "course autoplay pause control is explicit",
+      "status": "Pass"
+    },
+    {
+      "name": "course dialog receives keyboard focus",
+      "status": "Pass"
+    },
+    {
+      "name": "course dialog contains tab focus",
+      "status": "Pass"
+    },
+    {
+      "name": "Escape closes course details",
+      "status": "Pass"
+    },
+    {
+      "name": "native touch swipe advances course carousel",
+      "status": "Pass"
+    },
+    {
+      "name": "reduced motion omits GPU scene",
+      "status": "Pass"
+    },
+    {
+      "name": "invitation fragment erased from address bar",
+      "status": "Pass"
+    },
+    {
+      "name": "invitation form survives React Strict Mode",
+      "status": "Pass"
+    },
+    {
+      "name": "no uncaught public JavaScript errors",
+      "status": "Pass"
+    }
+  ],
+  "viewports": [
+    {
+      "label": "desktop",
+      "width": 1440,
+      "height": 1000,
+      "violations": []
+    },
+    {
+      "label": "tablet",
+      "width": 820,
+      "height": 1180,
+      "violations": []
+    },
+    {
+      "label": "mobile",
+      "width": 390,
+      "height": 844,
+      "violations": []
+    }
+  ],
+  "errors": [],
+  "status": "Pass",
+  "reference": {
+    "status": "Unavailable",
+    "reason": "page.goto: Timeout 30000ms exceeded."
+  }
+}

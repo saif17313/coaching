@@ -1,0 +1,43 @@
+{
+  "time": "2026-10-20T15:17:33.792Z",
+  "project": "rkpwqgwceekuvlizfpeb",
+  "records": {
+    "cmsPageId": "616db242-a2e6-4504-87c8-293d56d43c61",
+    "mediaId": "96d089cc-a9f1-4038-ba70-24d92ef27e0b",
+    "batchId": "41dcc8f0-a3a9-4ef1-91bd-aa82e824edb8",
+    "subjectId": "5cad1cee-8a84-4b36-ae86-a2793f774bbc",
+    "assignmentId": "4b8ccec3-fd66-463a-a6bf-570bb016b682",
+    "examId": "026f68b7-b8f7-4eaf-867e-8c82f9edac97"
+  },
+  "checks": [
+    {
+      "name": "overlapping routine returns business conflict",
+      "status": "Pass"
+    },
+    {
+      "name": "schedule conflict code",
+      "status": "Pass"
+    },
+    {
+      "name": "Teacher publishes assignment",
+      "status": "Pass"
+    },
+    {
+      "name": "Teacher creates exam draft",
+      "status": "Pass"
+    },
+    {
+      "name": "Teacher publishes exam",
+      "status": "Pass"
+    },
+    {
+      "name": "Teacher denied Student dashboard",
+      "status": "Pass"
+    },
+    {
+      "name": "public revision manifest",
+      "status": "Pass"
+    }
+  ],
+  "status": "Pass"
+}

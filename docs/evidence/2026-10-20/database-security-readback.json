@@ -1,0 +1,415 @@
+{
+  "time": "2026-10-20T15:19:10.690Z",
+  "project": "rkpwqgwceekuvlizfpeb",
+  "tables": [
+    {
+      "rls": true,
+      "name": "batches"
+    },
+    {
+      "rls": true,
+      "name": "profiles"
+    },
+    {
+      "rls": true,
+      "name": "enrollments"
+    },
+    {
+      "rls": true,
+      "name": "notification_dispatches"
+    },
+    {
+      "rls": true,
+      "name": "batch_contents"
+    },
+    {
+      "rls": true,
+      "name": "announcements"
+    },
+    {
+      "rls": true,
+      "name": "notifications"
+    },
+    {
+      "rls": true,
+      "name": "audit_logs"
+    },
+    {
+      "rls": true,
+      "name": "financial_operations"
+    },
+    {
+      "rls": true,
+      "name": "fee_plans"
+    },
+    {
+      "rls": true,
+      "name": "monthly_dues"
+    },
+    {
+      "rls": true,
+      "name": "payments"
+    },
+    {
+      "rls": true,
+      "name": "payment_adjustments"
+    },
+    {
+      "rls": true,
+      "name": "routine_slots"
+    },
+    {
+      "rls": true,
+      "name": "assignment_submissions"
+    },
+    {
+      "rls": true,
+      "name": "academic_subjects"
+    },
+    {
+      "rls": true,
+      "name": "syllabus_units"
+    },
+    {
+      "rls": true,
+      "name": "academic_assignments"
+    },
+    {
+      "rls": true,
+      "name": "coaching_mutation_receipts"
+    },
+    {
+      "rls": true,
+      "name": "teacher_profiles"
+    },
+    {
+      "rls": true,
+      "name": "teacher_preferences"
+    },
+    {
+      "rls": true,
+      "name": "app_settings"
+    },
+    {
+      "rls": true,
+      "name": "media_assets"
+    },
+    {
+      "rls": true,
+      "name": "site_pages"
+    },
+    {
+      "rls": true,
+      "name": "site_page_sections"
+    },
+    {
+      "rls": true,
+      "name": "site_section_items"
+    },
+    {
+      "rls": true,
+      "name": "exams"
+    },
+    {
+      "rls": true,
+      "name": "exam_results"
+    },
+    {
+      "rls": true,
+      "name": "office_expenses"
+    },
+    {
+      "rls": true,
+      "name": "office_expense_reversals"
+    }
+  ],
+  "cmsFunctions": [
+    {
+      "name": "coaching_cms_get_page",
+      "settings": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "securityDefiner": true,
+      "authenticatedExecute": true
+    },
+    {
+      "name": "coaching_cms_get_published_page",
+      "settings": [
+        "search_path=\"\""
+      ],
+      "anonExecute": true,
+      "securityDefiner": true,
+      "authenticatedExecute": true
+    },
+    {
+      "name": "coaching_cms_get_published_settings",
+      "settings": [
+        "search_path=\"\""
+      ],
+      "anonExecute": true,
+      "securityDefiner": true,
+      "authenticatedExecute": true
+    },
+    {
+      "name": "coaching_cms_get_settings_draft",
+      "settings": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "securityDefiner": true,
+      "authenticatedExecute": true
+    },
+    {
+      "name": "coaching_cms_write_base",
+      "settings": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "securityDefiner": true,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "coaching_cms_build_sections",
+      "settings": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "securityDefiner": true,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "coaching_cms_list_pages",
+      "settings": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "securityDefiner": true,
+      "authenticatedExecute": true
+    },
+    {
+      "name": "coaching_media_list",
+      "settings": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "securityDefiner": true,
+      "authenticatedExecute": true
+    },
+    {
+      "name": "coaching_media_resolve",
+      "settings": [
+        "search_path=\"\""
+      ],
+      "anonExecute": true,
+      "securityDefiner": true,
+      "authenticatedExecute": true
+    },
+    {
+      "name": "coaching_cms_settings_write",
+      "settings": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "securityDefiner": true,
+      "authenticatedExecute": true
+    },
+    {
+      "name": "coaching_cms_archive_page",
+      "settings": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "securityDefiner": true,
+      "authenticatedExecute": true
+    },
+    {
+      "name": "coaching_cms_public_navigation",
+      "settings": [
+        "search_path=\"\""
+      ],
+      "anonExecute": true,
+      "securityDefiner": true,
+      "authenticatedExecute": true
+    },
+    {
+      "name": "coaching_media_actor_is_active_teacher",
+      "settings": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "securityDefiner": true,
+      "authenticatedExecute": true
+    },
+    {
+      "name": "coaching_media_is_published_path",
+      "settings": [
+        "search_path=\"\""
+      ],
+      "anonExecute": true,
+      "securityDefiner": true,
+      "authenticatedExecute": true
+    },
+    {
+      "name": "coaching_media_register",
+      "settings": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "securityDefiner": true,
+      "authenticatedExecute": true
+    },
+    {
+      "name": "coaching_cms_media_mutation_base",
+      "settings": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "securityDefiner": true,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "coaching_cms_field_schema",
+      "settings": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "coaching_cms_content_media_ids",
+      "settings": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "securityDefiner": false,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "coaching_cms_validate_relations",
+      "settings": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "securityDefiner": true,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "coaching_cms_write",
+      "settings": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "securityDefiner": true,
+      "authenticatedExecute": true
+    },
+    {
+      "name": "coaching_cms_organize",
+      "settings": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "securityDefiner": true,
+      "authenticatedExecute": true
+    },
+    {
+      "name": "coaching_cms_fields_write_base",
+      "settings": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "securityDefiner": true,
+      "authenticatedExecute": false
+    },
+    {
+      "name": "coaching_cms_fields_write",
+      "settings": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "securityDefiner": true,
+      "authenticatedExecute": true
+    },
+    {
+      "name": "coaching_cms_media_mutation",
+      "settings": [
+        "search_path=\"\""
+      ],
+      "anonExecute": false,
+      "securityDefiner": true,
+      "authenticatedExecute": true
+    },
+    {
+      "name": "coaching_cms_public_fingerprint",
+      "settings": [
+        "search_path=\"\""
+      ],
+      "anonExecute": true,
+      "securityDefiner": true,
+      "authenticatedExecute": true
+    }
+  ],
+  "directDmlGrants": null,
+  "storagePolicies": [
+    {
+      "name": "musa_site_media_insert",
+      "qual": null,
+      "check": "((bucket_id = 'musa-site-media'::text) AND coaching_media_actor_is_active_teacher() AND (split_part(name, '/'::text, 1) = (( SELECT auth.uid() AS uid))::text) AND (name ~ '^[0-9a-f-]{36}/[0-9a-f-]{36}\\.(jpg|png|webp|avif)$'::text))",
+      "roles": [
+        "authenticated"
+      ],
+      "command": "INSERT"
+    },
+    {
+      "name": "musa_site_media_public_read",
+      "qual": "((bucket_id = 'musa-site-media'::text) AND coaching_media_is_published_path(name))",
+      "check": null,
+      "roles": [
+        "anon"
+      ],
+      "command": "SELECT"
+    },
+    {
+      "name": "musa_site_media_teacher_read",
+      "qual": "((bucket_id = 'musa-site-media'::text) AND (coaching_media_is_published_path(name) OR (coaching_media_actor_is_active_teacher() AND (split_part(name, '/'::text, 1) = (( SELECT auth.uid() AS uid))::text))))",
+      "check": null,
+      "roles": [
+        "authenticated"
+      ],
+      "command": "SELECT"
+    }
+  ],
+  "academicReadback": {
+    "exams": [
+      {
+        "id": "026f68b7-b8f7-4eaf-867e-8c82f9edac97",
+        "title": "DEMO assessment",
+        "status": "published",
+        "batch_id": "41dcc8f0-a3a9-4ef1-91bd-aa82e824edb8",
+        "max_marks": 100,
+        "created_at": "2026-10-20T15:17:36.159237+00:00",
+        "created_by": "a872a707-bd9b-42ee-b1d0-ab99dd34bcee",
+        "subject_id": "5cad1cee-8a84-4b36-ae86-a2793f774bbc",
+        "updated_at": "2026-10-20T15:17:38.075162+00:00",
+        "scheduled_at": "2026-10-21T15:17:34.98+00:00"
+      }
+    ],
+    "assignment": {
+      "id": "4b8ccec3-fd66-463a-a6bf-570bb016b682",
+      "title": "DEMO practice assignment",
+      "due_at": "2026-10-21T15:14:49.739+00:00",
+      "status": "published",
+      "batch_id": "41dcc8f0-a3a9-4ef1-91bd-aa82e824edb8",
+      "created_at": "2026-10-20T15:14:52.631367+00:00",
+      "created_by": "a872a707-bd9b-42ee-b1d0-ab99dd34bcee",
+      "max_points": 100,
+      "release_at": "2026-10-20T15:14:49.739+00:00",
+      "subject_id": "5cad1cee-8a84-4b36-ae86-a2793f774bbc",
+      "updated_at": "2026-10-20T15:17:33.587273+00:00",
+      "instructions": "DEMO authorization test only.",
+      "allow_resubmit": true,
+      "grades_published": false
+    }
+  }
+}

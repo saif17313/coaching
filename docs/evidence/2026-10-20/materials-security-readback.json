@@ -1,0 +1,187 @@
+{
+  "time": "2026-10-20T16:57:08.462Z",
+  "project": "rkpwqgwceekuvlizfpeb",
+  "bucket": {
+    "id": "educentre-learning-materials",
+    "public": false,
+    "maxBytes": 5242880,
+    "mimeTypes": [
+      "application/pdf"
+    ]
+  },
+  "tables": [
+    {
+      "rls": true,
+      "name": "academic_assignments"
+    },
+    {
+      "rls": true,
+      "name": "academic_subjects"
+    },
+    {
+      "rls": true,
+      "name": "announcements"
+    },
+    {
+      "rls": true,
+      "name": "app_settings"
+    },
+    {
+      "rls": true,
+      "name": "assignment_submissions"
+    },
+    {
+      "rls": true,
+      "name": "audit_logs"
+    },
+    {
+      "rls": true,
+      "name": "batch_contents"
+    },
+    {
+      "rls": true,
+      "name": "batches"
+    },
+    {
+      "rls": true,
+      "name": "coaching_mutation_receipts"
+    },
+    {
+      "rls": true,
+      "name": "enrollments"
+    },
+    {
+      "rls": true,
+      "name": "exam_results"
+    },
+    {
+      "rls": true,
+      "name": "exams"
+    },
+    {
+      "rls": true,
+      "name": "fee_plans"
+    },
+    {
+      "rls": true,
+      "name": "financial_operations"
+    },
+    {
+      "rls": true,
+      "name": "learning_material_uploads"
+    },
+    {
+      "rls": true,
+      "name": "media_assets"
+    },
+    {
+      "rls": true,
+      "name": "monthly_dues"
+    },
+    {
+      "rls": true,
+      "name": "notification_dispatches"
+    },
+    {
+      "rls": true,
+      "name": "notifications"
+    },
+    {
+      "rls": true,
+      "name": "office_expense_reversals"
+    },
+    {
+      "rls": true,
+      "name": "office_expenses"
+    },
+    {
+      "rls": true,
+      "name": "payment_adjustments"
+    },
+    {
+      "rls": true,
+      "name": "payments"
+    },
+    {
+      "rls": true,
+      "name": "profiles"
+    },
+    {
+      "rls": true,
+      "name": "routine_slots"
+    },
+    {
+      "rls": true,
+      "name": "site_page_sections"
+    },
+    {
+      "rls": true,
+      "name": "site_pages"
+    },
+    {
+      "rls": true,
+      "name": "site_section_items"
+    },
+    {
+      "rls": true,
+      "name": "syllabus_units"
+    },
+    {
+      "rls": true,
+      "name": "teacher_preferences"
+    },
+    {
+      "rls": true,
+      "name": "teacher_profiles"
+    }
+  ],
+  "materials": [
+    {
+      "id": "aead34b6-c3ba-4ead-8370-57703c2b4ddd",
+      "title": "DEMO private learning material reviewed",
+      "status": "archived",
+      "uploadId": "21053694-3c56-4f33-81f6-f098d6cd1cf1"
+    },
+    {
+      "id": "5e07f588-d7b3-4d1e-95d3-05f929a31743",
+      "title": "DEMO future release privacy",
+      "status": "archived",
+      "uploadId": "fe6d2df3-01e3-446f-996a-351533e82f88"
+    },
+    {
+      "id": "1663775b-0c8e-4b54-8f96-fec5f509aa86",
+      "title": "DEMO PDF UI mvgx6lw3",
+      "status": "published",
+      "uploadId": "7c1f8ceb-86e2-4978-affa-17149cf7f312"
+    },
+    {
+      "id": "586b57e2-48af-4a0b-89c5-ac5bbdee8755",
+      "title": "DEMO PDF UI mvgx8vl2",
+      "status": "published",
+      "uploadId": "5082dbb9-4385-4a4d-a24d-7a6b93528056"
+    },
+    {
+      "id": "99287808-6ec6-4b0d-94de-af35080bb797",
+      "title": "DEMO PDF UI mvgxa7zl",
+      "status": "published",
+      "uploadId": "112e399a-7dbc-4254-b996-0b2a2cf85551"
+    }
+  ],
+  "directClientDml": [
+    {
+      "role": "authenticated",
+      "table": "batches",
+      "privilege": "TRUNCATE"
+    },
+    {
+      "role": "authenticated",
+      "table": "profiles",
+      "privilege": "TRUNCATE"
+    },
+    {
+      "role": "authenticated",
+      "table": "enrollments",
+      "privilege": "TRUNCATE"
+    }
+  ]
+}

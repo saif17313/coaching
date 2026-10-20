@@ -1,0 +1,149 @@
+{
+  "time": "2026-10-20T17:16:43.400Z",
+  "checks": [
+    {
+      "name": "teacher desktop no horizontal overflow",
+      "status": "Pass"
+    },
+    {
+      "name": "teacher tablet no horizontal overflow",
+      "status": "Pass"
+    },
+    {
+      "name": "teacher mobile no horizontal overflow",
+      "status": "Pass"
+    },
+    {
+      "name": "student desktop no horizontal overflow",
+      "status": "Pass"
+    },
+    {
+      "name": "student tablet no horizontal overflow",
+      "status": "Pass"
+    },
+    {
+      "name": "student mobile no horizontal overflow",
+      "status": "Pass"
+    }
+  ],
+  "viewports": [
+    {
+      "role": "teacher",
+      "label": "desktop",
+      "width": 1440,
+      "height": 1000,
+      "violations": []
+    },
+    {
+      "role": "teacher",
+      "label": "tablet",
+      "width": 820,
+      "height": 1180,
+      "violations": []
+    },
+    {
+      "role": "teacher",
+      "label": "mobile",
+      "width": 390,
+      "height": 844,
+      "violations": []
+    },
+    {
+      "role": "student",
+      "label": "desktop",
+      "width": 1440,
+      "height": 1000,
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": [
+            {
+              "target": [
+                "article > div > p"
+              ],
+              "summary": "Fix any of the following:\n  Element has insufficient color contrast of 3.76 (foreground color: #6b898b, background color: #ffffff, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                "article > div > small"
+              ],
+              "summary": "Fix any of the following:\n  Element has insufficient color contrast of 2.4 (foreground color: #9baaaa, background color: #ffffff, font size: 7.5pt (10px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".student-pagebar > span"
+              ],
+              "summary": "Fix any of the following:\n  Element has insufficient color contrast of 3.86 (foreground color: #68817d, background color: #f3f7f5, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "role": "student",
+      "label": "tablet",
+      "width": 820,
+      "height": 1180,
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": [
+            {
+              "target": [
+                "article > div > p"
+              ],
+              "summary": "Fix any of the following:\n  Element has insufficient color contrast of 3.76 (foreground color: #6b898b, background color: #ffffff, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                "article > div > small"
+              ],
+              "summary": "Fix any of the following:\n  Element has insufficient color contrast of 2.4 (foreground color: #9baaaa, background color: #ffffff, font size: 7.5pt (10px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".student-pagebar > span"
+              ],
+              "summary": "Fix any of the following:\n  Element has insufficient color contrast of 3.86 (foreground color: #68817d, background color: #f3f7f5, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "role": "student",
+      "label": "mobile",
+      "width": 390,
+      "height": 844,
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": [
+            {
+              "target": [
+                "article > div > p"
+              ],
+              "summary": "Fix any of the following:\n  Element has insufficient color contrast of 3.76 (foreground color: #6b898b, background color: #ffffff, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                "article > div > small"
+              ],
+              "summary": "Fix any of the following:\n  Element has insufficient color contrast of 2.4 (foreground color: #9baaaa, background color: #ffffff, font size: 7.5pt (10px), font weight: normal). Expected contrast ratio of 4.5:1"
+            },
+            {
+              "target": [
+                ".student-pagebar > span"
+              ],
+              "summary": "Fix any of the following:\n  Element has insufficient color contrast of 3.86 (foreground color: #68817d, background color: #f3f7f5, font size: 9.0pt (12px), font weight: normal). Expected contrast ratio of 4.5:1"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "status": "Partial"
+}

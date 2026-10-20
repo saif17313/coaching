@@ -1,0 +1,164 @@
+{
+  "time": "2026-10-20T15:49:45.359Z",
+  "project": "rkpwqgwceekuvlizfpeb",
+  "approval": "Explicit user approval for BDT 1 fee, 0.60 payment, 0.10 waiver, 0.20 refund, BDT 1 expense and reversal; DEV DEMO only.",
+  "records": {
+    "batchId": "41dcc8f0-a3a9-4ef1-91bd-aa82e824edb8",
+    "studentId": "e6b148e2-dfe4-4f3a-8b35-6046e2fa57de",
+    "planId": "fa1aaca4-8d17-406e-870f-22cb5a35c2da",
+    "dueId": "097cded7-9e4a-4ca1-9fb7-bf9f4e5a8381",
+    "paymentId": "95fad783-15ce-40f2-8020-f90c759ef630",
+    "expenseId": "c57d0a21-cf56-4dba-85d5-63bca0648a36"
+  },
+  "operations": {
+    "DEMO fee plan": "29b80183-a899-436e-ba72-2c7d1c831a87",
+    "DEMO dues generation": "af1f5c64-19b3-4621-be2d-5afd4872dfa3",
+    "DEMO payment": "78b2b436-b6e2-476e-af57-9fd43a146efd",
+    "DEMO waiver": "25574cb7-59ff-4ba2-980c-23f27b6394cc",
+    "DEMO refund": "d88e27a2-a4bb-4dd6-a0f1-c035845b5510",
+    "DEMO expense": "fb2d8bc5-1831-4c9b-b7bc-7ba141dbd894",
+    "DEMO expense reversal": "9cf8d5dc-2722-4368-aa5c-2f44c890bd3e"
+  },
+  "checks": [
+    {
+      "name": "DEMO fee plan HTTP",
+      "status": "Pass"
+    },
+    {
+      "name": "DEMO dues generation HTTP",
+      "status": "Pass"
+    },
+    {
+      "name": "one approved DEMO Student billed",
+      "status": "Pass"
+    },
+    {
+      "name": "generated DEMO due amount",
+      "status": "Pass"
+    },
+    {
+      "name": "DEMO payment HTTP",
+      "status": "Pass"
+    },
+    {
+      "name": "DEMO waiver HTTP",
+      "status": "Pass"
+    },
+    {
+      "name": "DEMO refund HTTP",
+      "status": "Pass"
+    },
+    {
+      "name": "DEMO expense HTTP",
+      "status": "Pass"
+    },
+    {
+      "name": "DEMO expense reversal HTTP",
+      "status": "Pass"
+    },
+    {
+      "name": "reconciled Teacher cashflow read",
+      "status": "Pass"
+    },
+    {
+      "name": "reconciliation grossCollectionsMinor",
+      "status": "Pass"
+    },
+    {
+      "name": "reconciliation refundsMinor",
+      "status": "Pass"
+    },
+    {
+      "name": "reconciliation netCollectionsMinor",
+      "status": "Pass"
+    },
+    {
+      "name": "reconciliation grossExpensesMinor",
+      "status": "Pass"
+    },
+    {
+      "name": "reconciliation reversedExpensesMinor",
+      "status": "Pass"
+    },
+    {
+      "name": "reconciliation netExpensesMinor",
+      "status": "Pass"
+    },
+    {
+      "name": "reconciliation netCashFlowMinor",
+      "status": "Pass"
+    },
+    {
+      "name": "reconciliation waiversMemoMinor",
+      "status": "Pass"
+    },
+    {
+      "name": "reconciliation billedMemoMinor",
+      "status": "Pass"
+    },
+    {
+      "name": "Student reads own billing",
+      "status": "Pass"
+    },
+    {
+      "name": "Student sees own DEMO receipt",
+      "status": "Pass"
+    },
+    {
+      "name": "verified Teacher cashflow CSV",
+      "status": "Pass"
+    },
+    {
+      "name": "Student own billing CSV",
+      "status": "Pass"
+    },
+    {
+      "name": "Student denied Teacher finance write",
+      "status": "Pass"
+    }
+  ],
+  "status": "Pass",
+  "cashflow": {
+    "unit": "paisa",
+    "basis": "posted_utc",
+    "period": "2026-10",
+    "batchId": "41dcc8f0-a3a9-4ef1-91bd-aa82e824edb8",
+    "currency": "BDT",
+    "paymentCount": 1,
+    "refundsMinor": "20",
+    "billedMemoMinor": "100",
+    "netCashFlowMinor": "40",
+    "netExpensesMinor": "0",
+    "waiversMemoMinor": "10",
+    "grossExpensesMinor": "100",
+    "netCollectionsMinor": "40",
+    "grossCollectionsMinor": "60",
+    "reversedExpensesMinor": "100"
+  },
+  "billing": {
+    "items": [
+      {
+        "id": "097cded7-9e4a-4ca1-9fb7-bf9f4e5a8381",
+        "batchId": "41dcc8f0-a3a9-4ef1-91bd-aa82e824edb8",
+        "paidMinor": "60",
+        "billPeriod": "2026-10",
+        "billedMinor": "100",
+        "waivedMinor": "10",
+        "refundedMinor": "20",
+        "correctionsMinor": "0",
+        "outstandingMinor": "50"
+      }
+    ],
+    "currency": "BDT",
+    "studentId": "e6b148e2-dfe4-4f3a-8b35-6046e2fa57de",
+    "billPeriod": "2026-10",
+    "totalsMinor": {
+      "paid": "60",
+      "billed": "100",
+      "waived": "10",
+      "refunded": "20",
+      "corrections": "0",
+      "outstanding": "50"
+    }
+  }
+}

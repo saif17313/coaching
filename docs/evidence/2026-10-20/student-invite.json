@@ -1,0 +1,14 @@
+{
+  "time": "2026-10-20T15:34:27.998Z",
+  "project": "rkpwqgwceekuvlizfpeb",
+  "status": 201,
+  "body": {
+    "success": true,
+    "data": {
+      "studentId": "e6b148e2-dfe4-4f3a-8b35-6046e2fa57de",
+      "state": "pending",
+      "nameSaved": true,
+      "message": "Invitation accepted by Supabase Auth. The student must confirm email; Teacher approval and enrollment remain required."
+    }
+  }
+}

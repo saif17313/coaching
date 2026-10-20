@@ -1,0 +1,46 @@
+{
+  "time": "2026-10-20T15:52:13.811Z",
+  "project": "rkpwqgwceekuvlizfpeb",
+  "records": {
+    "cmsPageId": "616db242-a2e6-4504-87c8-293d56d43c61",
+    "mediaId": "96d089cc-a9f1-4038-ba70-24d92ef27e0b",
+    "batchId": "41dcc8f0-a3a9-4ef1-91bd-aa82e824edb8",
+    "subjectId": "5cad1cee-8a84-4b36-ae86-a2793f774bbc",
+    "assignmentId": "4b8ccec3-fd66-463a-a6bf-570bb016b682",
+    "examId": "026f68b7-b8f7-4eaf-867e-8c82f9edac97",
+    "studentId": "e6b148e2-dfe4-4f3a-8b35-6046e2fa57de",
+    "submissionId": "22033684-af3e-442b-89aa-faaa221c1b5a",
+    "announcementId": "9f49b6d7-ac34-46fd-924c-e0073a9ce6f5"
+  },
+  "checks": [
+    {
+      "name": "Student sees published announcement",
+      "status": "Pass"
+    },
+    {
+      "name": "Teacher dispatches one DEMO notification",
+      "status": "Pass"
+    },
+    {
+      "name": "only approved DEMO enrollment receives notification",
+      "status": "Pass"
+    },
+    {
+      "name": "notification duplicate safely replays",
+      "status": "Pass"
+    },
+    {
+      "name": "Student marks own notification read through UI",
+      "status": "Pass"
+    },
+    {
+      "name": "Student cannot read nonexistent notification",
+      "status": "Pass"
+    },
+    {
+      "name": "Student billing reads without ledger fabrication",
+      "status": "Pass"
+    }
+  ],
+  "status": "Pass"
+}

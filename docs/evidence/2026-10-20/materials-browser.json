@@ -1,0 +1,304 @@
+{
+  "time": "2026-10-20T17:00:29.678Z",
+  "project": "rkpwqgwceekuvlizfpeb",
+  "records": {
+    "batchId": "41dcc8f0-a3a9-4ef1-91bd-aa82e824edb8",
+    "uploadId": "03a165e1-4ad1-4b5d-95f0-1f0b3ca2fad8",
+    "materialId": "b8eb708c-b478-4179-bd2e-db54fe80ade0"
+  },
+  "checks": [
+    {
+      "name": "Teacher UI uploads private PDF",
+      "status": "Pass"
+    },
+    {
+      "name": "Teacher UI saves material draft",
+      "status": "Pass"
+    },
+    {
+      "name": "Student draft download denied",
+      "status": "Pass"
+    },
+    {
+      "name": "Draft independently persisted",
+      "status": "Pass"
+    },
+    {
+      "name": "Teacher UI publishes material",
+      "status": "Pass"
+    },
+    {
+      "name": "Student UI saves exact uploaded PDF",
+      "status": "Pass"
+    },
+    {
+      "name": "Teacher UI archives material",
+      "status": "Pass"
+    },
+    {
+      "name": "Archive revokes Student access",
+      "status": "Pass"
+    }
+  ],
+  "status": "Pass",
+  "previousAttempt": {
+    "time": "2026-10-20T16:53:42.891Z",
+    "project": "rkpwqgwceekuvlizfpeb",
+    "records": {
+      "batchId": "41dcc8f0-a3a9-4ef1-91bd-aa82e824edb8",
+      "uploadId": "112e399a-7dbc-4254-b996-0b2a2cf85551",
+      "materialId": "99287808-6ec6-4b0d-94de-af35080bb797"
+    },
+    "checks": [
+      {
+        "name": "Teacher UI uploads private PDF",
+        "status": "Pass"
+      },
+      {
+        "name": "Teacher UI saves material draft",
+        "status": "Pass"
+      },
+      {
+        "name": "Student draft download denied",
+        "status": "Pass"
+      },
+      {
+        "name": "Draft independently persisted",
+        "status": "Pass"
+      },
+      {
+        "name": "Teacher UI publishes material",
+        "status": "Pass"
+      }
+    ],
+    "status": "Fail",
+    "failure": "page.waitForRequest: Timeout 30000ms exceeded while waiting for event \"request\"",
+    "previousAttempt": {
+      "time": "2026-10-20T16:52:41.047Z",
+      "project": "rkpwqgwceekuvlizfpeb",
+      "records": {
+        "batchId": "41dcc8f0-a3a9-4ef1-91bd-aa82e824edb8",
+        "uploadId": "5082dbb9-4385-4a4d-a24d-7a6b93528056",
+        "materialId": "586b57e2-48af-4a0b-89c5-ac5bbdee8755"
+      },
+      "checks": [
+        {
+          "name": "Teacher UI uploads private PDF",
+          "status": "Pass"
+        },
+        {
+          "name": "Teacher UI saves material draft",
+          "status": "Pass"
+        },
+        {
+          "name": "Student draft download denied",
+          "status": "Pass"
+        },
+        {
+          "name": "Draft independently persisted",
+          "status": "Pass"
+        },
+        {
+          "name": "Teacher UI publishes material",
+          "status": "Pass"
+        }
+      ],
+      "status": "Fail",
+      "failure": "page.waitForResponse: Timeout 30000ms exceeded while waiting for event \"response\"",
+      "previousAttempt": {
+        "time": "2026-10-20T16:50:56.029Z",
+        "project": "rkpwqgwceekuvlizfpeb",
+        "records": {
+          "batchId": "41dcc8f0-a3a9-4ef1-91bd-aa82e824edb8",
+          "uploadId": "7c1f8ceb-86e2-4978-affa-17149cf7f312",
+          "materialId": "1663775b-0c8e-4b54-8f96-fec5f509aa86"
+        },
+        "checks": [
+          {
+            "name": "Teacher UI uploads private PDF",
+            "status": "Pass"
+          },
+          {
+            "name": "Teacher UI saves material draft",
+            "status": "Pass"
+          },
+          {
+            "name": "Student draft download denied",
+            "status": "Pass"
+          },
+          {
+            "name": "Draft independently persisted",
+            "status": "Pass"
+          },
+          {
+            "name": "Teacher UI publishes material",
+            "status": "Pass"
+          }
+        ],
+        "status": "Fail",
+        "failure": "page.waitForEvent: Timeout 30000ms exceeded while waiting for event \"download\"\n=========================== logs ===========================\nwaiting for event \"download\"\n============================================================",
+        "previousAttempt": {
+          "time": "2026-10-20T16:48:33.457Z",
+          "project": "rkpwqgwceekuvlizfpeb",
+          "records": {
+            "batchId": "41dcc8f0-a3a9-4ef1-91bd-aa82e824edb8"
+          },
+          "checks": [],
+          "status": "Fail",
+          "failure": "student sign-in required",
+          "previousAttempt": {
+            "time": "2026-10-20T16:47:40.791Z",
+            "project": "rkpwqgwceekuvlizfpeb",
+            "records": {
+              "batchId": "41dcc8f0-a3a9-4ef1-91bd-aa82e824edb8"
+            },
+            "checks": [],
+            "status": "Fail",
+            "failure": "student sign-in required",
+            "previousAttempt": {
+              "time": "2026-10-20T16:46:18.954Z",
+              "project": "rkpwqgwceekuvlizfpeb",
+              "records": {
+                "batchId": "41dcc8f0-a3a9-4ef1-91bd-aa82e824edb8"
+              },
+              "checks": [],
+              "status": "Fail",
+              "failure": "student sign-in required",
+              "previousAttempt": {
+                "time": "2026-10-20T16:43:50.728Z",
+                "project": "rkpwqgwceekuvlizfpeb",
+                "records": {
+                  "batchId": "41dcc8f0-a3a9-4ef1-91bd-aa82e824edb8"
+                },
+                "checks": [],
+                "status": "Fail",
+                "failure": "teacher sign-in required",
+                "previousAttempt": {
+                  "time": "2026-10-20T16:39:41.473Z",
+                  "project": "rkpwqgwceekuvlizfpeb",
+                  "records": {
+                    "batchId": "41dcc8f0-a3a9-4ef1-91bd-aa82e824edb8",
+                    "uploadId": "21053694-3c56-4f33-81f6-f098d6cd1cf1",
+                    "materialId": "aead34b6-c3ba-4ead-8370-57703c2b4ddd",
+                    "sharedDraftId": "ae718a26-c531-4316-ad1f-d8fe9b5748cb",
+                    "futureId": "5e07f588-d7b3-4d1e-95d3-05f929a31743"
+                  },
+                  "checks": [
+                    {
+                      "name": "Existing unique upload constraint rejects file reuse",
+                      "status": "Pass"
+                    },
+                    {
+                      "name": "Rejected material remains inaccessible",
+                      "status": "Pass"
+                    },
+                    {
+                      "name": "Future DEMO PDF upload",
+                      "status": "Pass"
+                    },
+                    {
+                      "name": "Future release DEMO draft created",
+                      "status": "Pass"
+                    },
+                    {
+                      "name": "Duplicate material command replays same result",
+                      "status": "Pass"
+                    },
+                    {
+                      "name": "Future release material published",
+                      "status": "Pass"
+                    },
+                    {
+                      "name": "Future release download remains hidden",
+                      "status": "Pass"
+                    },
+                    {
+                      "name": "Teacher UI archives material",
+                      "status": "Pass"
+                    },
+                    {
+                      "name": "Archived Student download revoked",
+                      "status": "Pass"
+                    },
+                    {
+                      "name": "DEMO privacy fixture archive",
+                      "status": "Pass"
+                    }
+                  ],
+                  "previousAttempt": {
+                    "time": "2026-10-20T16:38:33.203Z",
+                    "project": "rkpwqgwceekuvlizfpeb",
+                    "records": {
+                      "batchId": "41dcc8f0-a3a9-4ef1-91bd-aa82e824edb8",
+                      "uploadId": "21053694-3c56-4f33-81f6-f098d6cd1cf1",
+                      "materialId": "aead34b6-c3ba-4ead-8370-57703c2b4ddd",
+                      "sharedDraftId": "4b3fceac-14c9-4c7a-9f5a-a4fcb2e5b0a2"
+                    },
+                    "checks": [
+                      {
+                        "name": "Teacher UI uploads private PDF",
+                        "status": "Pass"
+                      },
+                      {
+                        "name": "Teacher UI saves material draft",
+                        "status": "Pass"
+                      },
+                      {
+                        "name": "Student cannot download draft",
+                        "status": "Pass"
+                      },
+                      {
+                        "name": "Student cannot use Teacher file route",
+                        "status": "Pass"
+                      },
+                      {
+                        "name": "Anonymous file request rejected",
+                        "status": "Pass"
+                      },
+                      {
+                        "name": "Draft survives independent read-back",
+                        "status": "Pass"
+                      },
+                      {
+                        "name": "Teacher UI edits material",
+                        "status": "Pass"
+                      },
+                      {
+                        "name": "Stale material revision rejected",
+                        "status": "Pass"
+                      },
+                      {
+                        "name": "Teacher UI publishes material",
+                        "status": "Pass"
+                      },
+                      {
+                        "name": "Enrolled Student downloads published PDF",
+                        "status": "Pass"
+                      },
+                      {
+                        "name": "Downloaded PDF bytes match upload SHA-256",
+                        "status": "Pass"
+                      },
+                      {
+                        "name": "Download is private and never cached",
+                        "status": "Pass"
+                      },
+                      {
+                        "name": "Download is an attachment",
+                        "status": "Pass"
+                      }
+                    ],
+                    "status": "Fail",
+                    "failure": "Shared-file DEMO draft created\n\n409 !== 201\n"
+                  },
+                  "status": "Fail",
+                  "failure": "anon is not defined"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

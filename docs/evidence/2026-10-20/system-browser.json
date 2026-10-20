@@ -1,0 +1,94 @@
+{
+  "project": "rkpwqgwceekuvlizfpeb",
+  "time": "2026-10-20T14:59:14.034Z",
+  "checks": [
+    {
+      "name": "public image delivery after policy repair",
+      "status": "Pass"
+    },
+    {
+      "name": "verified public image bytes",
+      "status": "Pass"
+    },
+    {
+      "name": "typed saved headline appears in public HTML",
+      "status": "Pass"
+    },
+    {
+      "name": "create independent draft section",
+      "status": "Pass"
+    },
+    {
+      "name": "atomic section reorder",
+      "status": "Pass"
+    },
+    {
+      "name": "section order read-back",
+      "status": "Pass"
+    },
+    {
+      "name": "ordering draft not exposed before publish",
+      "status": "Pass"
+    },
+    {
+      "name": "duplicate ordering IDs rejected",
+      "status": "Pass"
+    },
+    {
+      "name": "image detached from draft",
+      "status": "Pass"
+    },
+    {
+      "name": "published image remains available before removal is published",
+      "status": "Pass"
+    },
+    {
+      "name": "archive still blocked while old snapshot uses image",
+      "status": "Pass"
+    },
+    {
+      "name": "publish image removal and new ordering",
+      "status": "Pass"
+    },
+    {
+      "name": "public image access revoked after removal publication",
+      "status": "Pass"
+    },
+    {
+      "name": "unreferenced image archives through Teacher RPC",
+      "status": "Pass"
+    },
+    {
+      "name": "Teacher creates a DEMO batch",
+      "status": "Pass"
+    },
+    {
+      "name": "Teacher updates DEMO batch",
+      "status": "Pass"
+    },
+    {
+      "name": "batch read-back returns persisted edit",
+      "status": "Pass"
+    },
+    {
+      "name": "Teacher creates batch subject",
+      "status": "Pass"
+    },
+    {
+      "name": "Teacher creates syllabus unit",
+      "status": "Pass"
+    },
+    {
+      "name": "Teacher creates routine slot",
+      "status": "Pass"
+    }
+  ],
+  "records": {
+    "cmsPageId": "616db242-a2e6-4504-87c8-293d56d43c61",
+    "mediaId": "96d089cc-a9f1-4038-ba70-24d92ef27e0b",
+    "batchId": "41dcc8f0-a3a9-4ef1-91bd-aa82e824edb8",
+    "subjectId": "5cad1cee-8a84-4b36-ae86-a2793f774bbc"
+  },
+  "status": "Fail",
+  "failure": "overlapping routine is a business conflict\n\n503 !== 409\n"
+}

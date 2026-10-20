@@ -1,0 +1,30 @@
+{
+  "time": "2026-10-20T17:14:29.650Z",
+  "scope": "Archive this audit's exact CMS fixtures only; keep private objects and audit records",
+  "checks": [
+    {
+      "id": "8da9f8d1-3933-49a9-82a4-0dbcb92a8a52",
+      "slug": "demo-audit-mvgrimbe",
+      "action": "archive",
+      "status": "Pass"
+    },
+    {
+      "id": "616db242-a2e6-4504-87c8-293d56d43c61",
+      "slug": "demo-audit-mvgrjh34",
+      "action": "archive",
+      "status": "Pass"
+    },
+    {
+      "id": "e83388bf-6f56-45de-bcb2-1e5dc58c66ee",
+      "slug": "demo-portfolio-mvgx4jc9",
+      "action": "archive",
+      "status": "Pass"
+    },
+    {
+      "id": "c14c4c88-ca6b-40f8-b0f7-98fe6f2b583b",
+      "action": "archive unused audit logo",
+      "status": "Pass"
+    }
+  ],
+  "status": "Pass"
+}

@@ -1,0 +1,12 @@
+{
+  "time": "2026-10-20T14:38:42.186Z",
+  "project": "rkpwqgwceekuvlizfpeb",
+  "action": "approved DEMO Student account creation through Teacher UI",
+  "status": 409,
+  "result": {
+    "success": false,
+    "error": {
+      "code": "STUDENT_SIGNUP_REJECTED"
+    }
+  }
+}

@@ -1,0 +1,42 @@
+> coaching-management-system@0.1.0 lint
+> eslint .
+
+
+E:\projects\Musa Sir\coaching\src\components\portal\WebsiteAdminStudio.tsx
+  124:37  warning  The ref value 'selection.current' will likely have changed by the time this effect cleanup function runs. If this ref points to a node rendered by React, copy 'selection.current' to a variable inside the effect, and use that variable in the cleanup function  react-hooks/exhaustive-deps
+
+E:\projects\Musa Sir\coaching\tests\cms-core-snapshot-integration.test.mjs
+  12:199  warning  'visible' is defined but never used  @typescript-eslint/no-unused-vars
+
+E:\projects\Musa Sir\coaching\tests\cms-media-partm.test.mjs
+   4:29   warning  'imageSignature' is defined but never used  @typescript-eslint/no-unused-vars
+  26:168  warning  'pg' is assigned a value but never used     @typescript-eslint/no-unused-vars
+
+E:\projects\Musa Sir\coaching\tests\member-read-apis-integration.test.mjs
+  23:26  warning  'q' is defined but never used  @typescript-eslint/no-unused-vars
+
+E:\projects\Musa Sir\coaching\tests\office-resources-finance-reports-read.test.mjs
+  37:14  warning  'target' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+E:\projects\Musa Sir\coaching\tests\public-discovery-partw.test.mjs
+  19:37  warning  '_' is defined but never used  @typescript-eslint/no-unused-vars
+  19:39  warning  'i' is defined but never used  @typescript-eslint/no-unused-vars
+
+E:\projects\Musa Sir\coaching\tests\student-academic-portal-integration.test.mjs
+  21:21  warning  't' is defined but never used  @typescript-eslint/no-unused-vars
+
+E:\projects\Musa Sir\coaching\tests\student-completion-partl.test.mjs
+   3:22  warning  'existsSync' is defined but never used            @typescript-eslint/no-unused-vars
+  14:44  warning  'verifyCount' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  19:7   warning  'js' is assigned a value but never used           @typescript-eslint/no-unused-vars
+
+E:\projects\Musa Sir\coaching\tests\student-submissions-and-notifications-integration.test.mjs
+  28:55  warning  't' is defined but never used  @typescript-eslint/no-unused-vars
+
+E:\projects\Musa Sir\coaching\tests\teacher-core-management-read.test.mjs
+  49:123  warning  't' is defined but never used  @typescript-eslint/no-unused-vars
+  49:125  warning  'q' is defined but never used  @typescript-eslint/no-unused-vars
+  51:102  warning  't' is defined but never used  @typescript-eslint/no-unused-vars
+  51:104  warning  'q' is defined but never used  @typescript-eslint/no-unused-vars
+
+✖ 17 problems (0 errors, 17 warnings)
