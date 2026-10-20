@@ -38,7 +38,7 @@ async function upload({token,key,bytes,contentType}:{token:string,key:string,byt
   if(previous.length!==bytes.length||digest(previous)!==digest(bytes))throw cmsError('IDEMPOTENCY_CONFLICT',409);
  }
 }
-async function readObject({key,token}:{key:string;token?:string}):Promise<Uint8Array>{
+export async function readObject({key,token}:{key:string;token?:string}):Promise<Uint8Array>{
  const {root,key:anon}=config();
  if(!/^[0-9a-f-]{36}\/[0-9a-f-]{36}\.(jpg|png|webp|avif)$/.test(key))throw Error('INVALID_STORAGE_KEY');
  const res=await fetch(new URL(`/storage/v1/object/authenticated/musa-site-media/${encodedPath(key)}`,root),{headers:{apikey:anon,Authorization:`Bearer ${token??anon}`},cache:'no-store',redirect:'error',signal:AbortSignal.timeout(15000)});

@@ -21,6 +21,13 @@ export function resolveHomeSection(key,home,related={}){
  const legacy=(spec.catalog?ordered(source).find(s=>s.sectionKey===spec.catalog):undefined)??ordered(source).find(s=>s.kind===spec.kind&&!s.sectionKey);
  const section=own??(key==='HOME_YOUTUBE_CLASSES'||key==='HOME_TOP_STUDENTS'||key==='GLOBAL_FOOTER'?null:legacy);
  const selected=own&&spec.selection;
- return {...spec,section,sourceSlug:own?'home':spec.source,selectionSection:selected?own:null,catalogSection:spec.selection?legacy:null,catalogSlug:spec.selection?spec.source:null,available:Boolean(section),mode:selected?'selection':own?'dedicated':section?'shared legacy':'not configured'};
+ return {...spec,editorKey:own?key:spec.catalog??key,section,sourceSlug:own?'home':spec.source,selectionSection:selected?own:null,catalogSection:spec.selection?legacy:null,catalogSlug:spec.selection?spec.source:null,available:Boolean(section),mode:selected?'selection':own?'dedicated':section?'shared legacy':'not configured'};
 }
 export function homeSectionMap(home,related={}){return HOME_SECTIONS.map(s=>resolveHomeSection(s.key,home,related));}
+/** Reorder Home-owned visual records; shared catalogs retain their reference slots. */
+export function orderHomeKeys(keys,home,related={}){
+ const owned=keys.flatMap(key=>{const mapping=resolveHomeSection(key,home,related);return mapping?.sourceSlug==='home'&&mapping.section?[{key,order:mapping.section.order}]:[];});
+ const positions=new Set(owned.map(row=>row.key));
+ const sorted=owned.slice().sort((a,b)=>a.order-b.order);let index=0;
+ return keys.map(key=>positions.has(key)?sorted[index++].key:key);
+}

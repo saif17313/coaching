@@ -1,4 +1,5 @@
 'use client';
+import {StudentAdmissionProfile} from './StudentAdmissionProfile';
 import {useCallback,useEffect,useMemo,useRef,useState,type FormEvent} from 'react';
 import {normalizeTeacherList,readTeacherList,teacherCommand,type TeacherManagementScope,type TeacherRow} from '@/client/teacher-management.mjs';
 
@@ -21,6 +22,7 @@ export function TeacherManagement({mode}:{mode:Mode}){
  const [email,setEmail]=useState(''),[initialPassword,setInitialPassword]=useState('');
  const [students,setStudents]=useState<TeacherRow[]>([]),[batches,setBatches]=useState<TeacherRow[]>([]);
  const [search,setSearch]=useState('');
+ const [admissionStudent,setAdmissionStudent]=useState<string|null>(null);
  const load=useCallback(async()=>normalizeTeacherList(mode,await readTeacherList(mode,{offset,filter})),[mode,offset,filter]);
  useEffect(()=>{
   let alive=true;
@@ -75,11 +77,11 @@ export function TeacherManagement({mode}:{mode:Mode}){
    setAction(null);setInitialPassword('');setRefresh(n=>n+1);
   }catch(err){setError((err as Error).message);}finally{submissionBusy.current=false;setSaving(false);}
  }
- async function beginEnrollment(){
+ async function beginEnrollment(preselected?:TeacherRow){
   begin('enroll');
   try{
    const [s,b]=await Promise.all([readTeacherList('students',{offset:0}),readTeacherList('batches',{offset:0})]);
-   setStudents(normalizeTeacherList('students',s).filter(x=>x.status==='active'));
+   const eligible=normalizeTeacherList('students',s).filter(x=>x.status==='active');if(preselected?.status==='active'&&!eligible.some(row=>row.id===preselected.id))eligible.push(preselected);setStudents(eligible);if(preselected)setStudentId(preselected.id);
    setBatches(normalizeTeacherList('batches',b).filter(x=>!x.archived));
   }catch(err){setError((err as Error).message);setAction(null);}
  }
@@ -112,13 +114,14 @@ export function TeacherManagement({mode}:{mode:Mode}){
       <div className="teacher-ops-row-top"><div className="teacher-ops-avatar">{(row.name||row.code||'E').slice(0,1).toUpperCase()}</div><div className="teacher-ops-row-name"><strong>{row.name||row.code||`Enrollment ${short(row.id)}`}</strong><small>{mode==='students'?`Student · ${short(row.id)}`:mode==='batches'?`${row.code} · ${row.capacity} seats`:`Student ${short(row.studentId||'')} · Batch ${short(row.batchId||'')}`}</small></div>
         <span className={'teacher-ops-pill '+((row.status==='active'||!row.archived&&mode==='batches')?'good':row.status==='rejected'||row.archived?'off':'wait')}>{mode==='batches'?(row.archived?'Archived':'Open'):roleLabel(row.status)}</span></div>
       <div className="teacher-ops-row-actions">
-       {mode==='students'&&<><button className="portal-secondary" disabled={saving} onClick={()=>begin('edit',row)}>Edit profile</button>{row.status==='pending'&&<><button className="portal-secondary" disabled={saving} onClick={()=>updateStatus(row,'active')}>Activate</button><button className="portal-secondary" disabled={saving} onClick={()=>updateStatus(row,'rejected')}>Reject</button></>}{row.status==='active'&&<button className="portal-secondary" disabled={saving} onClick={()=>updateStatus(row,'disabled')}>Disable access</button>}{row.status==='disabled'&&<button className="portal-secondary" disabled={saving} onClick={()=>updateStatus(row,'active')}>Reactivate</button>}</>}
+       {mode==='students'&&<><button className="portal-secondary" onClick={()=>setAdmissionStudent(row.id)}>Admission & full profile</button><button className="portal-secondary" disabled={saving} onClick={()=>begin('edit',row)}>Edit profile</button>{row.status==='pending'&&<><button className="portal-secondary" disabled={saving} onClick={()=>updateStatus(row,'active')}>Activate</button><button className="portal-secondary" disabled={saving} onClick={()=>updateStatus(row,'rejected')}>Reject</button></>}{row.status==='active'&&<button className="portal-secondary" disabled={saving} onClick={()=>updateStatus(row,'disabled')}>Disable access</button>}{row.status==='disabled'&&<button className="portal-secondary" disabled={saving} onClick={()=>updateStatus(row,'active')}>Reactivate</button>}</>}
        {mode==='batches'&&<><button className="portal-secondary" disabled={saving||!!row.archived} onClick={()=>begin('edit',row)}>Edit batch</button>{!row.archived&&<button className="portal-secondary teacher-ops-danger" disabled={saving} onClick={()=>archive(row)}>Archive</button>}</>}
        {mode==='enrollments'&&row.status==='pending'&&<><button className="portal-secondary" disabled={saving} onClick={()=>decision(row,'approve')}>Approve</button><button className="portal-secondary teacher-ops-danger" disabled={saving} onClick={()=>decision(row,'reject')}>Reject</button><button className="portal-secondary" disabled={saving} onClick={()=>decision(row,'cancel')}>Cancel</button></>}
       </div>
      </article>)}</div>}
    <div className="teacher-ops-pagination"><button className="portal-secondary" disabled={offset===0||loading||saving} onClick={()=>setOffset(n=>Math.max(0,n-20))}>← Previous</button><span>Page {offset/20+1}</span><button className="portal-secondary" disabled={items.length<20||loading||saving} onClick={()=>setOffset(n=>n+20)}>Next →</button></div>
   </>}
+  {mode==='students'&&admissionStudent&&<StudentAdmissionProfile key={`${admissionStudent}:${refresh}`} role="teacher" studentId={admissionStudent} onAssignBatch={()=>void beginEnrollment(items.find(row=>row.id===admissionStudent))} onClose={()=>{setAdmissionStudent(null);setRefresh(value=>value+1);}}/>}
   {action&&<div className="teacher-ops-overlay"><div className="teacher-ops-modal" role="dialog" aria-modal="true" aria-labelledby="teacher-form-heading"><div className="teacher-ops-modal-head"><div><span className="portal-kicker">MANAGEMENT ACTION</span><h3 id="teacher-form-heading">{action==='create'?'Create a batch':action==='enroll'?'Request enrollment':action==='onboard'?'Add a student':action==='invite'?'Invite a student':mode==='students'?'Edit student name':'Edit batch'}</h3></div><button type="button" className="portal-secondary" aria-label="Close form" disabled={saving} onClick={()=>setAction(null)}>✕</button></div>
     {error&&<div className="portal-alert" role="alert">{error}</div>}
     <form className="teacher-ops-form" onSubmit={e=>void submitForm(e)}>

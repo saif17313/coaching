@@ -35,6 +35,13 @@ try{
  assert.equal(await page.locator('iframe').evaluate(node=>node.style.width),'1440px');
  report.checks.push('Desktop viewport uses 1440px presentation');
  await page.screenshot({path:directory+'/cms-shared-preview.png',fullPage:true});
+ await page.getByRole('button',{name:'Classroom benefits',exact:true}).click();
+ await page.getByLabel('Heading',{exact:true}).filter({visible:true}).waitFor();
+ await page.waitForFunction(()=>document.querySelector('input[value="What matters in the classroom"]'));
+ report.checks.push('Classroom benefits opens the actual shared About cards');
+ await page.getByRole('button',{name:'Courses',exact:true}).click();
+ await page.getByRole('heading',{name:'Course catalog',exact:true}).waitFor();
+ report.checks.push('Shared Courses opens catalog fields rather than homepage selection fields');
  report.status='Pass';console.log(JSON.stringify(report));
 }catch(error){report.status='Fail';report.failure=error.message;process.exitCode=1;console.error(error.message);}
 finally{writeFileSync(directory+'/cms-parity-browser.json',JSON.stringify(report,null,2)+'\n');if(page)await page.goto('http://localhost:3000/portal');await browser.close();}

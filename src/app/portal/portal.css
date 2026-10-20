@@ -51,3 +51,4 @@
 .studio-page-entry:focus-visible,.studio-section-select:focus-visible,.studio-item-select:focus-visible{outline:3px solid #e9a852;outline-offset:2px}
 @media(max-width:700px){.studio-write-status{flex-direction:column;align-items:stretch}.studio-write-status .portal-secondary{width:100%}}
 @media(prefers-reduced-motion:reduce){.studio-page-entry,.studio-section-select,.studio-item-select{transition:none}}
+.admission-profile{padding:24px;display:grid;gap:18px;scroll-margin-top:24px}.admission-summary{display:flex;gap:24px;flex-wrap:wrap;margin:0}.admission-summary dt{font-size:12px;color:#638080}.admission-summary dd{margin:6px 0;font-weight:700;overflow-wrap:anywhere}.admission-profile input[readonly],.admission-profile textarea[readonly]{background:#f3f7f5;color:#536b70}.admission-profile fieldset{min-width:0}.admission-profile .studio-expansion{margin:0}.admission-profile legend{font-weight:750;color:#315e63;padding:0 6px}
