@@ -1,0 +1,1 @@
+export function createTeacherAccountRoute(ports:{verify:(token:string)=>Promise<unknown>;call:(name:string,token:string,args:Record<string,unknown>)=>Promise<unknown>}):(request:Request)=>Promise<Response>;

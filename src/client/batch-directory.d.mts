@@ -1,0 +1,3 @@
+export type DirectoryBatch={id:string;code:string;name:string;capacity:number;isArchived:boolean;startsOn:string|null;endsOn:string|null;status:string;enrolled:number;pending:number;availableSeats:number;subjects:string[];classes:string[];sessions:string[];routine:{id:string;dayOfWeek:number;startMinute:number;endMinute:number;room:string;subject:string}[]};
+export type BatchDirectory={batches:DirectoryBatch[];total:number;limit:number;offset:number;classes:string[];sessions:string[];metrics:{activeBatches:number;activeEnrollments:number;availableSeats:number;upcomingStarts:number}};
+export function validateBatchDirectory(value:unknown):BatchDirectory;

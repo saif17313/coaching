@@ -1,7 +1,7 @@
 import {admissionId,validateAdmissionChanges,validateAdmissionProfile} from '../../client/student-admission.mjs';
 import {RpcError} from './rpc-errors.mjs';
 const fail=(code,status)=>{throw new RpcError(code,status);};
-async function bodyOf(req){
+export async function readSmallJsonBody(req){
  if(!/^application\/json(?:;\s*charset=utf-8)?$/i.test(req.headers.get('content-type')??''))fail('UNSUPPORTED_MEDIA_TYPE',415);
  const reader=req.body?.getReader();if(!reader)fail('INVALID_ADMISSION',400);let size=0;const chunks=[];
  try{while(true){const {done,value}=await reader.read();if(done)break;size+=value.length;if(size>8192){await reader.cancel();fail('BODY_TOO_LARGE',413);}chunks.push(value);}}finally{reader.releaseLock();}
@@ -21,7 +21,7 @@ export function createStudentAdmissionRoute(role,{verify,call}={}){
    let name='coaching_student_admission_read',args={p_student_id:id};
    if(req.method==='PATCH'){
     const operation=req.headers.get('idempotency-key');if(!admissionId(operation))fail('INVALID_OPERATION_ID',400);
-    const body=await bodyOf(req);
+    const body=await readSmallJsonBody(req);
     if(!body||Object.keys(body).sort().join(',')!=='data,expectedRevision'||!Number.isSafeInteger(body.expectedRevision)||body.expectedRevision<0)fail('INVALID_ADMISSION',400);
     let data;try{data=validateAdmissionChanges(body.data,role);}catch{fail('INVALID_ADMISSION',400);}
     name='coaching_student_admission_write';args={...args,p_data:data,p_expected_revision:body.expectedRevision,p_operation_id:operation};

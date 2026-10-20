@@ -1,15 +1,17 @@
+import {createTeacherAccountRoute} from './teacher-account.mjs';
 import {domainRpcError,RpcError} from './rpc-errors.mjs';
 import 'server-only';
+import {createTeacherStudentDirectory,createTeacherBatchDirectory} from './teacher-student-directory.mjs';
 import {createStudentAdmissionRoute} from './student-admission.mjs';
 import {verifyActiveActor} from './production-read-adapter';
 import {createHash} from 'node:crypto';
 import {imageSignature} from './cms-media.mjs';
 import {readObject} from './production-cms-media';
 import {admissionId} from '@/client/student-admission.mjs';
-const allow=new Set(['coaching_student_admission_read','coaching_student_admission_write','coaching_student_photo']);
+const allow=new Set(['coaching_student_admission_read','coaching_student_admission_write','coaching_student_photo','coaching_teacher_student_directory','coaching_teacher_batch_directory','coaching_teacher_account_profile','coaching_teacher_account_profile_write']);
 async function call(name:string,token:string,args:Record<string,unknown>):Promise<unknown>{
  if(!allow.has(name))throw Error('RPC_NOT_ALLOWED');
- if(name==='coaching_student_admission_write'&&process.env.COACHING_ENABLE_MUTATION_APIS!=='enabled-after-db-verification')throw new RpcError('MUTATIONS_DISABLED',503);
+ if(['coaching_student_admission_write','coaching_teacher_account_profile_write'].includes(name)&&process.env.COACHING_ENABLE_MUTATION_APIS!=='enabled-after-db-verification')throw new RpcError('MUTATIONS_DISABLED',503);
  const raw=process.env.SUPABASE_URL,key=process.env.SUPABASE_ANON_KEY;
  if(!raw||!key||/[^\x21-\x7e]/.test(key)||key.length>4096)throw Error('DB_NOT_CONFIGURED');
  let root:URL;try{root=new URL(raw);}catch{throw Error('DB_NOT_CONFIGURED');}
@@ -37,3 +39,9 @@ export const studentPhotoRoute=(role:'teacher'|'student')=>async(request:Request
   return new Response(new Uint8Array(bytes).buffer,{headers:{'Content-Type':media.contentType,'Cache-Control':'private, no-store','X-Content-Type-Options':'nosniff','Vary':'Cookie, Authorization'}});
  }catch(error){const e=error as {code?:string;status?:number;httpStatus?:number;publicCode?:string};const status=e.status??e.httpStatus??503;return Response.json({success:false,error:{code:e.code??e.publicCode??'PHOTO_SERVICE_UNAVAILABLE'}},{status,headers:{'Cache-Control':'no-store'}});}
 };
+
+export const teacherStudentDirectoryRoute=createTeacherStudentDirectory({verify:verifyActiveActor,call});
+
+export const teacherBatchDirectoryRoute=createTeacherBatchDirectory({verify:verifyActiveActor,call});
+
+export const teacherAccountRoute=createTeacherAccountRoute({verify:verifyActiveActor,call});
