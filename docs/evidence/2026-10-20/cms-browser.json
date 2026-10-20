@@ -1,0 +1,108 @@
+{
+  "project": "rkpwqgwceekuvlizfpeb",
+  "time": "2026-10-20T14:12:58.626Z",
+  "transport": "real browser cookie -> Next proxy -> verified Teacher -> Supabase RPC",
+  "checks": [
+    {
+      "name": "active Teacher write gate and CMS read probe",
+      "status": "Pass"
+    },
+    {
+      "name": "read probe does not claim mutation verification",
+      "status": "Pass"
+    },
+    {
+      "name": "UI create draft HTTP status",
+      "status": "Pass"
+    },
+    {
+      "name": "unpublished draft absent from public API",
+      "status": "Pass"
+    },
+    {
+      "name": "UI save section HTTP status",
+      "status": "Pass"
+    },
+    {
+      "name": "independent API draft read-back",
+      "status": "Pass"
+    },
+    {
+      "name": "draft still private after save",
+      "status": "Pass"
+    },
+    {
+      "name": "editor refresh retrieves saved section",
+      "status": "Pass"
+    },
+    {
+      "name": "UI publication HTTP status",
+      "status": "Pass"
+    },
+    {
+      "name": "public API contains published section",
+      "status": "Pass"
+    },
+    {
+      "name": "public HTML renders published text",
+      "status": "Pass"
+    },
+    {
+      "name": "unchanged revision cannot be published by editor",
+      "status": "Pass"
+    },
+    {
+      "name": "repeat publish gives conflict instead of false 503",
+      "status": "Pass"
+    },
+    {
+      "name": "repeat publish preserves database cause",
+      "status": "Pass"
+    },
+    {
+      "name": "unsaved form cannot publish",
+      "status": "Pass"
+    },
+    {
+      "name": "published content unchanged while draft differs",
+      "status": "Pass"
+    },
+    {
+      "name": "optimistic revision conflict",
+      "status": "Pass"
+    },
+    {
+      "name": "revision conflict safe code",
+      "status": "Pass"
+    },
+    {
+      "name": "invalid DTO rejected",
+      "status": "Pass"
+    },
+    {
+      "name": "duplicate operations both receive confirmed receipt",
+      "status": "Pass"
+    },
+    {
+      "name": "duplicate receipts agree",
+      "status": "Pass"
+    },
+    {
+      "name": "duplicate operation increments revision once",
+      "status": "Pass"
+    },
+    {
+      "name": "reused key with changed payload conflicts",
+      "status": "Pass"
+    },
+    {
+      "name": "anonymous cannot read Teacher CMS",
+      "status": "Pass"
+    }
+  ],
+  "testPage": {
+    "id": "616db242-a2e6-4504-87c8-293d56d43c61",
+    "slug": "demo-audit-mvgrjh34"
+  },
+  "status": "Pass"
+}

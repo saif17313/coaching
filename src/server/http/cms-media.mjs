@@ -1,5 +1,6 @@
 /** Part M: verified private media pipeline. No service-role credentials or public draft previews. */
 import {createHash} from 'node:crypto';
+import {cmsFailure} from './cms-errors.mjs';
 const uuid=/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const jwt=/^[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+$/;
 const names=Object.freeze({'image/jpeg':'jpg','image/png':'png','image/webp':'webp','image/avif':'avif'});
@@ -74,6 +75,6 @@ export function createCmsMediaRoute(kind,{verify,call,upload,readObject}={}){
    const bytes=await readObject({key:data.key});
    if(!(bytes instanceof Uint8Array)||bytes.length!==data.sizeBytes||!imageSignature(bytes,data.contentType)||sha(bytes)!==data.sha256)fail('MEDIA_VERIFICATION_FAILED',503);
    return new Response(bytes,{status:200,headers:{'Content-Type':data.contentType,'Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Content-Security-Policy':"default-src 'none'; sandbox",'Content-Disposition':'inline'}});
-  }catch(e){if(e?.publicCode)return json(e.httpStatus,{success:false,error:{code:e.publicCode}});return json(503,{success:false,error:{code:'SERVICE_UNAVAILABLE'}});}
+  }catch(e){const {status,code}=cmsFailure(e);return json(status,{success:false,error:{code}});}
  };
 }

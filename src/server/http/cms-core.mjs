@@ -1,4 +1,5 @@
 /** CMS Core Part I: teacher drafts, atomic publication and public snapshot reads. */
+import {cmsFailure} from './cms-errors.mjs';
 const uuid=/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const jwt=/^[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+$/;
 const slug=/^[a-z][a-z0-9-]{1,62}$/;
@@ -76,6 +77,6 @@ export function createCmsRoute(kind,{verify,call}={}){
    let data;if(expectedTarget)data=responseWrite(raw,expectedTarget);else if(kind==='list')data=responseList(raw);else if(kind==='detail')data=detail(raw,params.pageId);else if(kind==='publicPage')data=publicPage(raw,params.slug);else data=settings(raw);
    if((kind==='detail'||kind==='publicPage')&&data===null)deny('NOT_FOUND',404);
    return send(kind==='create'?201:200,{success:true,data});
-  }catch(e){if(e?.code&&[400,401,403,404,405,413,415,502].includes(e.status))return send(e.status,{success:false,error:{code:e.code}});return send(503,{success:false,error:{code:'SERVICE_UNAVAILABLE'}});}
+  }catch(e){const {status,code}=cmsFailure(e);return send(status,{success:false,error:{code}});}
  };
 }

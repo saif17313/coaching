@@ -1,6 +1,7 @@
 import 'server-only';
 import {createCmsMediaRoute} from './cms-media.mjs';
 import {verifyActiveActor} from './production-read-adapter';
+import {cmsRpcError} from './cms-errors.mjs';
 type MediaKind='upload'|'list'|'attach'|'archive'|'publicMedia';
 function config(){
  const key=process.env.SUPABASE_ANON_KEY,raw=process.env.SUPABASE_URL;
@@ -17,7 +18,7 @@ async function call(name:string,token:string|null,args:Record<string,unknown>):P
  if(['coaching_media_register','coaching_cms_media_mutation'].includes(name))mutationGate();
  const {root,key}=config();
  const res=await fetch(new URL(`/rest/v1/rpc/${name}`,root),{method:'POST',headers:{apikey:key,Authorization:`Bearer ${token??key}`,'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify(args),cache:'no-store',redirect:'error',signal:AbortSignal.timeout(10000)});
- if(!res.ok)throw Error('MEDIA_RPC_ERROR');
+ if(!res.ok)await cmsRpcError(res);
  return res.json();
 }
 const encodedPath=(x:string)=>x.split('/').map(encodeURIComponent).join('/');

@@ -1,6 +1,7 @@
 import 'server-only';
 import {createCmsSettingsRoute,type CmsSettingsKind} from './cms-settings-navigation.mjs';
 import {verifyActiveActor} from './production-read-adapter';
+import {cmsRpcError} from './cms-errors.mjs';
 function origin():{root:URL,key:string}{
  const raw=process.env.SUPABASE_URL,key=process.env.SUPABASE_ANON_KEY;
  if(!raw||!key||/[^\x21-\x7e]/.test(key)||key.length>4096)throw Error('INVALID_DB_CONFIG');
@@ -17,6 +18,6 @@ async function call(name:string,token:string|null,args:Record<string,unknown>):P
  const {root,key}=origin();const res=await fetch(new URL(`/rest/v1/rpc/${name}`,root),{
   method:'POST',headers:{apikey:key,Authorization:`Bearer ${token??key}`,Accept:'application/json','Content-Type':'application/json'},
   body:JSON.stringify(args),cache:'no-store',redirect:'error',signal:AbortSignal.timeout(10000)});
- if(!res.ok)throw Error('CMS_RPC_FAILED');return res.json();
+ if(!res.ok)await cmsRpcError(res);return res.json();
 }
 export const cmsSettingsRoute=(kind:CmsSettingsKind)=>createCmsSettingsRoute(kind,{verify:verifyActiveActor,call});

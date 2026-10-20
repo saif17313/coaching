@@ -1,4 +1,5 @@
 /** Teacher site settings, page archive and safe anonymous navigation (Part J). */
+import {cmsFailure} from './cms-errors.mjs';
 const uuid=/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const jwt=/^[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+$/;
 const isUUID=x=>typeof x==='string'&&uuid.test(x);
@@ -58,6 +59,6 @@ export function createCmsSettingsRoute(kind,{verify,call}={}){
    const raw=await call(name,bearer,paramsDb);
    const data=kind==='settingsRead'?responseSettings(raw):kind==='navigation'?responseNav(raw):responseMutation(raw,kind,expected);
    return result(200,{success:true,data});
-  }catch(e){if(e?.code&&[400,401,403,405,413,415,502].includes(e.status))return result(e.status,{success:false,error:{code:e.code}});return result(503,{success:false,error:{code:'SERVICE_UNAVAILABLE'}});}
+  }catch(e){const {status,code}=cmsFailure(e);return result(status,{success:false,error:{code}});}
  };
 }
