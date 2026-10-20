@@ -1,0 +1,508 @@
+{
+  "time": "2026-10-20T23:04:50.200Z",
+  "surfaces": [
+    {
+      "role": "teacher",
+      "label": "Overview",
+      "viewport": "desktop",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "teacher",
+      "label": "Overview",
+      "viewport": "mobile",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "teacher",
+      "label": "Students",
+      "viewport": "desktop",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "teacher",
+      "label": "Students",
+      "viewport": "mobile",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "teacher",
+      "label": "Batches",
+      "viewport": "desktop",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "teacher",
+      "label": "Batches",
+      "viewport": "mobile",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "teacher",
+      "label": "Enrollments",
+      "viewport": "desktop",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "teacher",
+      "label": "Enrollments",
+      "viewport": "mobile",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "teacher",
+      "label": "Subjects",
+      "viewport": "desktop",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "teacher",
+      "label": "Subjects",
+      "viewport": "mobile",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "teacher",
+      "label": "Syllabus",
+      "viewport": "desktop",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "teacher",
+      "label": "Syllabus",
+      "viewport": "mobile",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "teacher",
+      "label": "Routine",
+      "viewport": "desktop",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "teacher",
+      "label": "Routine",
+      "viewport": "mobile",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "teacher",
+      "label": "Assignments",
+      "viewport": "desktop",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "teacher",
+      "label": "Assignments",
+      "viewport": "mobile",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "teacher",
+      "label": "Examinations",
+      "viewport": "desktop",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "teacher",
+      "label": "Examinations",
+      "viewport": "mobile",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "teacher",
+      "label": "Results",
+      "viewport": "desktop",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "teacher",
+      "label": "Results",
+      "viewport": "mobile",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "teacher",
+      "label": "Study materials",
+      "viewport": "desktop",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "teacher",
+      "label": "Study materials",
+      "viewport": "mobile",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "teacher",
+      "label": "Announcements",
+      "viewport": "desktop",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "teacher",
+      "label": "Announcements",
+      "viewport": "mobile",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "teacher",
+      "label": "Cashflow & reports",
+      "viewport": "desktop",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "teacher",
+      "label": "Cashflow & reports",
+      "viewport": "mobile",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "teacher",
+      "label": "Fee plans",
+      "viewport": "desktop",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "teacher",
+      "label": "Fee plans",
+      "viewport": "mobile",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "teacher",
+      "label": "Student dues",
+      "viewport": "desktop",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "teacher",
+      "label": "Student dues",
+      "viewport": "mobile",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "teacher",
+      "label": "Expenses",
+      "viewport": "desktop",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "teacher",
+      "label": "Expenses",
+      "viewport": "mobile",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "teacher",
+      "label": "Website CMS",
+      "viewport": "desktop",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "teacher",
+      "label": "Website CMS",
+      "viewport": "mobile",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "teacher",
+      "label": "Settings",
+      "viewport": "desktop",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "teacher",
+      "label": "Settings",
+      "viewport": "mobile",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "teacher",
+      "label": "Audit log",
+      "viewport": "desktop",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "teacher",
+      "label": "Audit log",
+      "viewport": "mobile",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "student",
+      "label": "My dashboard",
+      "viewport": "desktop",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "student",
+      "label": "My dashboard",
+      "viewport": "mobile",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "student",
+      "label": "My batches",
+      "viewport": "desktop",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "student",
+      "label": "My batches",
+      "viewport": "mobile",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "student",
+      "label": "Subjects & syllabus",
+      "viewport": "desktop",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "student",
+      "label": "Subjects & syllabus",
+      "viewport": "mobile",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "student",
+      "label": "Assignments",
+      "viewport": "desktop",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "student",
+      "label": "Assignments",
+      "viewport": "mobile",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "student",
+      "label": "Exams",
+      "viewport": "desktop",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "student",
+      "label": "Exams",
+      "viewport": "mobile",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "student",
+      "label": "Routine",
+      "viewport": "desktop",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "student",
+      "label": "Routine",
+      "viewport": "mobile",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "student",
+      "label": "Calendar",
+      "viewport": "desktop",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "student",
+      "label": "Calendar",
+      "viewport": "mobile",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "student",
+      "label": "Materials",
+      "viewport": "desktop",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "student",
+      "label": "Materials",
+      "viewport": "mobile",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "student",
+      "label": "Announcements",
+      "viewport": "desktop",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "student",
+      "label": "Announcements",
+      "viewport": "mobile",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "student",
+      "label": "Results",
+      "viewport": "desktop",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "student",
+      "label": "Results",
+      "viewport": "mobile",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "student",
+      "label": "My progress",
+      "viewport": "desktop",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "student",
+      "label": "My progress",
+      "viewport": "mobile",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "student",
+      "label": "Notifications",
+      "viewport": "desktop",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "student",
+      "label": "Notifications",
+      "viewport": "mobile",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "student",
+      "label": "Billing statement",
+      "viewport": "desktop",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "student",
+      "label": "Billing statement",
+      "viewport": "mobile",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "student",
+      "label": "My dues",
+      "viewport": "desktop",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "student",
+      "label": "My dues",
+      "viewport": "mobile",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "student",
+      "label": "My payments",
+      "viewport": "desktop",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "student",
+      "label": "My payments",
+      "viewport": "mobile",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "student",
+      "label": "My profile",
+      "viewport": "desktop",
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "student",
+      "label": "My profile",
+      "viewport": "mobile",
+      "overflow": false,
+      "violations": []
+    }
+  ],
+  "keyboard": [
+    {
+      "role": "teacher",
+      "mobileMenuTrap": "Pass",
+      "escape": "Pass"
+    },
+    {
+      "role": "student",
+      "mobileMenuTrap": "Pass",
+      "escape": "Pass"
+    }
+  ],
+  "status": "Pass"
+}

@@ -1,0 +1,69 @@
+{
+  "time": "2026-10-20T18:34:46.104Z",
+  "project": "rkpwqgwceekuvlizfpeb",
+  "scope": "Explicitly approved existing DEV DEMO Student admission; no account/enrollment/ledger changes",
+  "checks": [
+    {
+      "name": "Teacher reads existing Student admission DTO",
+      "status": "Pass"
+    },
+    {
+      "name": "Exact approved DEMO account",
+      "status": "Pass"
+    },
+    {
+      "name": "Saved admission revision",
+      "status": "Pass"
+    },
+    {
+      "name": "Guardian persists independently",
+      "status": "Pass"
+    },
+    {
+      "name": "Teacher reload retrieves academic details",
+      "status": "Pass"
+    },
+    {
+      "name": "Student reads the same admission roll",
+      "status": "Pass"
+    },
+    {
+      "name": "Emergency contact redacted for Student",
+      "status": "Pass"
+    },
+    {
+      "name": "Student cannot use Teacher admission endpoint",
+      "status": "Pass"
+    },
+    {
+      "name": "Student cannot change guardian through self-service",
+      "status": "Pass"
+    },
+    {
+      "name": "Student guardian fields are read-only",
+      "status": "Pass"
+    },
+    {
+      "name": "Student emergency contact absent from UI",
+      "status": "Pass"
+    },
+    {
+      "name": "Student permitted UI self-edit",
+      "status": "Pass"
+    },
+    {
+      "name": "Teacher sees Student phone update",
+      "status": "Pass"
+    },
+    {
+      "name": "Shared revision increments",
+      "status": "Pass"
+    },
+    {
+      "name": "Guardian administrative data preserved",
+      "status": "Pass"
+    }
+  ],
+  "admissionRoll": "EC-2026-00000001",
+  "status": "Pass"
+}

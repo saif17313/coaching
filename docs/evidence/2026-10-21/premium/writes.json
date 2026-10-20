@@ -1,0 +1,43 @@
+{
+  "time": "2026-10-20T23:03:30.016Z",
+  "checks": [
+    {
+      "name": "Teacher settings UI saves and independently reads own profile",
+      "status": "Pass"
+    },
+    {
+      "name": "Teacher profile content restored after reversible test",
+      "status": "Pass"
+    },
+    {
+      "name": "Student denied Teacher account endpoint",
+      "status": "Pass"
+    },
+    {
+      "name": "Premium Save Draft persists a section while public API remains private",
+      "status": "Pass"
+    },
+    {
+      "name": "Section reorder persists through guarded API",
+      "status": "Pass"
+    },
+    {
+      "name": "Section visibility persists in saved draft",
+      "status": "Pass"
+    },
+    {
+      "name": "Draft survives full editor reload",
+      "status": "Pass"
+    },
+    {
+      "name": "Publish independently confirmed through public API and rendered HTML",
+      "status": "Pass"
+    }
+  ],
+  "fixture": {
+    "id": "44aab01e-ee50-43b8-b261-d40a7d3f1351",
+    "slug": "demo-premium-mvhai3k0"
+  },
+  "status": "Pass",
+  "cleanup": "DEMO page archived; public API 404"
+}

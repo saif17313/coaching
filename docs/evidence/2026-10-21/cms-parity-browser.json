@@ -1,11 +1,13 @@
 {
-  "time": "2026-10-20T18:13:31.218Z",
+  "time": "2026-10-20T18:20:10.539Z",
   "checks": [
     "Unsaved grouped Hero field renders through actual homepage presentation",
     "Unsaved content cannot publish",
     "Published homepage unchanged by unsaved preview",
     "Reloaded iframe receives the latest unsaved draft",
-    "Desktop viewport uses 1440px presentation"
+    "Desktop viewport uses 1440px presentation",
+    "Classroom benefits opens the actual shared About cards",
+    "Shared Courses opens catalog fields rather than homepage selection fields"
   ],
   "status": "Pass"
 }

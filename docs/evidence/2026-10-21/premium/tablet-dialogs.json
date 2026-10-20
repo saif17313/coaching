@@ -1,0 +1,59 @@
+{
+  "time": "2026-10-20T23:09:23.449Z",
+  "checks": [
+    {
+      "label": "Teacher Overview tablet",
+      "violations": []
+    },
+    {
+      "label": "Teacher Students tablet",
+      "violations": []
+    },
+    {
+      "label": "Teacher Batches tablet",
+      "violations": []
+    },
+    {
+      "label": "Batch modal tablet",
+      "violations": []
+    },
+    {
+      "label": "CMS Pages & sections tablet",
+      "violations": []
+    },
+    {
+      "label": "CMS Pages & sections mobile",
+      "violations": []
+    },
+    {
+      "label": "CMS Media library tablet",
+      "violations": []
+    },
+    {
+      "label": "CMS Media library mobile",
+      "violations": []
+    },
+    {
+      "label": "CMS Global settings tablet",
+      "violations": []
+    },
+    {
+      "label": "CMS Global settings mobile",
+      "violations": []
+    },
+    {
+      "label": "Student My dashboard tablet",
+      "violations": []
+    },
+    {
+      "label": "Student Billing statement tablet",
+      "violations": []
+    },
+    {
+      "label": "Student My profile tablet",
+      "violations": []
+    }
+  ],
+  "dialogFocus": "Tab trap, Escape and focus restoration pass",
+  "status": "Pass"
+}

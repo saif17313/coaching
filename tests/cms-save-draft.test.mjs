@@ -1,0 +1,9 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {saveCmsDraft} from '../src/client/cms-save-draft.mjs';
+const pageId='11111111-1111-4111-8111-111111111111',sectionId='22222222-2222-4222-8222-222222222222';
+const steps=[{kind:'pageUpdate',params:{payload:{title:'DEMO draft',seoTitle:'DEMO draft',seoDescription:'DEMO metadata'}}},{kind:'fields',params:{sectionId,payload:{sectionKey:'HOME_HERO',content:{headline:'DEMO typed heading'},itemId:null}}}];
+const page=revision=>({id:pageId,slug:'demo-draft',title:'DEMO draft',draftRevision:revision,sections:[]});
+test('Save Draft retains revision lock across metadata and structured fields and never publishes',async()=>{let revision=3;const calls=[];const result=await saveCmsDraft(pageId,revision,steps,async(kind,params)=>{calls.push({kind,params});if(kind==='page')return page(revision);assert.equal(params.payload.expectedRevision,revision);revision++;return {id:pageId};});assert.equal(result.draftRevision,5);assert.deepEqual(calls.map(call=>call.kind),['pageUpdate','page','fields','page']);assert.equal(steps[0].params.payload.expectedRevision,undefined);});
+test('All draft steps validate before any mutation, preventing an invalid last field from partly saving',async()=>{let calls=0;await assert.rejects(saveCmsDraft(pageId,1,[steps[0],{kind:'fields',params:{sectionId,payload:{sectionKey:'HOME_HERO',content:{headline:45},itemId:null}}}],async()=>{calls++;}),/typed|field|content/i);assert.equal(calls,0);});
+test('An intervening revision stops subsequent saves and requires review instead of false success',async()=>{const calls=[];await assert.rejects(saveCmsDraft(pageId,3,steps,async(kind)=>{calls.push(kind);return kind==='page'?page(5):{};}),error=>error.code==='REVISION_CONFLICT');assert.deepEqual(calls,['pageUpdate','page']);});

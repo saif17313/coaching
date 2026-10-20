@@ -1,0 +1,52 @@
+{
+  "time": "2026-10-20T18:36:47.241Z",
+  "scope": "DEV DEMO private profile-photo attachment, read, removal and archival",
+  "checks": [
+    {
+      "name": "Teacher UI private photo upload",
+      "status": "Pass"
+    },
+    {
+      "name": "Uploaded profile photo stays unavailable publicly",
+      "status": "Pass"
+    },
+    {
+      "name": "Student has no access before profile assignment",
+      "status": "Pass"
+    },
+    {
+      "name": "Teacher profile photo assignment save",
+      "status": "Pass"
+    },
+    {
+      "name": "Assigned Student reads private image through authenticated Storage",
+      "status": "Pass"
+    },
+    {
+      "name": "Private image content type",
+      "status": "Pass"
+    },
+    {
+      "name": "Private image byte count",
+      "status": "Pass"
+    },
+    {
+      "name": "Anonymous cannot read Student profile photo",
+      "status": "Pass"
+    },
+    {
+      "name": "Teacher profile photo assignment save",
+      "status": "Pass"
+    },
+    {
+      "name": "Removing assignment revokes Student image access",
+      "status": "Pass"
+    },
+    {
+      "name": "Unused DEMO image archived",
+      "status": "Pass"
+    }
+  ],
+  "mediaId": "85734a76-e8b6-4c91-8968-7a86562af43f",
+  "status": "Pass"
+}

@@ -1,0 +1,54 @@
+{
+  "time": "2026-10-20T23:10:46.112Z",
+  "checks": [
+    {
+      "name": "Complete Teacher directory API",
+      "status": "Pass"
+    },
+    {
+      "name": "Directory guardian comes from persisted profile",
+      "status": "Pass"
+    },
+    {
+      "name": "Directory school comes from persisted profile",
+      "status": "Pass"
+    },
+    {
+      "name": "Directory phone comes from persisted profile",
+      "status": "Pass"
+    },
+    {
+      "name": "Directory admission roll comes from persisted profile",
+      "status": "Pass"
+    },
+    {
+      "name": "Persisted Student fields render in directory row",
+      "status": "Pass"
+    },
+    {
+      "name": "Guardian search includes matching record",
+      "status": "Pass"
+    },
+    {
+      "name": "Nonmatching search renders honest empty state",
+      "status": "Pass"
+    },
+    {
+      "name": "Directory opens complete authorized profile",
+      "status": "Pass"
+    },
+    {
+      "name": "Student cannot read Teacher directory",
+      "status": "Pass"
+    },
+    {
+      "name": "Student sees persisted academic record",
+      "status": "Pass"
+    },
+    {
+      "name": "Guardian administrative contact stays absent for Student",
+      "status": "Pass"
+    }
+  ],
+  "status": "Pass"
+}

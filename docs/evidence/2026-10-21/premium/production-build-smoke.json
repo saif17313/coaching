@@ -1,0 +1,41 @@
+{
+  "time": "2026-10-20T23:13:54.690Z",
+  "scope": "Local optimized production build; not a hosted deployment",
+  "checks": [
+    {
+      "role": "teacher",
+      "path": "/api/v1/teacher/students/directory",
+      "status": 200
+    },
+    {
+      "role": "teacher",
+      "path": "/api/v1/teacher/batches/directory",
+      "status": 200
+    },
+    {
+      "role": "teacher",
+      "path": "/api/v1/teacher/account-profile",
+      "status": 200
+    },
+    {
+      "role": "student",
+      "path": "/api/v1/student/dashboard",
+      "status": 200
+    },
+    {
+      "role": "student",
+      "path": "/api/v1/student/admission-profile",
+      "status": 200
+    },
+    {
+      "name": "Production mobile audit table readable, keyboard scrollable, no page overflow, zero Axe violations",
+      "status": "Pass"
+    },
+    {
+      "name": "Public website renders in optimized runtime",
+      "status": "Pass"
+    }
+  ],
+  "auditViolations": [],
+  "status": "Pass"
+}

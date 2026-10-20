@@ -1,0 +1,34 @@
+{
+  "time": "2026-10-20T23:10:29.380Z",
+  "checks": [
+    {
+      "name": "Teacher overview uses connected premium dashboard",
+      "status": "Pass"
+    },
+    {
+      "name": "Batch aggregation reads actual occupancy and schedules",
+      "status": "Pass"
+    },
+    {
+      "name": "Batch create action opens existing validated form",
+      "status": "Pass"
+    },
+    {
+      "name": "Student cannot read Teacher batch aggregation",
+      "status": "Pass"
+    },
+    {
+      "name": "Website Studio maps all 12 real homepage roles",
+      "status": "Pass"
+    },
+    {
+      "name": "Visual section opens dedicated Hero editing fields",
+      "status": "Pass"
+    },
+    {
+      "name": "Save Draft stays disabled without unsaved edits",
+      "status": "Pass"
+    }
+  ],
+  "status": "Pass"
+}
