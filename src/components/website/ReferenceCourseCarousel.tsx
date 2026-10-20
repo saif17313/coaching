@@ -1,6 +1,6 @@
 'use client';
 import {useCallback,useEffect,useRef,useState,type KeyboardEvent,type CSSProperties} from 'react';
-import Image from 'next/image';
+import Image from './SiteImage';
 import type {SiteItem} from '@/server/website/public-site';
 
 const MEDIA_ID=/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;

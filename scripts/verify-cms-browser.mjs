@@ -7,11 +7,11 @@ const modulePath=process.env.EDUCENTRE_PLAYWRIGHT_MODULE;
 if(!modulePath)throw Error('Set EDUCENTRE_PLAYWRIGHT_MODULE to an installed playwright index.mjs.');
 if(!/^SUPABASE_URL\s*=\s*["']?https:\/\/rkpwqgwceekuvlizfpeb\.supabase\.co\/?["']?\s*$/m.test(readFileSync('.env.local','utf8')))throw Error('Reviewed DEV project mismatch.');
 const {chromium}=await import(pathToFileURL(modulePath).href);
-const browser=await chromium.connectOverCDP('http://127.0.0.1:9333');
+const browser=await chromium.connectOverCDP('http://127.0.0.1:'+(process.env.EDUCENTRE_CDP_PORT??'9333'));
 const context=browser.contexts()[0],page=context.pages().find(p=>p.url().startsWith('http://localhost:3000/portal'));
 if(!page)throw Error('Open the signed-in verification portal on localhost:3000.');
 const report={project:'rkpwqgwceekuvlizfpeb',time:new Date().toISOString(),transport:'real browser cookie -> Next proxy -> verified Teacher -> Supabase RPC',checks:[],testPage:null};
-const dir=resolve('docs/evidence/2026-10-20');mkdirSync(dir,{recursive:true});
+const dir=resolve('docs/evidence',process.env.EDUCENTRE_EVIDENCE_DATE??'2026-10-20');mkdirSync(dir,{recursive:true});
 function check(name,actual,expected){assert.deepEqual(actual,expected,name);report.checks.push({name,status:'Pass'});console.log('PASS '+name);}
 async function api(path,method='GET',body,operationId){
  return page.evaluate(async({path,method,body,operationId})=>{

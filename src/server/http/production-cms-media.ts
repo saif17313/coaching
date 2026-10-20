@@ -3,7 +3,7 @@ import {createHash} from 'node:crypto';
 import {createCmsMediaRoute} from './cms-media.mjs';
 import {verifyActiveActor} from './production-read-adapter';
 import {cmsRpcError,cmsError} from './cms-errors.mjs';
-type MediaKind='upload'|'list'|'attach'|'archive'|'publicMedia';
+type MediaKind='upload'|'list'|'attach'|'archive'|'publicMedia'|'teacherMedia';
 function config(){
  const key=process.env.SUPABASE_ANON_KEY,raw=process.env.SUPABASE_URL;
  if(!raw||!key||/[\x00-\x20\x7f]/.test(key)||key.length>4096)throw Error('DB_NOT_CONFIGURED');
@@ -15,7 +15,7 @@ function config(){
 }
 function mutationGate(){if(process.env.COACHING_ENABLE_MUTATION_APIS!=='enabled-after-db-verification')throw Error('MUTATIONS_DISABLED');}
 async function call(name:string,token:string|null,args:Record<string,unknown>):Promise<unknown>{
- if(!['coaching_media_register','coaching_media_list','coaching_media_resolve','coaching_cms_media_mutation'].includes(name))throw Error('UNKNOWN_RPC');
+ if(!['coaching_media_register','coaching_media_list','coaching_media_resolve','coaching_media_teacher_preview','coaching_cms_media_mutation'].includes(name))throw Error('UNKNOWN_RPC');
  if(['coaching_media_register','coaching_cms_media_mutation'].includes(name))mutationGate();
  const {root,key}=config();
  const res=await fetch(new URL(`/rest/v1/rpc/${name}`,root),{method:'POST',headers:{apikey:key,Authorization:`Bearer ${token??key}`,'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify(args),cache:'no-store',redirect:'error',signal:AbortSignal.timeout(10000)});

@@ -36,13 +36,13 @@ function safePreview(raw,id){if(raw===null)return null;
  return raw;
 }
 export function createCmsMediaRoute(kind,{verify,call,upload,readObject}={}){
- if(!['upload','list','attach','archive','publicMedia'].includes(kind)||typeof call!=='function'||(kind!=='publicMedia'&&typeof verify!=='function')||(kind==='upload'&&typeof upload!=='function')||(kind==='publicMedia'&&typeof readObject!=='function'))throw Error('INVALID_MEDIA_PORT');
+ if(!['upload','list','attach','archive','publicMedia','teacherMedia'].includes(kind)||typeof call!=='function'||(kind!=='publicMedia'&&typeof verify!=='function')||(kind==='upload'&&typeof upload!=='function')||(['publicMedia','teacherMedia'].includes(kind)&&typeof readObject!=='function'))throw Error('INVALID_MEDIA_PORT');
  return async(req,ctx={})=>{
   try{
-   if(!(req instanceof Request)||req.method!==(kind==='list'||kind==='publicMedia'?'GET':'POST'))fail('METHOD_NOT_ALLOWED',405);
+   if(!(req instanceof Request)||req.method!==(kind==='list'||kind==='publicMedia'||kind==='teacherMedia'?'GET':'POST'))fail('METHOD_NOT_ALLOWED',405);
    if(new URL(req.url).search)fail('INVALID_QUERY',400);
    const p=await ctx.params||{};
-   if((kind==='attach'&&(!uid(p.pageId)||!uid(p.itemId)))||(['archive','publicMedia'].includes(kind)&&!uid(p.mediaId)))fail('INVALID_RESOURCE_ID',400);
+   if((kind==='attach'&&(!uid(p.pageId)||!uid(p.itemId)))||(['archive','publicMedia','teacherMedia'].includes(kind)&&!uid(p.mediaId)))fail('INVALID_RESOURCE_ID',400);
    let token=null,actor=null;
    if(kind!=='publicMedia'){
     token=tokenOf(req);actor=await verify(token);
@@ -70,11 +70,11 @@ export function createCmsMediaRoute(kind,{verify,call,upload,readObject}={}){
     if(!raw||typeof raw!=='object'||Array.isArray(raw)||raw.id!==id||(kind==='archive'?(Object.keys(raw).sort().join(',')!=='id,status'||raw.status!=='archived'):(Object.keys(raw).sort().join(',')!=='id,revision,status'||raw.status!=='ready'||raw.revision!==b.expectedRevision+1)))fail('UPSTREAM_DATA_INVALID',502);
     return json(200,{success:true,data:raw});
    }
-   const data=safePreview(await call('coaching_media_resolve',null,{p_media_id:p.mediaId}),p.mediaId);
+   const data=safePreview(await call(kind==='teacherMedia'?'coaching_media_teacher_preview':'coaching_media_resolve',kind==='teacherMedia'?token:null,{p_media_id:p.mediaId}),p.mediaId);
    if(!data)fail('NOT_FOUND',404);
-   const bytes=await readObject({key:data.key});
+   const bytes=await readObject({key:data.key,...(kind==='teacherMedia'?{token}:{})});
    if(!(bytes instanceof Uint8Array)||bytes.length!==data.sizeBytes||!imageSignature(bytes,data.contentType)||sha(bytes)!==data.sha256)fail('MEDIA_VERIFICATION_FAILED',503);
-   return new Response(bytes,{status:200,headers:{'Content-Type':data.contentType,'Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Content-Security-Policy':"default-src 'none'; sandbox",'Content-Disposition':'inline'}});
+   return new Response(bytes,{status:200,headers:{'Content-Type':data.contentType,'Cache-Control':kind==='teacherMedia'?'private, no-store':'no-store','Vary':'Cookie, Authorization','X-Content-Type-Options':'nosniff','Content-Security-Policy':"default-src 'none'; sandbox",'Content-Disposition':'inline'}});
   }catch(e){const {status,code}=cmsFailure(e);return json(status,{success:false,error:{code}});}
  };
 }

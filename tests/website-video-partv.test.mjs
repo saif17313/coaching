@@ -50,7 +50,7 @@ test('Part V client iframe is click to load and never interpolates user-provided
 });
 test('Part V CMS editor recognizes only safe shared video IDs and keeps same revision-gated item writer',()=>{
  assert.match(studio,/youtubeVideoId\(item\.url\)/);
- assert.match(studio,/youtubeVideoId\(i\.url\)/);
+ assert.match(readFileSync(new URL('../src/components/website/SitePresentation.tsx',import.meta.url),'utf8'),/youtubeVideoId\(item\.url\)/);
  assert.match(studio,/HTTPS link \/ YouTube video URL/);
  assert.match(studio,/cmsFetch\('item'/);
  assert.match(studio,/expectedRevision:page\.draftRevision/);

@@ -56,6 +56,6 @@ test('draft page projection refuses duplicate section and item positions',()=>{
 test('portal uses Studio and public 3D visual motion respects reduced-motion',()=>{
  const portal=readFileSync('src/components/portal/PortalClient.tsx','utf8');
  const ui=readFileSync(root,'utf8');const css=readFileSync('src/app/globals.css','utf8');
- assert.match(portal,/<WebsiteAdminStudio(?:\s|\/>)/);assert.match(ui,/DraftPreview/);assert.match(ui,/global.*settings|Global website identity/i);assert.match(ui,/visible/);assert.match(ui,/x-musa-ui/);
+ assert.match(portal,/<WebsiteAdminStudio(?:\s|\/>)/);assert.match(ui,/CmsLivePreview/);assert.match(ui,/global.*settings|Global website identity/i);assert.match(ui,/visible/);assert.match(ui,/x-musa-ui/);
  assert.match(css,/musa-orbit/);assert.match(css,/prefers-reduced-motion/);
 });

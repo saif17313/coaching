@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import Image from './SiteImage';
 import './typed-content.css';
 import Link from 'next/link';
 import {CMS_FORMS,safeContentUrl,validateSchema,type FieldSchema} from '@/client/cms-fields.mjs';
@@ -27,9 +27,9 @@ function Value({value,schema,name}:{value:unknown;schema:FieldSchema;name:string
  if(['title','title1','title2','heading','headline','teacherName','question','value'].includes(name))return <h3>{String(value)}</h3>;
  return <p className="tale-typed-value">{['year','date','category','duration','schedule','examType','institution','rating'].includes(name)&&<strong>{schema.title}: </strong>}{String(value)}</p>;
 }
-export function TypedContent({section}:{section:SiteSection}){
+export function TypedContent({section,omit=[]}:{section:SiteSection;omit?:string[]}){
  const schema=section.sectionKey?CMS_FORMS[section.sectionKey]?.section:null;
- return schema&&section.content?<div className="tale-typed-content"><Value value={section.content} schema={schema} name="content"/></div>:null;
+ return schema&&section.content?<div className="tale-typed-content"><Value value={Object.fromEntries(Object.entries(section.content).filter(([key])=>!omit.includes(key)))} schema={schema} name="content"/></div>:null;
 }
 export function ItemDetails({section,value}:{section:SiteSection;value:Record<string,unknown>}){
  const schema=section.sectionKey?CMS_FORMS[section.sectionKey]?.item:null;
