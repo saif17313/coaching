@@ -11,6 +11,7 @@ import {createHash} from 'node:crypto';
 import {imageSignature} from './cms-media.mjs';
 import {readObject} from './production-cms-media';
 import {admissionId} from '@/client/student-admission.mjs';
+import {COOKIE_NAME,validAccessToken} from '../browser-session.mjs';
 const allow=new Set(['coaching_student_admission_read','coaching_student_admission_write','coaching_student_photo','coaching_teacher_student_directory','coaching_teacher_batch_directory','coaching_teacher_account_profile','coaching_teacher_account_profile_write','coaching_student_workflow_read','coaching_student_workflow_command','coaching_student_document','coaching_management_summary','coaching_teacher_student_identity']);
 async function call(name:string,token:string,args:Record<string,unknown>):Promise<unknown>{
  if(!allow.has(name))throw Error('RPC_NOT_ALLOWED');
@@ -27,7 +28,13 @@ async function call(name:string,token:string,args:Record<string,unknown>):Promis
 export const studentAdmissionRoute=(role:'teacher'|'student')=>createStudentAdmissionRoute(role,{verify:verifyActiveActor,call});
 export const studentPhotoRoute=(role:'teacher'|'student',document=false)=>async(request:Request)=>{
  try{
-  const url=new URL(request.url),token=/^Bearer ([A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+)$/.exec(request.headers.get('authorization')??'')?.[1];
+  const url=new URL(request.url);
+  let token=/^Bearer ([A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+)$/.exec(request.headers.get('authorization')??'')?.[1];
+  if(!token){
+   const cookieHeader=request.headers.get('cookie')??'';
+   const match=new RegExp('(?:^|;\\s*)'+COOKIE_NAME+'=([^;]+)').exec(cookieHeader);
+   if(match){const rawToken=decodeURIComponent(match[1]);if(validAccessToken(rawToken))token=rawToken;}
+  }
   if(!token)throw new RpcError('UNAUTHORIZED',401);
   const actor=await verifyActiveActor(token);if(actor.role!==role)throw new RpcError('FORBIDDEN',403);
   const documents=role==='teacher'?/^\/api\/v1\/teacher\/students\/([^/]+)\/documents\/([^/]+)$/.exec(url.pathname):/^\/api\/v1\/student\/documents\/([^/]+)$/.exec(url.pathname);

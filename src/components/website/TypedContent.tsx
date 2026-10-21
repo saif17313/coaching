@@ -33,5 +33,5 @@ export function TypedContent({section,omit=[]}:{section:SiteSection;omit?:string
 }
 export function ItemDetails({section,value}:{section:SiteSection;value:Record<string,unknown>}){
  const schema=section.sectionKey?CMS_FORMS[section.sectionKey]?.item:null;
- return schema?<div className="tale-typed-content">{value.demo===true&&<strong className="tale-pill">DEMO</strong>}<Value value={value} schema={schema} name="metadata"/></div>:null;
+ return schema?<div className="tale-typed-content"><Value value={value} schema={schema} name="metadata"/></div>:null;
 }

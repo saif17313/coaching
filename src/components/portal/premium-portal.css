@@ -43,3 +43,13 @@
 .portal-shell .portal-data-panel .portal-table{min-width:650px}.portal-shell .portal-data-panel .portal-table td{overflow-wrap:normal;word-break:normal}.portal-shell .portal-table-scroll{overflow-x:auto;max-width:100%}
 
 @media(max-width:650px){.premium-hero-art{right:0;margin-right:0}.premium-hero{overflow:clip}}
+.student-profile-header-premium{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;padding-bottom:16px;border-bottom:1px solid #e1eeec;margin-bottom:18px}
+.student-profile-identity{display:flex;align-items:center;gap:18px}
+.student-avatar-large{position:relative;width:76px;height:76px;border-radius:50%;flex-shrink:0;box-shadow:0 4px 18px rgba(0,70,60,.12);border:3px solid #fff;background:linear-gradient(135deg,#008b7d,#0f394c);display:grid;place-items:center}
+.student-circular-photo{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.student-circular-fallback{width:100%;height:100%;display:grid;place-items:center;color:#fff;font-weight:800;font-size:28px;border-radius:50%}
+.student-avatar-edit-badge{position:absolute;bottom:-2px;right:-2px;width:28px;height:28px;border-radius:50%;background:#007b6e;color:#fff;display:grid;place-items:center;cursor:pointer;border:2px solid #fff;font-size:13px;box-shadow:0 2px 8px rgba(0,0,0,.15);transition:transform .15s}
+.student-avatar-edit-badge:hover{transform:scale(1.1);background:#006258}
+.student-avatar-edit-badge input{display:none}
+.student-roll-badge{display:inline-block;margin-top:4px;padding:3px 10px;border-radius:20px;background:#e8f5f1;color:#006e62;font-size:11px;font-weight:700;border:1px solid #c9e6dc}
+

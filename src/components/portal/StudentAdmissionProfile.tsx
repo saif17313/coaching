@@ -40,7 +40,24 @@ export function StudentAdmissionProfile({role,studentId,onClose,onAssignBatch}:{
  }
  const photo=fields.photoMediaId,photoUrl=photo?(role==='teacher'?`/api/v1/teacher/website/media/${photo}/preview`:'/api/v1/student/profile-photo'):null;
  return <section className="portal-panel admission-profile" aria-label={role==='teacher'?'Student admission and full profile':'Your admission and profile'}>
-  <div className="studio-editor-head"><div><span className="portal-kicker">{role==='teacher'?'STUDENT ADMISSION':'YOUR PROFILE'}</span><h3 ref={heading} tabIndex={-1}>{profile?.fullName||'Student profile'}</h3></div>{onClose&&<button className="portal-secondary" onClick={onClose} disabled={busy}>Close profile</button>}</div>
+  <div className="studio-editor-head student-profile-header-premium">
+   <div className="student-profile-identity">
+    <div className="student-avatar-large">
+     {photoUrl ? (
+      <Image unoptimized src={photoUrl} alt={profile?.fullName||'Student photograph'} width={76} height={76} className="student-circular-photo"/>
+     ) : (
+      <span className="student-circular-fallback">{(profile?.fullName?.[0]||'S').toUpperCase()}</span>
+     )}
+     {role==='teacher'&&<label className="student-avatar-edit-badge" title="Upload student photograph"><input type="file" accept="image/jpeg,image/png,image/webp,image/avif" onChange={event=>{const file=event.target.files?.[0];if(file)void upload(file);}}/><span aria-hidden="true">📷</span></label>}
+    </div>
+    <div>
+     <span className="portal-kicker">{role==='teacher'?'STUDENT ADMISSION':'YOUR PROFILE'}</span>
+     <h3 ref={heading} tabIndex={-1}>{profile?.fullName||'Student profile'}</h3>
+     {profile?.admissionRoll&&<span className="student-roll-badge">Roll: {profile.admissionRoll}</span>}
+    </div>
+   </div>
+   {onClose&&<button className="portal-secondary" onClick={onClose} disabled={busy}>Close profile</button>}
+  </div>
   {error&&<p className="portal-alert" role="alert">{error.replaceAll('_',' ')}{error.includes('REVISION_CONFLICT')&&' — another update was saved. Reload before editing again.'}</p>}{notice&&<p className="portal-success" role="status">{notice}</p>}
   {loading?<p role="status">Loading verified Student profile…</p>:profile?<>
    <dl className="admission-summary"><div><dt>Admission roll</dt><dd>{profile.admissionRoll||'Not admitted yet'}</dd></div><div><dt>Account</dt><dd>{profile.accountStatus}</dd></div><div><dt>Email</dt><dd>{profile.email}</dd></div></dl>
