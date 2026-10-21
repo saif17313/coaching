@@ -1,0 +1,12 @@
+export type WorkflowDetails={gender:string;guardianEmail:string;previousSchool:string;previousClass:string;previousResult:string;applicationStatus:string;reviewReason:string;documents:string[];privateNotes?:string};
+export type WorkflowCharge={id:string;batchId:string;batchName:string;billPeriod:string;label:string;dueOn:string;amountMinor:string;admissionMinor:string;tuitionMinor:string;otherMinor:string;paidMinor:string;waivedMinor:string;refundedMinor:string;correctionMinor:string;outstandingMinor:string;status:string};
+export type WorkflowPayment={id:string;dueId:string;amountMinor:string;method:string;reference:string;recordedAt:string;receipt:string};
+export type WorkflowClaim={id:string;dueId:string;amountMinor:string;method:string;reference:string;paidOn:string;status:string;paymentId:string|null;reviewReason:string};
+export type WorkflowPolicy={batchId:string;batchName:string;requireReview:boolean;requireSettled:boolean;minimumPaidMinor:string};
+export type StudentWorkflow={id:string;revision:number;details:WorkflowDetails;summary:Record<string,string|number>;charges:WorkflowCharge[];payments:WorkflowPayment[];claims:WorkflowClaim[];policies:WorkflowPolicy[]};
+export function minorDecimal(value:string):string;
+export function inputMinor(value:string):string;
+export function validateStudentWorkflow(value:unknown,id:string,role:'teacher'|'student'):StudentWorkflow;
+export function workflowInput(action:string,data:unknown,role:'teacher'|'student'):Record<string,unknown>;
+export type ManagementSummary={period:string|null;summary:Record<string,string|number>;batches:{batchId:string;batchName:string;payableMinor:string;collectedMinor:string;refundedMinor:string;outstandingMinor:string}[]};
+export function validateManagementSummary(value:unknown):ManagementSummary;

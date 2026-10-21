@@ -41,3 +41,5 @@
 .portal-shell .studio-page-entry small,.portal-shell .studio-page-actions small,.portal-shell .studio-hint,.portal-shell .student-metric:not(.featured)>span,.portal-shell .student-zero p,.portal-shell .student-tag,.portal-shell .student-result>p,.portal-shell .student-result>div>span,.portal-shell .admission-summary dt{color:#4b6777}
 .portal-shell .portal-muted,.portal-shell .studio-media-card small,.portal-shell .studio-actions small{color:#4b6777}
 .portal-shell .portal-data-panel .portal-table{min-width:650px}.portal-shell .portal-data-panel .portal-table td{overflow-wrap:normal;word-break:normal}.portal-shell .portal-table-scroll{overflow-x:auto;max-width:100%}
+
+@media(max-width:650px){.premium-hero-art{right:0;margin-right:0}.premium-hero{overflow:clip}}

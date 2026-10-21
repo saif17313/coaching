@@ -1,3 +1,4 @@
+import {youtubeVideoId} from './cms-video.mjs';
 /** Reference semantic fields. This is UI/schema configuration, never operational data. */
 const string=(title,maxLength=160)=>({type:'string',title,maxLength,pattern:'^[^\\u0000-\\u0008\\u000b\\u000c\\u000e-\\u001f\\u007f]*$'});
 const object=(properties,title)=>({type:'object',title,properties,additionalProperties:false});
@@ -50,6 +51,7 @@ const training=object({id:recordId,title:string('Training title'),organization:s
 forms.ABOUT_TRAINING.section.properties.training={title:'Industrial training',oneOf:[training,forms.ABOUT_TRAINING.section.properties.training]};
 Object.assign(forms.ABOUT_HERO.section.properties,{name:string('Name'),role:string('Role'),organization:string('Organization'),summary:string('Biography',6000),email:string('Email',254),phone:string('Phone',30),location:string('Location'),imageUrl:media('Profile image'),greeting:string('Greeting'),quote:string('Quote',1000),heroStats:namedList('Profile highlights',{iconName,label:string('Label'),value:string('Value'),subValue:string('Context',500)}),socialLinks:namedList('Profile social links',{platform:string('Platform'),url:url('Link'),iconName})});
 Object.assign(forms.ABOUT_METRICS.section.properties.metrics.items.properties,{id:recordId,iconName});
+add('HOME_LAYOUT','Homepage arrangement','footer',{"sectionOrder":{"type":"array","title":"Section order","items":{"oneOf":[{"type":"string","title":"Section","enum":["HOME_HERO","HOME_STATS","HOME_FEATURED_COURSES","HOME_WHY_CHOOSE","HOME_TEACHER","HOME_TOP_STUDENTS","HOME_STUDENT_SUCCESS","HOME_YOUTUBE_CLASSES","HOME_TESTIMONIALS","HOME_NEWS_EVENTS","HOME_GALLERY"]},{"type":"string","title":"Custom section","pattern":"^section:[0-9a-f-]{36}$"}]},"maxItems":60,"uniqueItems":true},"hiddenSections":{"type":"array","title":"Hidden homepage sections","items":{"oneOf":[{"type":"string","title":"Section","enum":["HOME_HERO","HOME_STATS","HOME_FEATURED_COURSES","HOME_WHY_CHOOSE","HOME_TEACHER","HOME_TOP_STUDENTS","HOME_STUDENT_SUCCESS","HOME_YOUTUBE_CLASSES","HOME_TESTIMONIALS","HOME_NEWS_EVENTS","HOME_GALLERY"]},{"type":"string","title":"Custom section","pattern":"^section:[0-9a-f-]{36}$"}]},"maxItems":60,"uniqueItems":true}});
 export const CMS_FORMS=Object.freeze(forms);
 export function validateSchema(value,schema){
  if(schema.oneOf)return schema.oneOf.filter(x=>validateSchema(value,x)).length===1;
@@ -61,7 +63,7 @@ export function validateSchema(value,schema){
  return schema.type==='integer'&&Number.isSafeInteger(value)&&value>=schema.minimum&&value<=schema.maximum;
 }
 export function safeContentUrl(value){if(value==='')return true;if(/^\/(?!\/)[^\\\s]*$/.test(value))return true;try{const u=new URL(value);return u.protocol==='https:'&&!u.username&&!u.password&&!u.port;}catch{return false;}}
-export function validateCmsFields(key,value,item=false){return Boolean(CMS_FORMS[key]&&JSON.stringify(value).length<=60000&&validateSchema(value,CMS_FORMS[key][item?'item':'section']));}
+export function validateCmsFields(key,value,item=false){if(key==='HOME_YOUTUBE_CLASSES'&&!item&&Array.isArray(value?.classes)&&value.classes.some(row=>row.url&&!youtubeVideoId(row.url)))return false;return Boolean(CMS_FORMS[key]&&JSON.stringify(value).length<=60000&&validateSchema(value,CMS_FORMS[key][item?'item':'section']));}
 export function formForTarget(target){
  if(!target?.slug)return null;
  const exactTargets={'about-page-summary-metrics-strip':'ABOUT_METRICS','about-page-education-timeline':'ABOUT_EDUCATION','about-page-research-publications':'ABOUT_PUBLICATIONS','about-page-industrial-training-banner':'ABOUT_TRAINING','about-page-projects-grid':'ABOUT_PROJECTS','about-page-technical-skills':'ABOUT_SKILLS'};

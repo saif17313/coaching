@@ -1,12 +1,20 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
-import {youtubeVideoId} from '../src/client/cms-video.mjs';
+import {youtubeVideoId,normalizeYoutubeUrl} from '../src/client/cms-video.mjs';
+import {validateCmsFields} from '../src/client/cms-fields.mjs';
 const site=readFileSync(new URL('../src/components/website/SiteExperience.tsx',import.meta.url),'utf8');
 const player=readFileSync(new URL('../src/components/website/PublishedVideo.tsx',import.meta.url),'utf8');
 const studio=readFileSync(new URL('../src/components/portal/WebsiteAdminStudio.tsx',import.meta.url),'utf8');
 const css=readFileSync(new URL('../src/app/globals.css',import.meta.url),'utf8');
 const sql=readFileSync(new URL('../supabase/migrations/20261019000500_cms_verified_private_media.sql',import.meta.url),'utf8');
+
+test('Video class input normalizes provider URLs and refuses unrelated HTTPS embeds',()=>{
+ for(const url of ['https://youtube.com/watch?v=dQw4w9WgXcQ','https://youtu.be/dQw4w9WgXcQ','https://www.youtube.com/shorts/dQw4w9WgXcQ','https://youtube.com/embed/dQw4w9WgXcQ'])assert.equal(normalizeYoutubeUrl(url),'https://www.youtube.com/watch?v=dQw4w9WgXcQ');
+ assert.equal(normalizeYoutubeUrl('https://attacker.invalid/embed/dQw4w9WgXcQ'),null);
+ assert.equal(validateCmsFields('HOME_YOUTUBE_CLASSES',{classes:[{url:'https://attacker.invalid/embed/123'}]}),false);
+ assert.equal(validateCmsFields('HOME_YOUTUBE_CLASSES',{classes:[{url:'https://youtu.be/dQw4w9WgXcQ',title:'Lesson'}]}),true);
+});
 test('Part V accepts standard and privacy-domain YouTube links, not arbitrary hosts',()=>{
  for(const url of [
   'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
@@ -41,7 +49,7 @@ test('Part V video rendering consumes only recognized ID from existing published
 });
 test('Part V client iframe is click to load and never interpolates user-provided raw URL',()=>{
  assert.match(player,/'use client'/);
- assert.match(player,/onClick=\{\(\)=>setActive\(true\)\}/);
+ assert.match(player,/onClick=\{\(\)=>\{[^}]*setActive\(true\)/);
  assert.match(player,/VIDEO_ID\.test\(videoId\)/);
  assert.match(player,/https:\/\/www\.youtube-nocookie\.com\/embed\/\$\{videoId\}/);
  assert.match(player,/referrerPolicy="strict-origin-when-cross-origin"/);
@@ -49,12 +57,12 @@ test('Part V client iframe is click to load and never interpolates user-provided
  assert.doesNotMatch(player,/videoUrl|dangerouslySetInnerHTML|autoplay=1|youtube\.com\/embed/);
 });
 test('Part V CMS editor recognizes only safe shared video IDs and keeps same revision-gated item writer',()=>{
- assert.match(studio,/youtubeVideoId\(item\.url\)/);
+ const workspace=readFileSync(new URL('../src/components/portal/CmsContextWorkspace.tsx',import.meta.url),'utf8');assert.match(workspace,/youtubeVideoId\(fieldValue\)/);
  assert.match(readFileSync(new URL('../src/components/website/SitePresentation.tsx',import.meta.url),'utf8'),/youtubeVideoId\(item\.url\)/);
- assert.match(studio,/HTTPS link \/ YouTube video URL/);
+ assert.match(workspace,/YouTube URL or HTTPS link/);
  assert.match(studio,/cmsFetch\('item'/);
  assert.match(studio,/expectedRevision:page\.draftRevision/);
- assert.match(studio,/video file uploads are not part/);
+ assert.match(workspace,/valid HTTPS YouTube watch, Shorts, embed or shortened URL/);
 });
 test('Part V public video presentation is responsive and reduced motion, private CMS storage unchanged',()=>{
  assert.match(css,/musa-video-play:focus-visible/);

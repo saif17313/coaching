@@ -23,8 +23,8 @@ test('write status is behind signed teacher and never grants permission',async()
 });
 test('website editor transparently reports whether current server can write',()=>{
  const src=read('../src/components/portal/WebsiteAdminStudio.tsx');
- assert.match(src,/write-status/);assert.match(src,/studio-write-status/);
- assert.match(src,/RUN_EDUCENTRE_DEV_WRITES/);
+ assert.match(src,/write-status/);assert.match(read('../src/components/portal/CmsContextWorkspace.tsx'),/studio-write-status/);
+ assert.match(read('../src/components/portal/CmsContextWorkspace.tsx'),/RUN_EDUCENTRE_DEV_WRITES/);
 });
 
 test('public website automatically revalidates published revisions without privileged browser RPCs',()=>{
@@ -59,5 +59,5 @@ test('write-readiness includes a typed .d.mts sibling for Next.js route import',
 test('deployed read-only status offers hosting configuration guidance, not local launcher',()=>{
  const hosted=cmsWriteReadiness({NODE_ENV:'production'});assert.equal(hosted.writable,false);assert.match(hosted.detail,/hosting environment/);assert.doesNotMatch(hosted.detail,/DEV write launcher/);
  const local=cmsWriteReadiness({NODE_ENV:'development'});assert.match(local.detail,/local DEV write launcher/);
- const editor=read('../src/components/portal/WebsiteAdminStudio.tsx');assert.match(editor,/writeRuntime==='deployment'/);assert.match(editor,/COACHING_ENABLE_MUTATION_APIS=enabled-after-db-verification/);
+ const editor=read('../src/components/portal/CmsContextWorkspace.tsx');assert.match(editor,/writeRuntime==='deployment'/);assert.match(editor,/COACHING_ENABLE_MUTATION_APIS=enabled-after-db-verification/);
 });

@@ -22,6 +22,7 @@ export async function POST(request:Request){
   let input;try{input=JSON.parse(raw);}catch{return deny(400,'INVALID_ONBOARD_INPUT');}
   if(!input||Object.keys(input).sort().join(',')!=='email,fullName'||typeof input.email!=='string'||input.email.length>254||!/^\S+@\S+\.\S+$/.test(input.email)||typeof input.fullName!=='string'||input.fullName.trim().length<2||input.fullName.length>160||/[\x00-\x1f\x7f]/.test(input.fullName))return deny(400,'INVALID_ONBOARD_INPUT');
   const {root,key}=safeSupabaseAuthConfig(process.env);
+  const identity=await fetch(new URL('/rest/v1/rpc/coaching_teacher_student_identity',root),{method:'POST',headers:{apikey:key,Authorization:auth,'Content-Type':'application/json'},body:JSON.stringify({p_email:input.email.trim().toLowerCase()}),cache:'no-store',redirect:'error',signal:AbortSignal.timeout(10000)});if(!identity.ok)return deny(503,'IDENTITY_CHECK_UNAVAILABLE');const existing=await identity.json();if(existing.state!=='available')return deny(409,existing.state==='existing'?'STUDENT_ALREADY_EXISTS':'ACCOUNT_ROLE_CONFLICT');
   const portalOrigin=process.env.NODE_ENV==='development'?'http://localhost:3000':process.env.COACHING_PORTAL_ORIGIN;
   if(!portalOrigin||!/^https?:\/\/[^/]+$/.test(portalOrigin)||process.env.NODE_ENV!=='development'&&!portalOrigin.startsWith('https://'))return deny(503,'PORTAL_ORIGIN_NOT_CONFIGURED');
   const inviteUrl=new URL('/auth/v1/invite',root);inviteUrl.searchParams.set('redirect_to',portalOrigin+'/portal/accept-invite');

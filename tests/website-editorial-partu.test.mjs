@@ -38,12 +38,12 @@ test('Part U published section presentations remain type-specific and HTML-safe'
  assert.match(source,/prefers-reduced-motion:reduce|aria-hidden/);
 });
 test('Part U CMS blueprint inputs use existing section upsert contract and revision barrier',()=>{
- assert.match(studio,/SECTION_PRESETS\.map/);
- assert.match(studio,/cmsEditorialAudit\(page\)/);
+ const workspace=readFileSync(new URL('../src/components/portal/CmsContextWorkspace.tsx',import.meta.url),'utf8');assert.match(workspace,/Object.values\(CMS_FORMS\)/);
+ assert.match(workspace,/Section blueprint/);
  assert.match(studio,/expectedRevision:page\.draftRevision/);
  assert.match(studio,/cmsFetch\('section'/);
  assert.match(studio,/cmsFetch\('publish'/);
- assert.match(studio,/Custom item icons, video file uploads/);
+ assert.match(workspace,/Add section to draft/);
 });
 test('Part U CSS layouts are responsive, with motion fallback and private media contract unchanged',()=>{
  for(const cls of ['musa-gallery-grid','musa-review-grid','musa-editorial-row','musa-result-card','musa-cta-inner','musa-hero-photo'])assert.ok(style.includes(cls),cls);
@@ -56,8 +56,8 @@ test('Part U CSS layouts are responsive, with motion fallback and private media 
 test('Part U published homepage SEO uses public snapshot metadata, not fixed markup',()=>{
  assert.match(homepage,/generateMetadata/);
  assert.match(homepage,/publicPage\('home'\)/);
- assert.match(homepage,/title:page\.seoTitle/);
- assert.match(homepage,/description:page\.seoDescription/);
+ assert.match(homepage,/title:publicText\(page\.seoTitle\)/);
+ assert.match(homepage,/description:publicText\(page\.seoDescription\)/);
  assert.match(homepage,/index:false/);
  assert.match(source,/musa-skip-link/);
 });

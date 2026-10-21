@@ -1,0 +1,5 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {publicPageContent,publicText} from '../src/client/public-content-policy.mjs';
+test('placeholder achievements and testimonials are omitted rather than relabeled as real claims',()=>{const page={title:'Reviews',sections:[{id:'reviews',kind:'reviews',heading:'Reviews',items:[{title:'Sample author',metadata:{demo:true}}]},{id:'real',kind:'reviews',heading:'Student reviews',items:[{title:'A verified review',description:'Real experience',metadata:{approved:true,consent:true}}]}]};const result=publicPageContent(page);assert.equal(result.sections.length,1);assert.equal(result.sections[0].id,'real');assert.equal(page.sections.length,2);});
+test('only known placeholder copy is replaced; real CMS content stays editable and intact',()=>{assert.equal(publicText('Explore sample courses'),'Find your next learning path');assert.equal(publicText('My authored teaching approach'),'My authored teaching approach');assert.equal(publicText('DEMO ONLY — sample claims'),'');});

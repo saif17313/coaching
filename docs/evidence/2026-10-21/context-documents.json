@@ -1,0 +1,11 @@
+{
+  "time": "2026-10-21T14:34:34.891Z",
+  "checks": [
+    "Verified private upload succeeds",
+    "Assigned Student receives integrity-checked image bytes with no-store",
+    "Anonymous document access denied",
+    "Private document absent from public media"
+  ],
+  "status": "Pass",
+  "cleanup": "Original assignments restored; isolated verification image archived"
+}

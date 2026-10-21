@@ -1,7 +1,9 @@
 'use client';
 import {TeacherBatchDirectory} from './TeacherBatchDirectory';
 import {TeacherStudentDirectory} from './TeacherStudentDirectory';
-import {StudentAdmissionProfile} from './StudentAdmissionProfile';
+import {StudentAdmissionProfile,admissionGroups} from './StudentAdmissionProfile';
+import {workflowInput} from '@/client/student-workflow.mjs';
+import {admissionFields,validateAdmissionChanges} from '@/client/student-admission.mjs';
 import {useCallback,useEffect,useMemo,useRef,useState,type FormEvent} from 'react';
 import {normalizeTeacherList,readTeacherList,teacherCommand,type TeacherManagementScope,type TeacherRow} from '@/client/teacher-management.mjs';
 
@@ -22,6 +24,7 @@ export function TeacherManagement({mode,onNavigate,onSelectBatch}:{mode:Mode;onN
  const [studentId,setStudentId]=useState(''),[batchId,setBatchId]=useState('');
  const submissionBusy=useRef(false);
  const [email,setEmail]=useState(''),[initialPassword,setInitialPassword]=useState('');
+ const [registration,setRegistration]=useState<Record<string,string>>({});
  const [students,setStudents]=useState<TeacherRow[]>([]),[batches,setBatches]=useState<TeacherRow[]>([]);
  const [search,setSearch]=useState('');
  const [admissionStudent,setAdmissionStudent]=useState<string|null>(null),[admissionRow,setAdmissionRow]=useState<TeacherRow|null>(null);
@@ -37,7 +40,7 @@ export function TeacherManagement({mode,onNavigate,onSelectBatch}:{mode:Mode;onN
  }),[items,search]);
  function begin(next:Action,row:TeacherRow|null=null){
   setSelected(row);setAction(next);setNotice('');setError('');
-  setName(row?.name||'');setCode(row?.code||'');setCapacity(String(row?.capacity||30));setStudentId('');setBatchId('');setEmail('');setInitialPassword('');
+  setName(row?.name||'');setCode(row?.code||'');setCapacity(String(row?.capacity||30));setStudentId('');setBatchId('');setEmail('');setInitialPassword('');setRegistration({});
  }
  const run=async(kind:Parameters<typeof teacherCommand>[0],input:Record<string,unknown>,id?:string)=>{
   setSaving(true);setError('');setNotice('');
@@ -58,10 +61,22 @@ export function TeacherManagement({mode,onNavigate,onSelectBatch}:{mode:Mode;onN
  async function inviteStudent(){
   if(submissionBusy.current)return;submissionBusy.current=true;setSaving(true);setError('');setNotice('');
   try{
+   const core=validateAdmissionChanges({fullName:name.trim(),admittedOn:new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Dhaka'}).format(new Date()),...Object.fromEntries(Object.entries(registration).filter(([key,value])=>Object.hasOwn(admissionFields,key)&&value))},'teacher');
+   const extras={gender:registration.gender??'',guardianEmail:registration.guardianEmail??'',previousSchool:registration.previousSchool??'',previousClass:registration.previousClass??'',previousResult:registration.previousResult??'',privateNotes:registration.privateNotes??'',applicationStatus:'draft',reviewReason:'',documents:[],expectedRevision:0};
+   workflowInput('details.save',extras,'teacher');
+   const identity=await fetch('/api/v1/teacher/students/identity',{method:'POST',headers:{'Content-Type':'application/json','x-musa-ui':'1'},body:JSON.stringify({email:email.trim().toLowerCase()})});const existing=await identity.json();
+   if(!identity.ok||!existing.success)throw Error('The account identity check failed. Retry before creating an account.');
+   if(existing.data.state==='role_conflict')throw Error('This email belongs to a different account role. It cannot be linked as a Student.');
+   if(existing.data.state==='existing'){if(window.confirm('An existing Student account uses this email. Open its current profile without creating a duplicate?')){setAdmissionStudent(existing.data.studentId);setAction(null);setNotice('Existing Auth identity linked through its original Student profile. No account was created or replaced.');}return;}
    const response=await fetch('/api/v1/teacher/students/invite',{method:'POST',credentials:'same-origin',cache:'no-store',headers:{'Content-Type':'application/json','x-musa-ui':'1','Idempotency-Key':crypto.randomUUID()},body:JSON.stringify({email:email.trim().toLowerCase(),fullName:name.trim()})});
    const result=await response.json();
    if(!response.ok||result?.success!==true)throw Error(result?.error?.code==='AUTH_ADMIN_NOT_CONFIGURED'?'The server Auth invitation credential is not configured. Configure SUPABASE_AUTH_ADMIN_KEY on the server, then restart the reviewed DEV launcher. Never share it in chat.':result?.error?.code==='AUTH_INVITATION_REJECTED'?'Supabase rejected this invitation. Check whether the email already has an account; do not send repeated invitations.':`Invitation could not be confirmed (${result?.error?.code??response.status}).`);
-   setNotice(result.data.message);setAction(null);setInitialPassword('');setRefresh(x=>x+1);
+   const id=result.data.studentId;if(!isId(id))throw Error('Invitation was accepted, but the Student identifier requires review.');
+   setAdmissionStudent(id);setAction(null);setInitialPassword('');
+   const profile=await fetch(`/api/v1/teacher/students/${id}/admission`,{method:'PATCH',headers:{'Content-Type':'application/json','x-musa-ui':'1','Idempotency-Key':crypto.randomUUID()},body:JSON.stringify({data:core,expectedRevision:0})});const saved=await profile.json();
+   if(!profile.ok||!saved.success)throw Error('Invitation was accepted. Admission details were not confirmed; finish them in the open Student profile. Do not create another account.');
+   const workflow=await fetch(`/api/v1/teacher/students/${id}/workflow`,{method:'POST',headers:{'Content-Type':'application/json','x-musa-ui':'1','Idempotency-Key':crypto.randomUUID()},body:JSON.stringify({action:'details.save',data:extras})});if(!workflow.ok)throw Error('Student and admission were created. Finish the application details in the open profile; no second account is needed.');
+   setNotice('Invitation and admission details confirmed. Review the application, verify fees and explicitly approve account access and enrollment when eligible.');setRefresh(x=>x+1);
   }catch(e){setError((e as Error).message);}finally{submissionBusy.current=false;setSaving(false);}
  }
  async function onboardStudent(){
@@ -128,6 +143,7 @@ export function TeacherManagement({mode,onNavigate,onSelectBatch}:{mode:Mode;onN
     <form className="teacher-ops-form" onSubmit={e=>void submitForm(e)}>
      {mode==='batches'&&action!=='enroll'&&<>{action==='create'&&<label>Batch code <small>2–24 uppercase letters, numbers, underscores or hyphens</small><input required minLength={2} maxLength={24} pattern="[A-Z0-9][A-Z0-9_-]{1,23}" value={code} onChange={e=>setCode(e.target.value.toUpperCase())} placeholder="MATH_2026"/></label>}<label>Batch name<input required minLength={2} maxLength={120} value={name} onChange={e=>setName(e.target.value)} placeholder="HSC Mathematics"/></label><label>Capacity<input required type="number" min={1} max={100000} step={1} value={capacity} onChange={e=>setCapacity(e.target.value)}/></label></>}
      {mode==='students'&&action==='invite'&&<><p className="portal-muted">Sends an invitation through the server Auth administrator. Public signup can remain disabled. The student confirms email and chooses their own password; Teacher approval and enrollment remain required.</p><label>Student name<input required minLength={2} maxLength={160} value={name} onChange={e=>setName(e.target.value)}/></label><label>Student email<input required type="email" maxLength={254} value={email} onChange={e=>setEmail(e.target.value)}/></label></>}
+     {mode==='students'&&action==='invite'&&<details className="studio-expansion" open><summary>Complete admission information</summary><p className="studio-hint">Name and email above are required. Other fields are optional while drafting; class and guardian details are required for admission approval.</p>{admissionGroups.filter(group=>group.title!=='Admission').map(group=><fieldset className="studio-expansion" key={group.title}><legend>{group.title}</legend><div className="portal-form-grid">{group.fields.filter(([key])=>key!=='fullName').map(([key,label])=><label key={key}>{label}<input aria-label={'New Student '+label} maxLength={admissionFields[key]} type={key==='dateOfBirth'?'date':['phone','guardianMobile'].includes(key)?'tel':'text'} value={registration[key]??''} onChange={e=>setRegistration(previous=>({...previous,[key]:e.target.value}))}/></label>)}</div></fieldset>)}<div className="portal-form-grid"><label>Gender<select aria-label="New Student gender" value={registration.gender??''} onChange={e=>setRegistration(previous=>({...previous,gender:e.target.value}))}><option value="">Not provided</option>{['female','male','other','prefer_not_to_say'].map(value=><option key={value}>{value}</option>)}</select></label><label>Guardian email<input type="email" value={registration.guardianEmail??''} onChange={e=>setRegistration(previous=>({...previous,guardianEmail:e.target.value}))}/></label>{[['previousSchool','Previous school'],['previousClass','Previous class'],['previousResult','Previous academic result'],['privateNotes','Private Teacher notes']].map(([key,label])=><label key={key}>{label}<input value={registration[key]??''} maxLength={key==='privateNotes'?2000:200} onChange={e=>setRegistration(previous=>({...previous,[key]:e.target.value}))}/></label>)}</div><p className="studio-hint">After identity creation, use the profile&apos;s Photograph, Application & finances and Enrollment history tabs for private scans, fees and batch assignments.</p></details>}
      {mode==='students'&&action==='onboard'&&<><p className="portal-muted">Creates a <strong>pending student</strong> in Supabase Auth. The student must own this email address and confirm it. Share the initial password privately; never paste it into chat or public messages. The account cannot access student data until you activate and enroll it.</p><label>Student name<input autoComplete="name" required minLength={2} maxLength={160} value={name} onChange={e=>setName(e.target.value)} placeholder="Student full name"/></label><label>Student email<input type="email" autoComplete="off" required maxLength={254} value={email} onChange={e=>setEmail(e.target.value)} placeholder="student@example.org"/></label><label>Initial password <small>12–128 characters with uppercase, lowercase, number and symbol. Student should change it using Auth recovery after first login.</small><input type="password" required minLength={12} maxLength={128} autoComplete="new-password" value={initialPassword} onChange={e=>setInitialPassword(e.target.value)}/></label></>}
      {mode==='students'&&action==='edit'&&<label>Student full name<input required minLength={2} maxLength={160} value={name} onChange={e=>setName(e.target.value)}/></label>}
      {action==='enroll'&&<><p className="portal-muted">Choose an active student and an open batch from the first 20 records. To select others, use the directory and pagination in a later workflow.</p><label>Active student<select aria-label="Active student" required value={studentId} onChange={e=>setStudentId(e.target.value)}><option value="">Select student</option>{students.map(row=><option key={row.id} value={row.id}>{row.name||short(row.id)}</option>)}</select></label><label>Open batch<select aria-label="Open batch" required value={batchId} onChange={e=>setBatchId(e.target.value)}><option value="">Select batch</option>{batches.map(row=><option key={row.id} value={row.id}>{row.name} · {row.code}</option>)}</select></label>{(students.length===0||batches.length===0)&&<p className="portal-muted">You need at least one active student and an open batch to create an enrollment.</p>}</>}

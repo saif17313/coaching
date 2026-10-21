@@ -1,0 +1,21 @@
+import {CMS_FORMS,formForTarget} from './cms-fields.mjs';
+import {cmsFieldGroups} from './cms-field-groups.mjs';
+import {homeSectionMap} from './website-composition.mjs';
+const unsafe=new Set(['__proto__','prototype','constructor']);
+export function valueAt(value,path){return path.reduce((next,key)=>next!=null&&Object.hasOwn(Object(next),key)?next[key]:undefined,value);}
+export function replaceAt(value,path,next){if(!path.length)return next;const [key,...rest]=path;if(unsafe.has(String(key)))throw Error('INVALID_FIELD_PATH');const copy=Array.isArray(value)?value.slice():{...(value&&typeof value==='object'?value:{})};copy[key]=replaceAt(copy[key],rest,next);return copy;}
+export function schemaAt(schema,path){return path.reduce((next,key)=>typeof key==='number'?next?.items:next?.properties?.[key],schema);}
+export function schemaNodes(schema,value,base,path=[]){
+ if(schema?.type==='object')return Object.entries(schema.properties??{}).map(([key,field])=>{const next=[...path,key];return {...base,id:base.id+':'+JSON.stringify(next),label:field.title??key,type:'field',path:next,children:schemaNodes(field,value?.[key],base,next)};});
+ if(schema?.type==='array')return (Array.isArray(value)?value:[]).map((row,index)=>({...base,id:base.id+':'+JSON.stringify([...path,index]),label:String(row?.title??row?.name??`${schema.title??'Entry'} ${index+1}`),type:'field',path:[...path,index],children:schemaNodes(schema.items,row,base,[...path,index])}));
+ return [];
+}
+export function sectionTree(page,section){
+ const inferred=section.sectionKey??Object.values(CMS_FORMS).find(form=>form.kind===section.kind&&form.label.toLowerCase()===section.heading.toLowerCase())?.key??(section.kind==='hero'?formForTarget({slug:page.slug,kind:section.kind,label:section.heading}):null);
+ const base={pageId:page.id,sectionId:section.id,id:'section:'+section.id,schemaKey:inferred};const form=CMS_FORMS[inferred];
+ const fields=form?cmsFieldGroups(form.key,form.section.properties).map(group=>({...base,id:base.id+':group:'+group.label,label:group.label,type:'group',keys:group.keys,children:group.keys.flatMap(key=>schemaNodes({type:'object',properties:{[key]:form.section.properties[key]}},section.content,{...base,scope:'content'}))})):[];
+ return {...base,type:'section',label:section.heading||form?.label||section.kind,children:[...['heading','body','visible'].map(key=>({...base,id:base.id+':common:'+key,label:{heading:'Section heading',body:'Section description',visible:'Visibility'}[key],type:'field',scope:'section',path:[key]})),...fields,...(section.items??[]).map(item=>{const child={...base,id:'item:'+item.id,itemId:item.id};return {...child,type:'item',label:item.title||'Untitled card',children:[...['title','description','url','mediaId','visible'].map(key=>({...child,id:child.id+':common:'+key,type:'field',scope:'item',path:[key],label:{title:'Title',description:'Description',url:'Link / YouTube video',mediaId:'Image',visible:'Visibility'}[key]})),...(form?schemaNodes(form.item,item.metadata,{...child,scope:'metadata'}):[])]};})]};
+}
+export function cmsTree(pages){const active=pages.filter(page=>page.status!=='archived'),related=Object.fromEntries(active.map(page=>[page.slug,page]));return active.map(page=>{const sections=(page.sections??[]).slice().sort((a,b)=>a.order-b.order).map(section=>sectionTree(page,section));if(page.slug==='home'){for(const row of homeSectionMap(page,related)){if(row.sourceSlug==='home'||!row.section)continue;const source=related[row.sourceSlug];if(!source)continue;const prefix='shared:home:'+row.key+':';const alias=node=>({...node,id:prefix+node.id,children:node.children?.map(alias)});sections.push({...alias(sectionTree(source,row.section)),label:row.label+' · '+source.title});}}return {id:'page:'+page.id,pageId:page.id,label:page.title,type:'page',children:sections};});}
+export function findNode(nodes,id,ancestors=[]){for(const node of nodes){if(node.id===id)return {node,ancestors};const found=findNode(node.children??[],id,[...ancestors,node]);if(found)return found;}return null;}
+export function filterTree(nodes,query){if(!query.trim())return nodes;const q=query.trim().toLocaleLowerCase();return nodes.flatMap(node=>{const children=filterTree(node.children??[],query);return node.label.toLocaleLowerCase().includes(q)?[node]:children.length?[{...node,children}]:[];});}

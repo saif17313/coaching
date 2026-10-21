@@ -31,3 +31,5 @@ export function youtubeVideoId(value) {
   } else return null;
   return ID.test(video ?? '') ? video : null;
 }
+
+export function normalizeYoutubeUrl(value){const id=youtubeVideoId(value);return id?`https://www.youtube.com/watch?v=${id}`:null;}

@@ -9,8 +9,8 @@ const actor={verified:true,userId:page,role:'teacher',accountStatus:'active'};
 const payload={sectionKey:'HOME_HERO',content:{headline:'DEMO headline',teacherName:'DEMO educator',features:['Guided learning'],primaryCtaUrl:'/site/courses'},itemId:null,expectedRevision:2};
 const context={params:Promise.resolve({pageId:page,sectionId:section})};
 const request=(body=payload)=>new Request('https://app.example/fields',{method:'PUT',headers:{Authorization:'Bearer aaa.bbb.ccc','Content-Type':'application/json','Idempotency-Key':operation},body:JSON.stringify(body)});
-test('42 field schemas retain semantic hero, portfolio, contact, gallery and article fields',()=>{
- assert.equal(Object.keys(CMS_FORMS).length,42);
+test('43 field schemas retain semantic hero, portfolio, contact, gallery and article fields',()=>{
+ assert.equal(Object.keys(CMS_FORMS).length,43);
  assert.ok(validateCmsFields('HOME_HERO',payload.content));
  assert.ok(validateCmsFields('CONTACT_INFO',{address:'DEMO address',mapEmbedUrl:'https://maps.google.com/maps?q=education'}));
  assert.ok(validateCmsFields('GALLERY_ALBUMS',{images:[{mediaId:page,alt:'DEMO educational photograph'}]},true));

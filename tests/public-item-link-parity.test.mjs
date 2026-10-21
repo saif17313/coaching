@@ -22,7 +22,7 @@ test('Website Admin maps open draft sections while preserving public fallback fo
  assert.match(map,/homeSectionMap\(related\.home,related\)/);
  assert.match(map,/editing draft/);
  const studio=readFileSync(new URL('../src/components/portal/WebsiteAdminStudio.tsx',import.meta.url),'utf8');
- assert.match(studio,/<HomepageSectionMap[\s\S]*?draft=\{previewPage\?/);
+ assert.match(studio,/<CmsContextWorkspace[\s\S]*?preview=\{previewPage\}/);const workspace=readFileSync(new URL('../src/components/portal/CmsContextWorkspace.tsx',import.meta.url),'utf8');assert.match(workspace,/homeSectionMap/);assert.match(workspace,/CmsLivePreview draft=\{p.preview\}/);
 });
 test('Student admission fee selector uses real BDT formatting, not placeholder characters',()=>{
  const source=readFileSync(new URL('../src/components/portal/StudentAdmissionProfile.tsx',import.meta.url),'utf8');

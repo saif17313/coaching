@@ -1,0 +1,208 @@
+{
+  "time": "2026-10-21T14:31:09.737Z",
+  "scans": [
+    {
+      "name": "Teacher application review",
+      "width": 1440,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "name": "Teacher application review",
+      "width": 820,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "name": "Teacher application review",
+      "width": 390,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "name": "Teacher Student ledger",
+      "width": 1440,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "name": "Teacher Student ledger",
+      "width": 390,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "name": "Focused CMS structure",
+      "width": 1440,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "name": "Focused CMS structure",
+      "width": 820,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "name": "Focused CMS structure",
+      "width": 390,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "name": "CMS mobile preview",
+      "width": 390,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "name": "Public home",
+      "width": 1440,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "name": "Public home",
+      "width": 390,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "name": "Public about",
+      "width": 1440,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "name": "Public about",
+      "width": 390,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "name": "Public courses",
+      "width": 1440,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "name": "Public courses",
+      "width": 390,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "name": "Public gallery",
+      "width": 1440,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "name": "Public gallery",
+      "width": 390,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "name": "Public results",
+      "width": 1440,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "name": "Public results",
+      "width": 390,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "name": "Public reviews",
+      "width": 1440,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "name": "Public reviews",
+      "width": 390,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "name": "Public news-events",
+      "width": 1440,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "name": "Public news-events",
+      "width": 390,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "name": "Public materials",
+      "width": 1440,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "name": "Public materials",
+      "width": 390,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "name": "Public contact",
+      "width": 1440,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "name": "Public contact",
+      "width": 390,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "name": "Public academic-calendar",
+      "width": 1440,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "name": "Public academic-calendar",
+      "width": 390,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "name": "Public class-routine",
+      "width": 1440,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "name": "Public class-routine",
+      "width": 390,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "name": "Public projects",
+      "width": 1440,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "name": "Public projects",
+      "width": 390,
+      "overflow": false,
+      "violations": []
+    }
+  ],
+  "checks": [
+    "Existing reviewed fee plans load from the chosen batch",
+    "All 12 public routes render without development labels or uncaught browser errors"
+  ],
+  "status": "Pass"
+}

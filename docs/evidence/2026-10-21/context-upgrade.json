@@ -1,0 +1,14 @@
+{
+  "time": "2026-10-21T14:20:21.371Z",
+  "checks": [
+    "Home structure resolves all composed roles and custom sections",
+    "Nested headline opens only its own field; unsaved preview resets without a write",
+    "Typed video URL normalizes and persists as a private draft",
+    "Correct thumbnail appears in preview and published HTML; iframe requires Play",
+    "Existing Auth identity reused; Student cannot read Teacher notes or management endpoints",
+    "One-paisa DEMO report stays outside collections and is rejected without changing the ledger"
+  ],
+  "status": "Pass",
+  "profileCleanup": "Original application fields restored",
+  "cmsCleanup": "Isolated DEMO page archived"
+}

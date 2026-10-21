@@ -1,0 +1,13 @@
+/** Placeholder claims are omitted, never relabeled as real achievements or reviews. */
+export function isPlaceholderRecord(value){return value?.metadata?.demo===true||value?.demo===true||/\b(?:DEMO|PLACEHOLDER|sample entry|illustrative only|not a real|not a scheduled|not a real student)\b/i.test([value?.title,value?.description].filter(Boolean).join(' '));}
+const copy=new Map([
+ ['Explore sample courses','Find your next learning path'],
+ ['Replace with real subjects and current batch details.','Explore courses and choose the right learning space.'],
+ ['A sample outline: explain first principles, practice actively, review thoughtfully, and build independent problem-solving habits.','Understand the principles. Practice with purpose. Build independent problem-solving habits.'],
+ ['Build a stronger foundation.Learn with direction.Testing...','Build a stronger foundation. Learn with direction.'],
+ ['DEMO PREVIEW - A sample learning space for physics, mathematics, class and exam preparation. Actual enrollment and dates will be announced by the coaching team.','Explore structured learning in physics, mathematics and exam preparation. Contact the coaching team for current batches and admission details.'],
+ ['Sample themes to customize.','Clear explanations, purposeful practice and thoughtful feedback.'],
+]);
+export function publicText(value){if(typeof value!=='string')return value;const exact=copy.get(value.trim());if(exact)return exact;if(/^(?:DEMO PREVIEW|DEMO ONLY|DEMO data|DEMO PLACEHOLDER|Replace with|Sample placeholder)/i.test(value.trim()))return '';return value;}
+function clean(value){if(Array.isArray(value))return value.filter(entry=>!isPlaceholderRecord(entry)).map(clean);if(value&&typeof value==='object'){if(isPlaceholderRecord(value))return null;return Object.fromEntries(Object.entries(value).map(([key,next])=>[key,['title','heading','body','description','headline','tagline','teacherBio','subtitle','title1','title2','footerText'].includes(key)?publicText(next):clean(next)]));}return value;}
+export function publicPageContent(page){if(!page)return page;return {...page,title:publicText(page.title),sections:page.sections.map(section=>({...section,heading:publicText(section.heading),body:publicText(section.body),content:clean(section.content),items:section.items.filter(item=>!isPlaceholderRecord(item)).map(item=>({...item,title:publicText(item.title),description:publicText(item.description),metadata:clean(item.metadata)}))})).filter(section=>!['results','reviews','gallery','news'].includes(section.kind)||section.items.length>0||section.sectionKey&&section.content&&Object.values(section.content).some(value=>Array.isArray(value)&&value.length>0))};}
