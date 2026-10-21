@@ -1,0 +1,13 @@
+{
+  "origin": "https://educentre-iota.vercel.app",
+  "time": "2026-10-21T14:59:39.601Z",
+  "checks": [
+    "Live Teacher/Student statements reconcile; private notes and Teacher reports remain restricted",
+    "Live contextual CMS loads real nested navigation and Home composition",
+    "Live UI creates and saves a private draft, then publishes the exact revision confirmed in public HTML",
+    "Live public theme removes development labels and fits mobile width"
+  ],
+  "financialWrites": false,
+  "status": "Pass",
+  "cleanup": "Only the isolated release fixture was archived; public API confirms 404"
+}
