@@ -1,4 +1,4 @@
-import {publicPageContent,publicText} from '@/client/public-content-policy.mjs';
+import {publicPageContent,publicText,publicContactEmail} from '@/client/public-content-policy.mjs';
 import './premium-public.css';
 import {Fragment,type ReactNode} from 'react';
 import Link from 'next/link';
@@ -109,7 +109,7 @@ function Home({page,related}:{page:SitePage;related:Record<string,SitePage|null>
 }
 export function SitePresentation({page:rawPage,settings:rawSettings,navigation,related:rawRelated={},preview=false}:{page:SitePage|null;settings:SiteSettings|null;navigation:NavItem[];related?:Record<string,SitePage|null>;preview?:boolean}){
  const page=publicPageContent(rawPage),related=Object.fromEntries(Object.entries(rawRelated).map(([key,value])=>[key,publicPageContent(value)]));
- const settings=rawSettings?{...rawSettings,settings:{...rawSettings.settings,siteTitle:rawSettings.settings.siteTitle.replace(/\s+Demo$/i,''),tagline:publicText(rawSettings.settings.tagline),footerText:publicText(rawSettings.settings.footerText),contactEmail:/@(?:example\.(?:invalid|com)|test\.com)$/i.test(rawSettings.settings.contactEmail)?'':rawSettings.settings.contactEmail}}:null;
+ const settings=rawSettings?{...rawSettings,settings:{...rawSettings.settings,siteTitle:rawSettings.settings.siteTitle.replace(/\s+Demo$/i,''),tagline:publicText(rawSettings.settings.tagline),footerText:publicText(rawSettings.settings.footerText),contactEmail:publicContactEmail(rawSettings.settings.contactEmail)}}:null;
  const name=settings?.settings.siteTitle||'EduCentre';
  const rawLogo=settings?.settings.logoMediaId;const logoId=rawLogo&&uuid.test(rawLogo)?rawLogo:null;
  const sections=ordered(page);const isHome=page?.slug==='home';
