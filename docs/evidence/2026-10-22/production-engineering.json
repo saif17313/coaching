@@ -1,0 +1,7 @@
+{
+  "origin": "https://educentre-iota.vercel.app",
+  "checkedAt": "2026-10-22T03:54:41.760Z",
+  "checks": [],
+  "status": "Fail",
+  "failure": "Production domain has not activated the new build: brand asset is missing\n\n404 !== 200\n"
+}

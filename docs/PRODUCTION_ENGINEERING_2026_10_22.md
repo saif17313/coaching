@@ -66,4 +66,8 @@ The receipt's Noto Sans Bengali font is distributed with its [Open Font License]
 
 ## Release status
 
-Optimized local verification is complete. Commit, CI and hosted verification results are recorded in the subsequent release evidence.
+Implementation commit `46ccef0c4e941c5912a39455fed996faebecd416` is pushed to the user-confirmed production branch, `feature/p00-foundation`. GitHub [Verify run 39718804617](https://github.com/saif17313/coaching/actions/runs/39718804617) completed successfully. Vercel's Git status reports success for [deployment 9uTr18SBUAtHySdqF8CHRLpVDjSW](https://vercel.com/saif-411a/educentre/9uTr18SBUAtHySdqF8CHRLpVDjSW).
+
+Production activation remains unresolved: direct requests to `https://educentre-iota.vercel.app/brand/symbol.svg` and `/api/v1/teacher/demo-workspace` return 404, and the live About hero still fails the new full-width check. The domain therefore has not been verified as serving this release. The connected Vercel account returns 403 for team `saif-411a`; promotion or alias repair requires access to that team. No unrelated team/project, branch configuration, or domain was changed. The user has been given the exact deployment to promote.
+
+`scripts/verify-production-engineering.mjs` is a read-only post-activation check covering the actual domain, four About viewport widths, brand assets, authenticated Teacher/Student demo reads, own-record isolation, A4 PDF rendering and foreign receipt denial. Run it after production activation with the existing local verification browser and credential-document configuration. It performs no financial or account writes. The current failed attempt is retained in `docs/evidence/2026-10-22/production-engineering.json`; local passing evidence is separate.
