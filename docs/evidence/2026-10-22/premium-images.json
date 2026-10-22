@@ -1,0 +1,100 @@
+{
+  "checks": [
+    "Every rendered same-origin homepage image decodes, including published CMS media"
+  ],
+  "status": "Pass",
+  "images": [
+    {
+      "path": "/api/v1/public/media/b14efa4d-b0f6-46e7-9cca-1c7907e78b1d",
+      "loaded": true
+    },
+    {
+      "path": "/api/v1/public/media/40701858-a6ae-4f0b-86c6-54b21ee2abf0",
+      "loaded": true
+    },
+    {
+      "path": "/api/v1/public/media/a1bf78e1-b76c-4ec7-889c-b32d33d4a97e",
+      "loaded": true
+    },
+    {
+      "path": "/api/v1/public/media/75977d12-8b51-4f98-8dcb-516434306b3c",
+      "loaded": true
+    },
+    {
+      "path": "/api/v1/public/media/40701858-a6ae-4f0b-86c6-54b21ee2abf0",
+      "loaded": true
+    },
+    {
+      "path": "/api/v1/public/media/40701858-a6ae-4f0b-86c6-54b21ee2abf0",
+      "loaded": true
+    },
+    {
+      "path": "/api/v1/public/media/a1bf78e1-b76c-4ec7-889c-b32d33d4a97e",
+      "loaded": true
+    },
+    {
+      "path": "/api/v1/public/media/75977d12-8b51-4f98-8dcb-516434306b3c",
+      "loaded": true
+    },
+    {
+      "path": "/api/v1/public/media/40701858-a6ae-4f0b-86c6-54b21ee2abf0",
+      "loaded": true
+    },
+    {
+      "path": "/api/v1/public/media/40701858-a6ae-4f0b-86c6-54b21ee2abf0",
+      "loaded": true
+    },
+    {
+      "path": "/api/v1/public/media/a1bf78e1-b76c-4ec7-889c-b32d33d4a97e",
+      "loaded": true
+    },
+    {
+      "path": "/api/v1/public/media/75977d12-8b51-4f98-8dcb-516434306b3c",
+      "loaded": true
+    },
+    {
+      "path": "/api/v1/public/media/40701858-a6ae-4f0b-86c6-54b21ee2abf0",
+      "loaded": true
+    },
+    {
+      "path": "/api/v1/public/media/a1bf78e1-b76c-4ec7-889c-b32d33d4a97e",
+      "loaded": true
+    },
+    {
+      "path": "/api/v1/public/media/40701858-a6ae-4f0b-86c6-54b21ee2abf0",
+      "loaded": true
+    },
+    {
+      "path": "/api/v1/public/media/a1bf78e1-b76c-4ec7-889c-b32d33d4a97e",
+      "loaded": true
+    },
+    {
+      "path": "/api/v1/public/media/75977d12-8b51-4f98-8dcb-516434306b3c",
+      "loaded": true
+    },
+    {
+      "path": "/api/v1/public/media/40701858-a6ae-4f0b-86c6-54b21ee2abf0",
+      "loaded": true
+    },
+    {
+      "path": "/api/v1/public/media/a1bf78e1-b76c-4ec7-889c-b32d33d4a97e",
+      "loaded": true
+    },
+    {
+      "path": "/api/v1/public/media/75977d12-8b51-4f98-8dcb-516434306b3c",
+      "loaded": true
+    },
+    {
+      "path": "/api/v1/public/media/40701858-a6ae-4f0b-86c6-54b21ee2abf0",
+      "loaded": true
+    },
+    {
+      "path": "/api/v1/public/media/a1bf78e1-b76c-4ec7-889c-b32d33d4a97e",
+      "loaded": true
+    },
+    {
+      "path": "/api/v1/public/media/75977d12-8b51-4f98-8dcb-516434306b3c",
+      "loaded": true
+    }
+  ]
+}

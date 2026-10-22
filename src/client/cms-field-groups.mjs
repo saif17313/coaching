@@ -8,7 +8,7 @@ const configurations={
  HOME_YOUTUBE_CLASSES:[['Section title','header'],['YouTube classes','classes']],
  CONTACT_INFO:[['Location and visitor information','address','transitInfo','securityInfo'],['Map and directions','mapEmbedUrl','mapDirectionUrl'],['Contact methods','phone','email','socialLinks']],
  CONTACT_FAQ:[['Frequently asked questions','faqs']],
- GLOBAL_FOOTER:[['Identity and copyright','description','copyrightText'],['Social media','socialLinks'],['Navigation links','links']],
+ GLOBAL_FOOTER:[['Website appearance','appearance'],['Interface labels','interfaceLabels'],['Identity and copyright','description','copyrightText'],['Social media','socialLinks'],['Navigation links','links']],
  ABOUT_HERO:[['Introduction','eyebrow','title','subtitle','description','highlightedText','greeting','quote'],['Teacher profile','name','role','organization','summary','email','phone','location','imageUrl'],['Trust and social links','heroStats','socialLinks']],
 };
 const itemConfigurations={

@@ -92,3 +92,11 @@ Remaining REQUIRED: optimized readonly smoke (can replay verify-demo-workspace.m
 - Live domain still returns 404 for the new brand asset and demo route; production activation is pending. Connected Vercel team access returns 403. Exact deployment promotion requested from the user.
 - Read-only production verification script and honest failed live evidence are retained; all prior local passing evidence remains intact.
 
+
+### 2026-10-22 record-source and premium release
+- Confirmed 1 registered Student versus 51 isolated samples, 11 sample batches and 81 enrollments. Added explicit main-menu data source switching with persisted selection and unchanged genuine totals.
+- Added premium public presentation, reduced motion, 34 editable interface labels, global appearance controls and source-aware Home catalog editing.
+- Additive interface schema migrated; global control section uses backward-compatible empty content and preserves existing editorial sections.
+- 756 tests pass; optimized build, typecheck, lint and public responsive/accessibility checks pass. Browser evidence verifies data sources and actual unsaved preview.
+- Production screenshot shows main; remote main is an ancestor at 92b8fe5. Release advances main normally alongside feature/p00-foundation, without force or Vercel configuration changes.
+

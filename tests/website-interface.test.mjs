@@ -1,0 +1,4 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {validateCmsFields} from '../src/client/cms-fields.mjs';
+test('global appearance and small interface labels remain bounded and backward compatible',()=>{assert.equal(validateCmsFields('GLOBAL_FOOTER',{}),true);assert.equal(validateCmsFields('GLOBAL_FOOTER',{appearance:{visualStyle:'premium',enableMotion:false},interfaceLabels:{dashboardButton:'My learning space',viewCourse:'Explore programme',footerContact:''}}),true);for(const value of [{appearance:{visualStyle:'custom-css'}},{appearance:{enableMotion:'yes'}},{appearance:{css:'position:fixed'}},{interfaceLabels:{dashboardButton:'x'.repeat(301)}},{interfaceLabels:{unknown:'not an exposed setting'}}])assert.equal(validateCmsFields('GLOBAL_FOOTER',value),false);});
