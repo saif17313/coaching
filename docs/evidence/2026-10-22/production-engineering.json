@@ -1,7 +1,35 @@
 {
+  "status": "Pass",
+  "checkedAt": "2026-10-22T16:24:59.523Z",
   "origin": "https://educentre-iota.vercel.app",
-  "checkedAt": "2026-10-22T03:54:41.760Z",
-  "checks": [],
-  "status": "Fail",
-  "failure": "Production domain has not activated the new build: brand asset is missing\n\n404 !== 200\n"
+  "implementationCommit": "b913240cb3f7081af724e36a7e4c617e84e3919d",
+  "productionSource": "main",
+  "deliveryBranch": "feature/p00-foundation",
+  "ci": {
+    "main": "https://github.com/saif17313/coaching/actions/runs/39812974400",
+    "feature": "https://github.com/saif17313/coaching/actions/runs/39812924312",
+    "status": "success"
+  },
+  "deployment": "https://vercel.com/saif-411a/educentre/F8SjG9SV19HXGnTHVrP3MQdXSpDG",
+  "seedCounts": {
+    "students": 51,
+    "batches": 11,
+    "enrollments": 81
+  },
+  "registeredStudentCount": 1,
+  "checks": [
+    "Authenticated CMS write readiness confirmed",
+    "Students main menu defaults to all seeded sample profiles with an explicit source label",
+    "Registered records retain their actual account count and never merge sample identities",
+    "Batches loads its seeded records through the main menu",
+    "Enrollments loads its seeded records through the main menu",
+    "Subjects loads its seeded records through the main menu",
+    "Cashflow & reports loads its seeded records through the main menu",
+    "Source selection survives reload and genuine management/finance totals remain unchanged",
+    "Authorized Student SAMPLE PDF receipt renders and opens successfully",
+    "Student still receives only their assigned sample profile and cannot access the Teacher dataset",
+    "Unsaved global interface labels render in the real preview and remain absent from the public site",
+    "Appearance and motion controls update the actual website preview",
+    "Premium presentation is responsive at four widths and respects reduced motion"
+  ]
 }

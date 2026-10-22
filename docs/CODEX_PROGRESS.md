@@ -100,3 +100,7 @@ Remaining REQUIRED: optimized readonly smoke (can replay verify-demo-workspace.m
 - 756 tests pass; optimized build, typecheck, lint and public responsive/accessibility checks pass. Browser evidence verifies data sources and actual unsaved preview.
 - Production screenshot shows main; remote main is an ancestor at 92b8fe5. Release advances main normally alongside feature/p00-foundation, without force or Vercel configuration changes.
 
+### Production activation confirmed
+- Implementation b913240 is on both branches; both CI runs and Vercel deployment passed.
+- The actual production alias passed 13 authenticated scope/preview/PDF checks and all seeded public-page checks. Source distinction is intentional: 1 registered account versus 51 isolated sample profiles, now accessible from the main management menus.
+- Latest production evidence supersedes the earlier activation-blocker report. Existing immutable preview URLs are unchanged; use educentre-iota.vercel.app.

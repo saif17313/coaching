@@ -1,0 +1,25 @@
+{
+  "checks": [
+    "Authenticated CMS write readiness confirmed",
+    "Students main menu defaults to all seeded sample profiles with an explicit source label",
+    "Registered records retain their actual account count and never merge sample identities",
+    "Batches loads its seeded records through the main menu",
+    "Enrollments loads its seeded records through the main menu",
+    "Subjects loads its seeded records through the main menu",
+    "Cashflow & reports loads its seeded records through the main menu",
+    "Source selection survives reload and genuine management/finance totals remain unchanged",
+    "Authorized Student SAMPLE PDF receipt renders and opens successfully",
+    "Student still receives only their assigned sample profile and cannot access the Teacher dataset",
+    "Unsaved global interface labels render in the real preview and remain absent from the public site",
+    "Appearance and motion controls update the actual website preview",
+    "Premium presentation is responsive at four widths and respects reduced motion"
+  ],
+  "status": "Pass",
+  "origin": "https://educentre-iota.vercel.app",
+  "seedCounts": {
+    "students": 51,
+    "batches": 11,
+    "enrollments": 81
+  },
+  "registeredStudentCount": 1
+}
