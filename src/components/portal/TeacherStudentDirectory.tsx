@@ -1,11 +1,11 @@
 'use client';
 import {useEffect,useMemo,useState} from 'react';
-import Image from 'next/image';
+import {ProfileAvatar} from './ProfileAvatar';
 import {validateStudentDirectory,type DirectoryStudent,type StudentDirectory} from '@/client/student-directory.mjs';
 import {PortalEmpty,PortalIcon,PortalMetric} from './PortalPrimitives';
 import type {TeacherRow} from '@/client/teacher-management.mjs';
 const asRow=(row:DirectoryStudent):TeacherRow=>({id:row.id,name:row.fullName,status:row.accountStatus});
-function Avatar({student}:{student:DirectoryStudent}){const [failed,setFailed]=useState(false);return <span className="premium-avatar">{student.photoMediaId&&!failed?<Image unoptimized src={`/api/v1/teacher/students/${student.id}/photo`} alt="" width={36} height={36} onError={()=>setFailed(true)}/>:student.fullName.slice(0,1).toUpperCase()||'S'}</span>;}
+function Avatar({student}:{student:DirectoryStudent}){return <ProfileAvatar key={student.id+':'+student.photoMediaId} src={student.photoMediaId?`/api/v1/teacher/students/${student.id}/photo`:null} name={student.fullName} size={36}/>;}
 function decimalMinor(value:string){const amount=BigInt(value);return (amount/100n).toString()+'.'+(amount%100n).toString().padStart(2,'0');}
 function csvCell(value:unknown){const text=String(value??'');return '"'+text.replace(/^[\s\uFEFF]*([=+@\-])/,"'$1").replaceAll('"','""')+'"';}
 export function TeacherStudentDirectory({version,onOpen,onRename,onStatus,onAdd,onCreateAccount,onRefresh}:{version:number;onAdd:()=>void;onCreateAccount:()=>void;onRefresh:()=>void;onOpen:(row:TeacherRow)=>void;onRename:(row:TeacherRow)=>void;onStatus:(row:TeacherRow,status:'active'|'disabled'|'rejected')=>void}){

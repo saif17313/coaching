@@ -1,0 +1,21 @@
+{
+  "checks": [
+    {
+      "width": 375,
+      "violations": []
+    },
+    {
+      "width": 768,
+      "violations": []
+    },
+    {
+      "width": 1440,
+      "violations": []
+    },
+    {
+      "width": 1920,
+      "violations": []
+    }
+  ],
+  "status": "Pass"
+}

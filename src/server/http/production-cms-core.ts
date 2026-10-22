@@ -1,4 +1,5 @@
 import 'server-only';
+import {createCmsDesignRoute} from './cms-design-route.mjs';
 import {createCmsRoute,type CmsKind} from './cms-core.mjs';
 import {verifyActiveActor} from './production-read-adapter';
 import {cmsRpcError} from './cms-errors.mjs';
@@ -14,8 +15,8 @@ function origin():{root:URL,key:string}{
  return {root,key};
 }
 export async function callCms(name:string,token:string|null,args:Record<string,unknown>):Promise<unknown>{
- if(!['coaching_cms_public_fingerprint','coaching_cms_organize','coaching_cms_fields_write','coaching_cms_write','coaching_cms_list_pages','coaching_cms_get_page','coaching_cms_get_published_page','coaching_cms_get_published_settings'].includes(name))throw Error('INVALID_RPC');
- if(['coaching_cms_write','coaching_cms_fields_write','coaching_cms_organize'].includes(name)&&process.env.COACHING_ENABLE_MUTATION_APIS!=='enabled-after-db-verification')throw Error('MUTATIONS_DISABLED');
+ if(!['coaching_cms_design_write','coaching_cms_public_fingerprint','coaching_cms_organize','coaching_cms_fields_write','coaching_cms_write','coaching_cms_list_pages','coaching_cms_get_page','coaching_cms_get_published_page','coaching_cms_get_published_settings'].includes(name))throw Error('INVALID_RPC');
+ if(['coaching_cms_design_write','coaching_cms_write','coaching_cms_fields_write','coaching_cms_organize'].includes(name)&&process.env.COACHING_ENABLE_MUTATION_APIS!=='enabled-after-db-verification')throw Error('MUTATIONS_DISABLED');
  const {root,key}=origin();const res=await fetch(new URL(`/rest/v1/rpc/${name}`,root),{
   method:'POST',headers:{apikey:key,...(token?{Authorization:`Bearer ${token}`}:{Authorization:`Bearer ${key}`}),
    Accept:'application/json','Content-Type':'application/json'},body:JSON.stringify(args),cache:'no-store',redirect:'error',signal:AbortSignal.timeout(10000)});
@@ -24,3 +25,5 @@ export async function callCms(name:string,token:string|null,args:Record<string,u
 export const cmsRoute=(kind:CmsKind)=>createCmsRoute(kind,{verify:verifyActiveActor,call:callCms});
 export const cmsFieldsRoute=createCmsFieldsRoute({verify:verifyActiveActor,call:callCms});
 export const cmsOrganizeRoute=createCmsOrganizeRoute({verify:verifyActiveActor,call:callCms});
+
+export const cmsDesignRoute=createCmsDesignRoute({verify:verifyActiveActor,call:callCms});

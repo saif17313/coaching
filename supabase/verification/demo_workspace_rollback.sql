@@ -1,0 +1,47 @@
+-- Run after admission fixtures, inside BEGIN/ROLLBACK.
+select set_config('request.jwt.claim.sub',:'teacher_id',true),set_config('test.demo_revenue',(select coalesce(sum(amount_minor),0)::text from public.payments),true),set_config('test.demo_enrollments',(select count(*)::text from public.enrollments),true);
+set local role authenticated;
+do $$declare r jsonb;r2 jsonb;s jsonb;c text;op uuid:=gen_random_uuid();payload jsonb;begin
+ payload:=jsonb_build_object('studentUserId',current_setting('test.student'));
+ r:=public.coaching_demo_command('seed',payload,0,op);s:=r->'state';
+ if jsonb_array_length(s->'students')<>50 or jsonb_array_length(s->'batches')<>10 or jsonb_array_length(s->'enrollments')<>80 then raise exception 'DEMO_COUNTS_FAILED';end if;
+ if public.coaching_demo_command('seed',payload,0,op)<>r or public.coaching_demo_command('seed',payload,0,gen_random_uuid())<>r then raise exception 'SEED_NOT_REPEATABLE';end if;
+ c:=s->'charges'->0->>'id';perform set_config('test.demo_charge',c,true);perform set_config('test.demo_other_charge',s->'charges'->1->>'id',true);
+ r:=public.coaching_demo_command('payment.post',jsonb_build_object('chargeId',c,'amountMinor','250000','method','cash','reference','DEMO full 2500'),1,gen_random_uuid());
+ if r->'state'->'receipts'->0->'snapshot'->>'balanceMinor'<>'0' or r->'state'->'receipts'->0->'snapshot'->>'demo'<>'true' then raise exception 'FULL_2500_FAILED';end if;
+ payload:=jsonb_build_object('chargeId',current_setting('test.demo_other_charge'),'amountMinor','150000','method','bank','reference','DEMO partial 1500 A');op:=gen_random_uuid();
+ r:=public.coaching_demo_command('payment.post',payload,2,op);
+ if r->'state'->'receipts'->1->'snapshot'->>'balanceMinor'<>'150000' then raise exception 'PARTIAL_3000_FAILED';end if;
+ if public.coaching_demo_command('payment.post',payload,2,op)<>r then raise exception 'PAYMENT_REPLAY_FAILED';end if;
+ payload:=jsonb_set(payload,'{reference}','"DEMO partial 1500 B"');r:=public.coaching_demo_command('payment.post',payload,3,gen_random_uuid());
+ if r->'state'->'receipts'->2->'snapshot'->>'balanceMinor'<>'0' or r->'state'->'receipts'->1->'snapshot'->>'balanceMinor'<>'150000' then raise exception 'RECEIPT_HISTORY_MUTATED';end if;
+ begin perform public.coaching_demo_command('payment.post',payload,3,gen_random_uuid());raise exception 'STALE_ACCEPTED';exception when others then if sqlerrm<>'REVISION_CONFLICT' then raise;end if;end;
+ begin perform public.coaching_demo_command('payment.post',payload,4,gen_random_uuid());raise exception 'OVERPAYMENT_ACCEPTED';exception when others then if sqlerrm<>'PAYMENT_EXCEEDS_BALANCE' then raise;end if;end;
+ payload:=jsonb_build_object('chargeId',c,'amountMinor','20000','method','cash','reference','DEMO partial refund');r:=public.coaching_demo_command('payment.refund',payload,4,gen_random_uuid());
+ if jsonb_array_length(r->'state'->'receipts'->0->'adjustments')<>1 or r->'state'->'receipts'->0->'snapshot'->>'balanceMinor'<>'0' then raise exception 'REFUND_TRAIL_FAILED';end if;
+ begin perform public.coaching_demo_command('payment.post',jsonb_build_object('chargeId',c,'amountMinor',null,'method','cash','reference','DEMO null'),5,gen_random_uuid());raise exception 'NULL_ACCEPTED';exception when others then if sqlerrm<>'INVALID_INPUT' then raise;end if;end;
+ raise notice 'PASS 50 students,10 batches,80 enrollments,repeatable seed,2500 full,3000 installments,immutable snapshots,refund trail,stale and overpayment denial';
+end;$$;
+do $$declare r jsonb;s jsonb;b text;sid text;eid text;rev bigint;begin
+ r:=public.coaching_demo_read();s:=r->'state';rev:=(r->>'revision')::bigint;
+ begin perform public.coaching_demo_command('enrollment.create',jsonb_build_object('studentId',s->'enrollments'->0->>'studentId','batchId',s->'enrollments'->0->>'batchId'),rev,gen_random_uuid());raise exception 'DUPLICATE_ENROLLMENT_ALLOWED';exception when others then if sqlerrm<>'ENROLLMENT_ALREADY_EXISTS' then raise;end if;end;
+ begin perform public.coaching_demo_command('enrollment.decide',jsonb_build_object('enrollmentId',s->'enrollments'->0->>'id','status','pending'),rev,gen_random_uuid());raise exception 'INVALID_TRANSITION_ALLOWED';exception when others then if sqlerrm<>'INVALID_ENROLLMENT_TRANSITION' then raise;end if;end;
+ r:=public.coaching_demo_command('batch.create','{"name":"Capacity fixture","feeMinor":"250000","capacity":"1","schedule":"DEMO Mon 10:00"}',rev,gen_random_uuid());b:=r->'state'->'batches'->10->>'id';
+ r:=public.coaching_demo_command('enrollment.create',jsonb_build_object('studentId',s->'students'->0->>'id','batchId',b),(r->>'revision')::bigint,gen_random_uuid());eid:=r->'state'->'enrollments'->80->>'id';
+ r:=public.coaching_demo_command('enrollment.decide',jsonb_build_object('enrollmentId',eid,'status','active'),(r->>'revision')::bigint,gen_random_uuid());
+ begin perform public.coaching_demo_command('enrollment.create',jsonb_build_object('studentId',s->'students'->1->>'id','batchId',b),(r->>'revision')::bigint,gen_random_uuid());raise exception 'CAPACITY_EXCEEDED';exception when others then if sqlerrm<>'BATCH_FULL' then raise;end if;end;
+ begin perform public.coaching_demo_command('admission.decide',jsonb_build_object('studentId',s->'students'->0->>'id','status','approved'),(r->>'revision')::bigint,gen_random_uuid());raise exception 'UNSETTLED_ADMISSION_APPROVED';exception when others then if sqlerrm<>'VERIFIED_PAYMENT_REQUIRED' then raise;end if;end;
+ raise notice 'PASS Batch creation, atomic enrollment/charge, duplicate, transition, capacity and admission eligibility';
+end;$$;
+reset role;
+do $$begin if (select coalesce(sum(amount_minor),0)::text from public.payments)<>current_setting('test.demo_revenue') or (select count(*)::text from public.enrollments)<>current_setting('test.demo_enrollments') then raise exception 'GENUINE_LEDGER_CHANGED';end if;end;$$;
+select set_config('request.jwt.claim.sub',:'student_id',true);
+set local role authenticated;
+do $$declare r jsonb;begin r:=public.coaching_demo_read();if jsonb_array_length(r->'state'->'students')<>1 or exists(select 1 from jsonb_array_elements(r->'state'->'charges') c where c->>'studentId'<>r->'state'->'students'->0->>'id') then raise exception 'DEMO_STUDENT_LEAK';end if;
+ begin perform public.coaching_demo_command('payment.report',jsonb_build_object('chargeId',current_setting('test.demo_other_charge'),'amountMinor','100','method','bank','reference','DEMO foreign charge'),(public.coaching_demo_read()->>'revision')::bigint,gen_random_uuid());raise exception 'FOREIGN_DEMO_ALLOWED';exception when others then if sqlerrm<>'FORBIDDEN' then raise;end if;end;
+ begin perform public.coaching_demo_command('seed','{}',0,gen_random_uuid());raise exception 'STUDENT_SEED_ALLOWED';exception when others then if sqlerrm<>'FORBIDDEN' then raise;end if;end;
+ raise notice 'PASS Student subset and cross-student/Teacher-action isolation';end;$$;
+reset role;
+set local role anon;
+do $$begin begin perform public.coaching_demo_read();raise exception 'ANON_ALLOWED';exception when insufficient_privilege then null;end;end;$$;
+reset role;

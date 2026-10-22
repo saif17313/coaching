@@ -1,0 +1,14 @@
+{
+  "time": "2026-10-21T19:41:11.666Z",
+  "checks": [
+    "UI uploads verified image and saves bounded image/layout settings privately",
+    "Actual public-renderer preview applies saved image width and crop radius",
+    "Reload, exact publication, independent public image styling and four viewport widths pass"
+  ],
+  "status": "Pass",
+  "retainedAsset": {
+    "id": "29051676-6691-4553-85f2-be6337254e4f",
+    "reason": "MEDIA_DRAFT_IN_USE"
+  },
+  "cleanup": "Isolated page archived; its attached image retained by reference protection"
+}

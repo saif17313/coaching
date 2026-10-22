@@ -1,3 +1,5 @@
+import {createDemoWorkspaceRoute} from './demo-workspace.mjs';
+import {createPaymentReceiptRoute} from './payment-receipt.mjs';
 import {createTeacherAccountRoute} from './teacher-account.mjs';
 import {validateManagementSummary} from '@/client/student-workflow.mjs';
 import {readSmallJsonBody} from './student-admission.mjs';
@@ -12,10 +14,11 @@ import {imageSignature} from './cms-media.mjs';
 import {readObject} from './production-cms-media';
 import {admissionId} from '@/client/student-admission.mjs';
 import {COOKIE_NAME,validAccessToken} from '../browser-session.mjs';
-const allow=new Set(['coaching_student_admission_read','coaching_student_admission_write','coaching_student_photo','coaching_teacher_student_directory','coaching_teacher_batch_directory','coaching_teacher_account_profile','coaching_teacher_account_profile_write','coaching_student_workflow_read','coaching_student_workflow_command','coaching_student_document','coaching_management_summary','coaching_teacher_student_identity']);
+async function renderReceipt(data:unknown){const {receiptPdf}=await import('../receipts/pdf.mjs');return receiptPdf(data);}
+const allow=new Set(['coaching_demo_read','coaching_demo_command','coaching_payment_receipt','coaching_student_admission_read','coaching_student_admission_write','coaching_student_photo','coaching_teacher_student_directory','coaching_teacher_batch_directory','coaching_teacher_account_profile','coaching_teacher_account_profile_write','coaching_student_workflow_read','coaching_student_workflow_command','coaching_student_document','coaching_management_summary','coaching_teacher_student_identity']);
 async function call(name:string,token:string,args:Record<string,unknown>):Promise<unknown>{
  if(!allow.has(name))throw Error('RPC_NOT_ALLOWED');
- if(['coaching_student_admission_write','coaching_teacher_account_profile_write','coaching_student_workflow_command'].includes(name)&&process.env.COACHING_ENABLE_MUTATION_APIS!=='enabled-after-db-verification')throw new RpcError('MUTATIONS_DISABLED',503);
+ if((name==='coaching_payment_receipt'&&args.p_issue===true||['coaching_demo_command','coaching_student_admission_write','coaching_teacher_account_profile_write','coaching_student_workflow_command'].includes(name))&&process.env.COACHING_ENABLE_MUTATION_APIS!=='enabled-after-db-verification')throw new RpcError('MUTATIONS_DISABLED',503);
  const raw=process.env.SUPABASE_URL,key=process.env.SUPABASE_ANON_KEY;
  if(!raw||!key||/[^\x21-\x7e]/.test(key)||key.length>4096)throw Error('DB_NOT_CONFIGURED');
  let root:URL;try{root=new URL(raw);}catch{throw Error('DB_NOT_CONFIGURED');}
@@ -64,3 +67,7 @@ async function verifiedTeacherToken(request:Request){const token=/^Bearer ([A-Za
 function workflowFailure(error:unknown){const e=error as {status?:number;httpStatus?:number;code?:string;publicCode?:string};const status=e.status??e.httpStatus??503;return Response.json({success:false,error:{code:e.code??e.publicCode??'SERVICE_UNAVAILABLE'}},{status,headers:{'Cache-Control':'no-store'}});}
 export async function teacherStudentIdentityRoute(request:Request){try{const token=await verifiedTeacherToken(request);const body=await readSmallJsonBody(request) as {email?:unknown};if(!body||Object.keys(body).join(',')!=='email'||typeof body.email!=='string'||body.email.length>254||!/^\S+@\S+\.\S+$/.test(body.email)||new URL(request.url).search)throw new RpcError('INVALID_INPUT',400);const data=await call('coaching_teacher_student_identity',token,{p_email:body.email.trim().toLowerCase()}) as Record<string,unknown>;if(!data||Object.keys(data).sort().join(',')!=='accountStatus,confirmed,state,studentId'||!['available','existing','role_conflict'].includes(String(data.state))||typeof data.confirmed!=='boolean'||!(data.studentId===null||admissionId(data.studentId)))throw new RpcError('UPSTREAM_DATA_INVALID',502);return Response.json({success:true,data},{headers:{'Cache-Control':'private, no-store'}});}catch(error){return workflowFailure(error);}}
 export async function teacherManagementSummaryRoute(request:Request){try{const token=await verifiedTeacherToken(request),query=new URL(request.url).searchParams,period=query.get('period');if([...query.keys()].some(key=>key!=='period')||query.getAll('period').length>1||period!==null&&!/^\d{4}-(0[1-9]|1[0-2])$/.test(period))throw new RpcError('INVALID_PERIOD',400);const data=validateManagementSummary(await call('coaching_management_summary',token,{p_period:period}));return Response.json({success:true,data},{headers:{'Cache-Control':'private, no-store'}});}catch(error){return workflowFailure(error);}}
+
+export const paymentReceiptRoute=(role:'teacher'|'student')=>createPaymentReceiptRoute(role,{verify:verifyActiveActor,call,render:renderReceipt});
+
+export const demoWorkspaceRoute=(role:'teacher'|'student')=>createDemoWorkspaceRoute(role,{verify:verifyActiveActor,call,render:renderReceipt});

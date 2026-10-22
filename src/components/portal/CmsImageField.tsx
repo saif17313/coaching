@@ -15,6 +15,7 @@ export interface CmsImageFieldProps {
   media?: MediaAsset[];
   disabled?: boolean;
   path?: string;
+  onBusyChange?: (busy: boolean) => void;
 }
 
 export function CmsImageField({
@@ -23,7 +24,8 @@ export function CmsImageField({
   onChange,
   media = [],
   disabled = false,
-  path = ''
+  path = '',
+  onBusyChange
 }: CmsImageFieldProps) {
   const [mode, setMode] = useState<'view' | 'upload' | 'library'>(value ? 'view' : 'upload');
   const [altText, setAltText] = useState('');
@@ -48,6 +50,7 @@ export function CmsImageField({
     }
 
     setUploading(true);
+    onBusyChange?.(true);
     setError('');
     const effectiveAlt = altText.trim() || `${label} image`;
 
@@ -70,6 +73,7 @@ export function CmsImageField({
       }
 
       onChange(body.data.id);
+      window.dispatchEvent(new Event('educentre:media-uploaded'));
       setMode('view');
       setAltText('');
       setPreviewError(false);
@@ -78,6 +82,7 @@ export function CmsImageField({
       setError((err as Error).message || 'Failed to upload image.');
     } finally {
       setUploading(false);
+      onBusyChange?.(false);
     }
   }
 

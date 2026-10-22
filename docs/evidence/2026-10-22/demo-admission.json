@@ -1,0 +1,8 @@
+{
+  "checks": [
+    "Actual Add sample student, full fields, private photo upload, circular avatar, persisted admission roll and edit pass",
+    "Physical rejection, resubmission, eligible approval and completion persist; invalid final transition is denied",
+    "Reload confirms the same isolated identity, contact, photo and completed admission"
+  ],
+  "status": "Pass"
+}

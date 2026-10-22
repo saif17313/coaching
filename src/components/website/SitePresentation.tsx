@@ -1,7 +1,9 @@
+import {BrandSymbol} from '@/components/common/BrandSymbol';
 import {publicPageContent,publicText,publicContactEmail} from '@/client/public-content-policy.mjs';
 import './premium-public.css';
+import {CmsDesignScope} from './CmsDesignScope';
 import {Fragment,type ReactNode} from 'react';
-import Link from 'next/link';
+import Link from '@/components/common/ProgressLink';
 
 import {HOME_SECTIONS,resolveHomeSection,orderHomeKeys} from '@/client/website-composition.mjs';
 import {InvitationRedirect} from '../portal/InvitationRedirect';
@@ -37,11 +39,11 @@ function Media({item,large=false}:{item:SiteItem;large?:boolean}){
 }
 function Card({item,index=0,kind='cards',section}:{item:SiteItem;index?:number;kind?:string;section?:SiteSection}){
  const video=youtubeVideoId(item.url),outgoing=item.url?.startsWith('https://')&&!video?item.url:null;
- return <article id={`item-${item.id.toLowerCase()}`} className={`tale-card tale-card-${kind}`}>
+ return <CmsDesignScope design={item.design}><article id={`item-${item.id.toLowerCase()}`} className={`tale-card tale-card-${kind}`}>
   {kind==='gallery'||item.mediaId?<div className="tale-card-media"><Media item={item}/></div>:<span className="tale-card-symbol" aria-hidden="true">{['✦','◈','◇','✳','✧'][index%5]}</span>}
   <div className="tale-card-copy">{item.title&&<h3>{item.title}</h3>}{item.description&&<p>{item.description}</p>}{section&&item.metadata&&<ItemDetails section={section} value={item.metadata}/>}{['news','gallery'].includes(kind)&&publicItemLink(kind,item.id)&&<Link href={publicItemLink(kind,item.id)!}>View on page →</Link>}
   {video?<PublishedVideo videoId={video} title={item.title||'Published class video'}/>:outgoing?<a href={outgoing} target="_blank" rel="noopener noreferrer">Explore more <span aria-hidden="true">↗</span></a>:null}</div>
- </article>;
+ </article></CmsDesignScope>;
 }
 function Cards({section,kind='cards',limit}:{section?:SiteSection;kind?:string;limit?:number}){
  if(!section)return null;
@@ -52,10 +54,11 @@ function Cards({section,kind='cards',limit}:{section?:SiteSection;kind?:string;l
  </section>;
 }
 function InfoSection({section,slug}:{section:SiteSection;slug:string}){
+ if(section.kind==='hero')return <section className="tale-interior-hero" id={`section-${section.id}`}><span className="tale-eyebrow">EDUCENTRE / {slug.replaceAll('-',' ').toUpperCase()}</span><h1>{typeof section.content?.headline==='string'&&section.content.headline||section.heading}</h1>{(section.content?.description||section.body)&&<p>{typeof section.content?.description==='string'&&section.content.description||section.body}</p>}{section.sectionKey&&<TypedContent section={section} omit={['headline','description']}/> }<span className="tale-interior-decoration" aria-hidden="true">✦</span></section>;
  if(section.sectionKey)return <section className={`tale-block tale-info tale-typed-section`} id={`section-${section.id}`}><div className="tale-section-title"><h2>{section.heading}</h2>{section.body&&<p>{section.body}</p>}</div><TypedContent section={section}/>{section.items.length>0&&<div className="tale-cards">{section.items.map((item,index)=><Card key={item.id} item={item} index={index} kind={section.kind} section={section}/>)}</div>}</section>;
- if(section.kind==='hero')return <section className="tale-interior-hero" id={`section-${section.id}`}><span className="tale-eyebrow">EDUCENTRE / {slug.replaceAll('-',' ').toUpperCase()}</span><h1>{section.heading}</h1><p>{section.body}</p><span className="tale-interior-decoration" aria-hidden="true">✦</span></section>;
+
  if(section.kind==='faq')return <section id={`section-${section.id}`} className="tale-block tale-faq"><div className="tale-section-title"><span className="tale-eyebrow">HELPFUL ANSWERS</span><h2>{section.heading}</h2>{section.body&&<p>{section.body}</p>}</div><TypedContent section={section}/><div className="tale-faq-list">{visibleItems(section).map(x=><details key={x.id}><summary>{x.title}<span>+</span></summary><p>{x.description}</p></details>)}</div></section>;
- if(section.kind==='rich-text'||section.kind==='contact'||section.kind==='materials'||section.kind==='routine'||section.kind==='academic-calendar')return <section id={`section-${section.id}`} className="tale-block tale-info"><div className="tale-section-title"><span className="tale-eyebrow">DISCOVER MORE</span><h2>{section.heading}</h2>{section.body&&<p>{section.body}</p>}</div><TypedContent section={section}/><div className="tale-info-rows">{visibleItems(section).map((x,i)=><article key={x.id}><span>{String(i+1).padStart(2,'0')}</span><div><h3>{x.title}</h3><p>{x.description}</p></div>{x.url?.startsWith('https://')&&<a href={x.url} target="_blank" rel="noopener noreferrer">Visit ↗</a>}</article>)}</div></section>;
+ if(section.kind==='rich-text'||section.kind==='contact'||section.kind==='materials'||section.kind==='routine'||section.kind==='academic-calendar')return <section id={`section-${section.id}`} className={'tale-block tale-info'+(!visibleItems(section).length?' tale-copy-only':'')}><div className="tale-section-title"><span className="tale-eyebrow">DISCOVER MORE</span><h2>{section.heading}</h2>{section.body&&<p>{section.body}</p>}</div><TypedContent section={section}/><div className="tale-info-rows">{visibleItems(section).map((x,i)=><article key={x.id}><span>{String(i+1).padStart(2,'0')}</span><div><h3>{x.title}</h3><p>{x.description}</p></div>{x.url?.startsWith('https://')&&<a href={x.url} target="_blank" rel="noopener noreferrer">Visit ↗</a>}</article>)}</div></section>;
  if(section.kind==='cta'||section.kind==='footer')return <section id={`section-${section.id}`} className="tale-block tale-banner"><h2>{section.heading}</h2>{section.body&&<p>{section.body}</p>}<div className="tale-banner-actions">{visibleItems(section).filter(x=>x.url?.startsWith('https://')).map(x=><a key={x.id} href={x.url!} rel="noopener noreferrer" target="_blank">{x.title} ↗</a>)}</div></section>;
  return <Cards section={section} kind={section.kind}/>;
 }
@@ -65,7 +68,7 @@ function Header({siteTitle,navigation,logoId,custom=[]}:{siteTitle:string;naviga
  const available=new Set(navigation.map(n=>n.slug));
  const basic=(slug:string,label:string)=>available.has(slug)?<Link href={href(slug)} key={slug}>{navigation.find(x=>x.slug===slug)?.title||label}</Link>:null;
  return <header className="tale-header"><div className="tale-header-inner">
-   <Link className="tale-brand" href="/"><span className="tale-brand-mark">{logoId?<Image unoptimized src={`/api/v1/public/media/${logoId}`} alt="" width={46} height={46}/>:<span>E</span>}</span><span><strong>{siteTitle}</strong><small>ACADEMIC CARE · STUDENT SUCCESS</small></span></Link>
+   <Link className="tale-brand" href="/"><span className="tale-brand-mark">{logoId?<Image unoptimized src={`/api/v1/public/media/${logoId}`} alt="" width={46} height={46}/>:<BrandSymbol size={50}/>}</span><span><strong>{siteTitle}</strong><small>ACADEMIC CARE · STUDENT SUCCESS</small></span></Link>
    <nav className="tale-desktop-nav" aria-label="Main website navigation">{custom.length>0?custom.map(link=><Link key={link.url+link.label} href={link.url}>{link.label}</Link>):<>{basic('home','Home')}{basic('about','About')}
     <details className="tale-nav-dropdown"><summary>Academic <span aria-hidden="true">⌄</span></summary><div className="tale-nav-menu">{academic.filter(([slug])=>available.has(slug)).map(([slug,label])=><Link key={slug} href={href(slug)}>{label}<span>↗</span></Link>)}</div></details>
     {basic('gallery','Gallery')}{basic('news-events','News & Events')}{basic('contact','Contact Me')}
@@ -105,9 +108,9 @@ function Home({page,related}:{page:SitePage;related:Record<string,SitePage|null>
   HOME_GALLERY:(gallery&&<div className="tale-soft-panel tale-last-gallery"><Cards section={gallery} kind="gallery" limit={4}/><div className="tale-centered-link"><Link href={href('gallery')}>Explore gallery →</Link></div></div>),
  };
  for(const section of ordered(page).filter(s=>s.sectionKey!=='HOME_LAYOUT'&&!renderedHomeIds.has(s.id)))blocks['section:'+section.id]=<InfoSection section={section} slug="home" key={section.id}/>;
- return <>{orderHomeKeys(Object.keys(blocks),page,related).map(key=><Fragment key={key}>{blocks[key]}</Fragment>)}</>;
+ return <>{orderHomeKeys(Object.keys(blocks),page,related).map(key=><Fragment key={key}><CmsDesignScope sectionId={(resolveHomeSection(key,page,related)?.section??page.sections.find(s=>'section:'+s.id===key))?.id} design={(resolveHomeSection(key,page,related)?.section??page.sections.find(s=>'section:'+s.id===key))?.design}>{blocks[key]}</CmsDesignScope></Fragment>)}</>;
 }
-export function SitePresentation({page:rawPage,settings:rawSettings,navigation,related:rawRelated={},preview=false}:{page:SitePage|null;settings:SiteSettings|null;navigation:NavItem[];related?:Record<string,SitePage|null>;preview?:boolean}){
+export function SitePresentation({page:rawPage,settings:rawSettings,navigation,related:rawRelated={},preview=false,children}:{children?:ReactNode;page:SitePage|null;settings:SiteSettings|null;navigation:NavItem[];related?:Record<string,SitePage|null>;preview?:boolean}){
  const page=publicPageContent(rawPage),related=Object.fromEntries(Object.entries(rawRelated).map(([key,value])=>[key,publicPageContent(value)]));
  const settings=rawSettings?{...rawSettings,settings:{...rawSettings.settings,siteTitle:rawSettings.settings.siteTitle.replace(/\s+Demo$/i,''),tagline:publicText(rawSettings.settings.tagline),footerText:publicText(rawSettings.settings.footerText),contactEmail:publicContactEmail(rawSettings.settings.contactEmail)}}:null;
  const name=settings?.settings.siteTitle||'EduCentre';
@@ -120,7 +123,7 @@ export function SitePresentation({page:rawPage,settings:rawSettings,navigation,r
 
  return <div className="tale-site">{!preview&&<InvitationRedirect/>}<a className="tale-skip" href="#tale-content">Skip to content</a>{settings?.settings.tagline&&<div className="tale-topline">{settings.settings.tagline}</div>}
   <Header siteTitle={name} navigation={navigation} logoId={logoId} custom={links.filter(x=>x.location!=='footer')}/>
-  <main id="tale-content">{page?<>{isHome?<Home page={page} related={related}/>:<div className="tale-page-width"><SiteDiscovery entries={buildPublishedDirectory(sections)}/>{sections.map(section=><InfoSection key={section.id} section={section} slug={page.slug}/>)}</div>}</>:<div className="tale-empty"><h1>Website content is being prepared</h1><p>Published information will appear here soon.</p></div>}</main>
+  <main id="tale-content">{children??(page?<>{isHome?<Home page={page} related={related}/>:<div className="tale-page-width"><SiteDiscovery entries={buildPublishedDirectory(sections)}/>{sections.map(section=><CmsDesignScope key={section.id} design={section.design} sectionId={section.id}><InfoSection section={section} slug={page.slug}/></CmsDesignScope>)}</div>}</>:<div className="tale-empty"><h1>Website content is being prepared</h1><p>Published information will appear here soon.</p></div>)}</main>
   <footer id="website-footer" className="tale-footer"><div className="tale-footer-columns"><div><Link href="/" className="tale-footer-brand">{name} <span>✦</span></Link><p>{footerText('description')||settings?.settings.tagline}</p>{settings?.settings.footerText&&<small>{settings.settings.footerText}</small>}</div><div><h3>Explore</h3>{links.some(x=>x.location!=='header')?links.filter(x=>x.location!=='header').map(x=><Link key={x.url+x.label} href={x.url}>{x.label}</Link>):<><Link href="/site/about">About</Link><Link href="/site/courses">Courses</Link><Link href="/site/results">Results</Link><Link href="/site/gallery">Gallery</Link></>}</div><div><h3>Academics</h3><Link href="/site/academic-calendar">Academic calendar</Link><Link href="/site/class-routine">Class routine</Link><Link href="/site/materials">Materials</Link><Link href="/site/news-events">News & events</Link></div><div><h3>Get in touch</h3>{settings?.settings.contactEmail&&<a href={`mailto:${settings.settings.contactEmail}`}>{settings.settings.contactEmail}</a>}{settings?.settings.contactPhone&&<a href={`tel:${settings.settings.contactPhone}`}>{settings.settings.contactPhone}</a>}<Link href="/portal">Student / Teacher portal →</Link></div></div><div className="tale-footer-bottom">© {footerText('copyrightText')||`${new Date().getFullYear()} ${name}. All rights reserved.`} <a href="#tale-content">Back to top ↑</a></div></footer>
  </div>;
 }

@@ -1,0 +1,4 @@
+'use client';
+import Image from 'next/image';
+import {useState} from 'react';
+export function ProfileAvatar({src,name,size=96}:{src:string|null;name:string;size?:number}){const [failed,setFailed]=useState(false);return <span className="profile-avatar" style={{width:size,height:size,display:'inline-flex',flexShrink:0,alignItems:'center',justifyContent:'center',borderRadius:'50%',overflow:'hidden',background:'#e0f3e9',color:'#006d66',fontSize:size*.35,fontWeight:750}}>{src&&!failed?<Image unoptimized src={src} width={size} height={size} alt={`${name||'Student'} portrait`} style={{width:'100%',height:'100%',objectFit:'cover'}} onError={()=>setFailed(true)}/>:<span aria-label={`${name||'Student'} initials`}>{name.trim().split(/\s+/).slice(0,2).map(part=>part[0]).join('').toUpperCase()||'S'}</span>}</span>;}

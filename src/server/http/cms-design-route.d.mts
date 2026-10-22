@@ -1,0 +1,1 @@
+export function createCmsDesignRoute(ports:{verify:(token:string)=>Promise<unknown>;call:(name:string,token:string,args:Record<string,unknown>)=>Promise<unknown>}):(request:Request,context?:{params?:Promise<{pageId:string;sectionId:string}>})=>Promise<Response>;

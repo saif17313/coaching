@@ -1,4 +1,5 @@
 'use client';
+import type {CmsDesign} from '@/client/cms-design.mjs';
 import {useCallback,useEffect,useRef,useState,type FormEvent} from 'react';
 
 import {cmsFetch,cmsResponseError,CmsRequestError,validateCmsPage,type CmsKind} from '@/client/cms-studio.mjs';
@@ -13,8 +14,8 @@ import {saveCmsDraft,type CmsDraftStep} from '@/client/cms-save-draft.mjs';
 import {CmsContextWorkspace} from './CmsContextWorkspace';
 import type {CmsNode} from '@/client/cms-tree.mjs';
 
-type Item={id:string;order:number;title:string;description:string;url:string|null;mediaId:string|null;visible:boolean;metadata?:Record<string,unknown>};
-type Section={id:string;kind:CmsKind;order:number;heading:string;body:string;visible:boolean;items:Item[];sectionKey?:string;content?:Record<string,unknown>};
+type Item={id:string;order:number;title:string;description:string;url:string|null;mediaId:string|null;visible:boolean;metadata?:Record<string,unknown>;design?:CmsDesign};
+type Section={id:string;kind:CmsKind;order:number;heading:string;body:string;visible:boolean;items:Item[];sectionKey?:string;content?:Record<string,unknown>;design?:CmsDesign};
 type Page={id:string;slug:string;title:string;seoTitle:string;seoDescription:string;status:string;draftRevision:number;publishedRevision:number|null;sections:Section[]};
 type Listing={id:string;slug:string;title:string;status:string;draftRevision:number;publishedRevision:number|null};
 type Media={id:string;alt:string;status:string;sizeBytes:number;contentType:string};
@@ -52,14 +53,15 @@ export function WebsiteAdminStudio({target}:{target?:{id?:string;sectionId?:stri
  const [global,setGlobal]=useState<SettingsData|null>(null),[settings,setSettings]=useState<SiteSettings>(emptySettings);
  const [writeStatus,setWriteStatus]=useState<'checking'|'enabled'|'disabled'|'unavailable'|'unauthenticated'|'forbidden'>('checking');
  const [writeRuntime,setWriteRuntime]=useState<'local-development'|'deployment'>('local-development');
+ const [designPreview,setDesignPreview]=useState<{sectionId:string;itemId:string|null;design:CmsDesign}|null>(null);
  const [typedDirty,setTypedDirty]=useState(false);
  const [typedPreview,setTypedPreview]=useState<{sectionId:string;itemId:string;key:string;value:Record<string,unknown>}|null>(null);
  const statusSequence=useRef(0),mutationBusy=useRef(false),appliedSectionTarget=useRef('');
  const selection=useRef(0);const handledTarget=useRef<number|null>(null);const selected=page?.sections.find(s=>s.id===selectedSection);const content=selected?.items.find(i=>i.id===selectedItem);
  const settingsDirty=Boolean(global&&JSON.stringify(settings)!==JSON.stringify(global.settings));
- const unsaved=settingsDirty||typedDirty||Boolean(!selected&&(section.heading||section.body))||Boolean(!content&&(item.title||item.description||item.url))||Boolean(page&&(title!==page.title||seoTitle!==page.seoTitle||seoDescription!==page.seoDescription||selected&&(section.kind!==selected.kind||section.heading!==selected.heading||section.body!==selected.body||section.visible!==selected.visible)||content&&(item.title!==content.title||item.description!==content.description||item.url!==(content.url??'')||item.visible!==content.visible)));
+ const unsaved=settingsDirty||typedDirty||Boolean(designPreview)||Boolean(!selected&&(section.heading||section.body))||Boolean(!content&&(item.title||item.description||item.url))||Boolean(page&&(title!==page.title||seoTitle!==page.seoTitle||seoDescription!==page.seoDescription||selected&&(section.kind!==selected.kind||section.heading!==selected.heading||section.body!==selected.body||section.visible!==selected.visible)||content&&(item.title!==content.title||item.description!==content.description||item.url!==(content.url??'')||item.visible!==content.visible)));
  const canPublish=Boolean(page&&page.draftRevision!==page.publishedRevision&&!unsaved&&writeStatus==='enabled'&&!busy);
- const previewPage=page?{...page,title,sections:page.sections.map(s=>s.id===selectedSection?{...s,...section,...(typedPreview?.sectionId===s.id&&!typedPreview.itemId?{sectionKey:typedPreview.key,content:typedPreview.value}:{}),items:s.items.map(i=>i.id===selectedItem?{...i,...item,url:item.url||null,...(typedPreview?.itemId===i.id?{metadata:typedPreview.value}:{})}:i)}:s)}:null;
+ const previewPage=page?{...page,title,sections:page.sections.map(s=>s.id===selectedSection?{...s,...section,...(designPreview?.sectionId===s.id&&!designPreview.itemId?{design:designPreview.design}:{}),...(typedPreview?.sectionId===s.id&&!typedPreview.itemId?{sectionKey:typedPreview.key,content:typedPreview.value}:{}),items:s.items.map(i=>i.id===selectedItem?{...i,...item,url:item.url||null,...(designPreview?.itemId===i.id?{design:designPreview.design}:{}),...(typedPreview?.itemId===i.id?{metadata:typedPreview.value}:{})}:i)}:s)}:null;
 
  useEffect(()=>{if(!unsaved)return;const before=(event:BeforeUnloadEvent)=>{event.preventDefault();};const navigate=(event:MouseEvent)=>{const target=event.target instanceof Element?event.target.closest('.portal-workspace-switch button,.portal-signout,.portal-mobile-logout'):null;if(target&&!window.confirm('Discard unsaved website edits?')){event.preventDefault();event.stopPropagation();}};window.addEventListener('beforeunload',before);document.addEventListener('click',navigate,true);return()=>{window.removeEventListener('beforeunload',before);document.removeEventListener('click',navigate,true);};},[unsaved]);
  // Load write readiness after mounting, without a synchronous effect state update.
@@ -94,13 +96,14 @@ export function WebsiteAdminStudio({target}:{target?:{id?:string;sectionId?:stri
   if(!next||typeof next.revision!=='number'||!next.settings||typeof next.settings.siteTitle!=='string')throw Error('Invalid global settings response.');
   setGlobal(next);setSettings({...next.settings});
  },[]);
+ useEffect(()=>{const reload=()=>{void refreshMedia().catch(()=>{});};window.addEventListener('educentre:media-uploaded',reload);return()=>window.removeEventListener('educentre:media-uploaded',reload);},[refreshMedia]);
  const choosePage=useCallback(async(id:string,preserve=false)=>{
   const seq=++selection.current;
   setBusy(true);setError('');setNotice('');
   try{
    const next=validateCmsPage(await cmsFetch('page',{pageId:id})) as Page;
    if(seq!==selection.current)return;
-   setPage(next);setTitle(next.title);setSeoTitle(next.seoTitle);setSeoDescription(next.seoDescription);setTypedDirty(false);setTypedPreview(null);
+   setPage(next);setTitle(next.title);setSeoTitle(next.seoTitle);setSeoDescription(next.seoDescription);setTypedDirty(false);setTypedPreview(null);setDesignPreview(null);
    if(!preserve){setSelectedSection('');setSelectedItem('');setSection(emptySection);setItem(emptyItem);setTypedPreview(null);setContextFocus({id:'page:'+next.id,pageId:next.id,label:next.title,type:'page'});}
    return next;
   }catch(e){if(seq===selection.current)setError(errorOf(e));}finally{if(seq===selection.current)setBusy(false);}
@@ -172,6 +175,7 @@ export function WebsiteAdminStudio({target}:{target?:{id?:string;sectionId?:stri
   const itemChanged=selected&&(content?item.title!==content.title||item.description!==content.description||item.url!==(content.url??'')||item.visible!==content.visible:Boolean(item.title||item.description||item.url));
   if(itemChanged)steps.push({kind:'item',params:{sectionId:selected!.id,itemId:content?.id??crypto.randomUUID(),payload:{...item,url:item.url.trim()||null,order:content?.order??(selected!.items.length?Math.max(...selected!.items.map(value=>value.order))+1:0)}}});
   if(typedDirty&&typedPreview)steps.push({kind:'fields',params:{sectionId:typedPreview.sectionId,payload:{sectionKey:typedPreview.key,content:typedPreview.value,itemId:typedPreview.itemId||null}}});
+  if(designPreview)steps.push({kind:'design',params:{sectionId:designPreview.sectionId,payload:{design:designPreview.design,itemId:designPreview.itemId}}});
   if(!steps.length){setError('Complete the active fields before saving a draft.');return;}
   void run(async()=>{await saveCmsDraft(page.id,page.draftRevision,steps);if(sectionChanged)setSelectedSection(sectionId);},page.id,false,'Draft changes saved and confirmed. Publish separately when you are ready.');
  }
@@ -203,7 +207,7 @@ export function WebsiteAdminStudio({target}:{target?:{id?:string;sectionId?:stri
  async function saveHomeLayout(order:string[],hidden:string[]){if(!page||page.slug!=='home'||unsaved)return;void run(async()=>{const layout=page.sections.find(s=>s.sectionKey==='HOME_LAYOUT');let revision=page.draftRevision;const id=layout?.id??crypto.randomUUID();if(!layout){await cmsFetch('section',{pageId:page.id,sectionId:id,payload:{expectedRevision:revision,kind:'footer',heading:'Homepage arrangement',body:'',visible:true,order:Math.max(-1,...page.sections.map(s=>s.order))+1}});const next=validateCmsPage(await cmsFetch('page',{pageId:page.id})) as Page;revision=next.draftRevision;}await cmsFetch('fields',{pageId:page.id,sectionId:id,payload:{expectedRevision:revision,sectionKey:'HOME_LAYOUT',content:{sectionOrder:order,hiddenSections:hidden},itemId:null}});},page.id,false,'Home arrangement saved privately. Review the preview and publish Home when ready.');}
  return <CmsContextWorkspace tool={tab} writeRuntime={writeRuntime} pages={pages} page={page} preview={previewPage} media={media} settings={settings} global={global} busy={busy} loading={loading} unsaved={unsaved} error={error} notice={notice} writable={writeStatus==='enabled'} canPublish={canPublish} focus={contextFocus}
  select={selectContext} save={()=>{if(settingsDirty&&global){void run(async()=>{await cmsFetch('settingsUpdate',{payload:{expectedRevision:global.revision,settings}});await refreshSettings();},null);}else saveAllDraftChanges();}} publish={publish} reset={()=>{if(global)setSettings({...global.settings});if(page){const focus=contextFocus;void choosePage(page.id).then(async next=>{if(next&&focus){setContextFocus(focus);const s=next.sections.find(s=>s.id===focus.sectionId),i=s?.items.find(i=>i.id===focus.itemId);setSelectedSection(s?.id??'');setSelectedItem(i?.id??'');setSection(s?{kind:s.kind,heading:s.heading,body:s.body,visible:s.visible}:emptySection);setItem(i?{title:i.title,description:i.description,url:i.url??'',visible:i.visible}:emptyItem);}});}}}
- changeSection={value=>setSection(previous=>({...previous,kind:value.kind??previous.kind,heading:value.heading??previous.heading,body:value.body??previous.body,visible:value.visible??previous.visible}))} changeItem={value=>setItem(previous=>({...previous,title:value.title??previous.title,description:value.description??previous.description,url:value.url??previous.url,visible:value.visible??previous.visible}))}
+ changeDesign={design=>{if(selected)setDesignPreview({sectionId:selected.id,itemId:selectedItem||null,design});}} changeSection={value=>setSection(previous=>({...previous,kind:value.kind??previous.kind,heading:value.heading??previous.heading,body:value.body??previous.body,visible:value.visible??previous.visible}))} changeItem={value=>setItem(previous=>({...previous,title:value.title??previous.title,description:value.description??previous.description,url:value.url??previous.url,visible:value.visible??previous.visible}))}
  changeFields={(key,value)=>{if(!selected)return;setTypedDirty(true);setTypedPreview({sectionId:selected.id,itemId:selectedItem,key,value});}} changePage={value=>{if(value.title!==undefined)setTitle(value.title);if(value.seoTitle!==undefined)setSeoTitle(value.seoTitle);if(value.seoDescription!==undefined)setSeoDescription(value.seoDescription);}}
  createPage={(slug,title)=>{const id=crypto.randomUUID();void run(()=>cmsFetch('pageCreate',{payload:{id,slug,title,seoTitle:title,seoDescription:''}}),id);}} createSection={(kind,heading,key)=>void addSection(kind,heading,key)} createItem={()=>{if(!page||!selected)return;const id=crypto.randomUUID();void run(()=>cmsFetch('item',{pageId:page.id,sectionId:selected.id,itemId:id,payload:{expectedRevision:page.draftRevision,order:Math.max(-1,...selected.items.map(i=>i.order))+1,title:'New card',description:'',url:null,visible:false}}),page.id);}} reorder={moveContent} saveHomeLayout={(order,hidden)=>void saveHomeLayout(order,hidden)} duplicate={(section,item)=>void duplicate(section,item)} hide={hide}
  upload={async(file,alt)=>{if(!file.size||file.size>5242880||!['image/png','image/jpeg','image/webp','image/avif'].includes(file.type)||alt.trim().length<2)throw Error('Choose an image up to 5 MiB and descriptive alternative text.');await run(async()=>{const response=await fetch('/api/v1/teacher/website/media/upload',{method:'POST',headers:{'Content-Type':file.type,'x-musa-ui':'1','Idempotency-Key':crypto.randomUUID(),'x-media-id':crypto.randomUUID(),'x-media-alt':alt.trim()},body:file});if(!response.ok)throw cmsResponseError(response.status,await response.json());},page?.id??null,true,'Image uploaded privately. Choose an image field to attach it.');}}

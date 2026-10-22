@@ -1,3 +1,4 @@
+import {validateCmsDesign} from './cms-design.mjs';
 /** Part P: validated request boundary for the teacher CMS. Uses existing proxy/JWT/RPC routes. */
 import {validateCmsFields} from './cms-fields.mjs';
 import {validOrganization} from './cms-order.mjs';
@@ -25,7 +26,7 @@ export function cmsResponseError(status,value){
   CMS_RPC_UNAVAILABLE:'The CMS database function is unavailable. Verify the installed Supabase migrations; restarting the server will not repair a missing function.',
   CMS_PERMISSION_DENIED:'The database denied access to this CMS operation. Review the RPC grants and active Teacher permissions.',
   MEDIA_PUBLIC_IN_USE:'This image is in published content. Remove it and publish that change before archiving it.',
-  MEDIA_DRAFT_IN_USE:'This image is attached to draft content. Remove the attachment before archiving it.',
+  MEDIA_DRAFT_IN_USE:'This image is attached to a private draft, profile or document. Remove its assignment before archiving it.',
   MEDIA_NOT_VERIFIED:'The selected media could not be verified in Storage. Choose a verified image before publishing.',
   SECTION_KEY_REQUIRED:'Save the section’s content form before editing its individual content details.',
   INVALID_CONTENT_REFERENCE:'Choose records that are currently published in the corresponding source page.',
@@ -40,7 +41,7 @@ export function cmsRequest(kind,params={}){
  const page=id(pageId)?`${root}/pages/${pageId}`:null;
  const s=id(sectionId)?`${page}/sections/${sectionId}`:null;
  const i=id(itemId)?`${s}/items/${itemId}`:null;
- if(['pageUpdate','publish','archive','section','item','attach','fields','organize'].includes(kind)&&!page)err('Select a valid page.');
+ if(['pageUpdate','publish','archive','section','item','attach','fields','design','organize'].includes(kind)&&!page)err('Select a valid page.');
  let method='GET',path='',body=null;
  switch(kind){
  case 'pages':path=`${root}/pages`;break;
@@ -62,6 +63,9 @@ export function cmsRequest(kind,params={}){
  case 'item':
   if(!i||!exact(payload,['expectedRevision','order','title','description','url','visible'])||!revision(payload.expectedRevision)||payload.expectedRevision===0||!Number.isSafeInteger(payload.order)||payload.order<0||payload.order>1000||!string(payload.title,160)||!string(payload.description,2000)||!validUrl(payload.url)||typeof payload.visible!=='boolean')err('Invalid item fields.');
   method='PUT';path=i;body=payload;break;
+ case 'design':
+  if(!exact(payload,['design','itemId','expectedRevision'])||!revision(payload.expectedRevision)||payload.expectedRevision===0||payload.itemId!==null&&!id(payload.itemId)||!validateCmsDesign(payload.design))err('Invalid presentation settings.');
+  method='PUT';path=`${s}/design`;body=payload;break;
  case 'fields':
   if(!s||!exact(payload,['sectionKey','content','itemId','expectedRevision'])||!revision(payload.expectedRevision)||payload.expectedRevision===0||payload.itemId!==null&&!id(payload.itemId)||!validateCmsFields(payload.sectionKey,payload.content,payload.itemId!==null))err('Invalid structured content fields.');
   method='PUT';path=`${s}/fields`;body=payload;break;
@@ -100,7 +104,7 @@ export async function cmsFetch(kind,params={},fetcher=globalThis.fetch,uuid=glob
 export function validateCmsPage(x){
  if(!plain(x)||!id(x.id)||!SLUG.test(x.slug)||!string(x.title,160,2)||!revision(x.draftRevision)||x.draftRevision===0||!Array.isArray(x.sections)||x.sections.length>60)err('Invalid page response.');
  const sections=new Set(),orders=new Set();
- for(const s of x.sections){if(!plain(s)||!id(s.id)||sections.has(s.id)||orders.has(s.order)||!CMS_KINDS.includes(s.kind)||!string(s.heading,160)||!string(s.body,6000)||typeof s.visible!=='boolean'||!Number.isSafeInteger(s.order)||s.order<0||s.order>1000||!Array.isArray(s.items)||s.items.length>100)err('Invalid section response.');sections.add(s.id);orders.add(s.order);
- const items=new Set(),ranks=new Set();for(const item of s.items){if(!plain(item)||!id(item.id)||items.has(item.id)||ranks.has(item.order)||!Number.isSafeInteger(item.order)||item.order<0||item.order>1000||!string(item.title,160)||!string(item.description,2000)||typeof item.visible!=='boolean'||!(item.mediaId===null||id(item.mediaId))||!validUrl(item.url))err('Invalid content item.');items.add(item.id);ranks.add(item.order);}}
+ for(const s of x.sections){if(!plain(s)||s.design!==undefined&&!validateCmsDesign(s.design)||!id(s.id)||sections.has(s.id)||orders.has(s.order)||!CMS_KINDS.includes(s.kind)||!string(s.heading,160)||!string(s.body,6000)||typeof s.visible!=='boolean'||!Number.isSafeInteger(s.order)||s.order<0||s.order>1000||!Array.isArray(s.items)||s.items.length>100)err('Invalid section response.');sections.add(s.id);orders.add(s.order);
+ const items=new Set(),ranks=new Set();for(const item of s.items){if(!plain(item)||item.design!==undefined&&!validateCmsDesign(item.design)||!id(item.id)||items.has(item.id)||ranks.has(item.order)||!Number.isSafeInteger(item.order)||item.order<0||item.order>1000||!string(item.title,160)||!string(item.description,2000)||typeof item.visible!=='boolean'||!(item.mediaId===null||id(item.mediaId))||!validUrl(item.url))err('Invalid content item.');items.add(item.id);ranks.add(item.order);}}
  return x;
 }

@@ -1,6 +1,6 @@
 'use client';
 import {useEffect,useRef,useState,type FormEvent} from 'react';
-import Link from 'next/link';
+import Link from '@/components/common/ProgressLink';
 export function AcceptStudentInvitation(){
  const token=useRef(''),initialized=useRef(false),[available,setAvailable]=useState(false),[password,setPassword]=useState(''),[confirm,setConfirm]=useState(''),[busy,setBusy]=useState(false),[error,setError]=useState(''),[notice,setNotice]=useState('');
  useEffect(()=>{

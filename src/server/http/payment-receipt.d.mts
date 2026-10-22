@@ -1,0 +1,1 @@
+export function createPaymentReceiptRoute(role:'teacher'|'student',ports:{verify:(token:string)=>Promise<unknown>;call:(name:string,token:string,args:Record<string,unknown>)=>Promise<unknown>;render:(data:unknown)=>Promise<Uint8Array>}):(request:Request)=>Promise<Response>;

@@ -1,0 +1,7 @@
+{
+  "checks": [
+    "Actual Student button issues and downloads a valid A4 PDF with DEMO designation",
+    "Teacher authorized download, Student Teacher-route denial, missing payment and anonymous denial verified"
+  ],
+  "status": "Pass"
+}

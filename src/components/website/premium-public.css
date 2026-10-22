@@ -4,3 +4,14 @@
 @media(prefers-reduced-motion:reduce){.tale-site *{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 
 .tale-site .tale-mentor>div>p,.tale-site .musa-discover-caption{color:#486977}
+
+/* Structural page wrappers span the viewport; content children remain centered. */
+.tale-site .tale-page-width{max-width:none;width:100%;margin-inline:auto;min-width:0}
+.tale-site .tale-interior-hero{width:100%;padding:clamp(58px,6vw,88px) max(24px,calc((100% - 1192px)/2));background:radial-gradient(ellipse at 90% 20%,#d8eee5aa,transparent 55%),linear-gradient(120deg,#f6fbf8,#fffaf0);isolation:isolate}
+.tale-site .tale-interior-hero h1{max-width:1000px;text-wrap:balance;line-height:1.12}
+.tale-site .tale-page-width>.tale-block{padding-block:clamp(42px,5vw,70px)}
+.tale-site .tale-page-width>.musa-discover{width:calc(100% - 48px);max-width:1192px;margin:20px auto}
+.tale-info-rows:empty{display:none}.tale-site .tale-card-media img{transition:transform .45s ease}.tale-site .tale-card:hover .tale-card-media img{transform:scale(1.035)}
+@media(max-width:600px){.tale-site .tale-page-width>.musa-discover{width:calc(100% - 32px);margin-block:16px}.tale-site .tale-interior-hero{padding:48px 24px}.tale-site .tale-interior-hero h1{font-size:clamp(32px,8.5vw,44px)}.tale-interior-decoration{font-size:170px;right:0;opacity:.5}}
+
+.tale-site .tale-copy-only{padding-block:clamp(32px,3.4vw,48px)}.tale-copy-only>.tale-section-title{margin-bottom:0}

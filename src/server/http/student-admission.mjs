@@ -1,10 +1,11 @@
 import {admissionId,validateAdmissionChanges,validateAdmissionProfile} from '../../client/student-admission.mjs';
 import {RpcError} from './rpc-errors.mjs';
 const fail=(code,status)=>{throw new RpcError(code,status);};
-export async function readSmallJsonBody(req){
+export async function readSmallJsonBody(req,maximum=8192){
+ if(!Number.isSafeInteger(maximum)||maximum<1||maximum>32768)throw Error('INVALID_BODY_LIMIT');
  if(!/^application\/json(?:;\s*charset=utf-8)?$/i.test(req.headers.get('content-type')??''))fail('UNSUPPORTED_MEDIA_TYPE',415);
  const reader=req.body?.getReader();if(!reader)fail('INVALID_ADMISSION',400);let size=0;const chunks=[];
- try{while(true){const {done,value}=await reader.read();if(done)break;size+=value.length;if(size>8192){await reader.cancel();fail('BODY_TOO_LARGE',413);}chunks.push(value);}}finally{reader.releaseLock();}
+ try{while(true){const {done,value}=await reader.read();if(done)break;size+=value.length;if(size>maximum){await reader.cancel();fail('BODY_TOO_LARGE',413);}chunks.push(value);}}finally{reader.releaseLock();}
  const bytes=new Uint8Array(size);let offset=0;for(const chunk of chunks){bytes.set(chunk,offset);offset+=chunk.length;}
  try{return JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(bytes));}catch{fail('INVALID_ADMISSION',400);}
 }

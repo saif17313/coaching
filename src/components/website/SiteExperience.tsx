@@ -1,5 +1,5 @@
 import type {SitePage,SiteSection,SiteSettings,NavItem,SiteItem} from '@/server/website/public-site';
-import Link from 'next/link';
+import Link from '@/components/common/ProgressLink';
 import type {ReactNode} from 'react';
 import Image from 'next/image';
 import {youtubeVideoId} from '@/client/cms-video.mjs';

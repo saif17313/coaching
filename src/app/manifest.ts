@@ -1,0 +1,2 @@
+import type {MetadataRoute} from 'next';
+export default function manifest():MetadataRoute.Manifest{return {name:'EduCentre Learning Studio',short_name:'EduCentre',description:'Your learning, thoughtfully organized.',start_url:'/',display:'standalone',background_color:'#fffdf7',theme_color:'#007d73',icons:[{src:'/brand/icon-192.png',sizes:'192x192',type:'image/png',purpose:'any'},{src:'/brand/icon-512.png',sizes:'512x512',type:'image/png',purpose:'any'}]};}

@@ -1,6 +1,6 @@
 import Image from './SiteImage';
 import './typed-content.css';
-import Link from 'next/link';
+import Link from '@/components/common/ProgressLink';
 import {CMS_FORMS,safeContentUrl,validateSchema,type FieldSchema} from '@/client/cms-fields.mjs';
 import type {SiteSection} from '@/server/website/public-site';
 import {PublishedVideo} from './PublishedVideo';

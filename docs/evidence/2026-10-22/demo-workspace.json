@@ -1,0 +1,17 @@
+{
+  "checks": [
+    "Isolated dataset loads with the expected fictitious profiles, batches and enrollments",
+    "Physical 2500 full payment and 3000 two-installment flow reconcile with frozen receipt balances",
+    "Watermarked sample receipt downloads and opens as A4 PDF",
+    "Physical batch fee/capacity setup and pending-to-active enrollment persist",
+    "Student sees one assigned profile, own enrollment/finance/receipt and cannot download another demo Student receipt",
+    "Reload persistence and unchanged genuine management/financial totals verified"
+  ],
+  "financialScope": "Isolated demo_workspaces only",
+  "demoCounts": {
+    "students": 51,
+    "batches": 11,
+    "enrollments": 81
+  },
+  "status": "Pass"
+}

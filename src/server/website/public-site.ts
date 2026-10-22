@@ -1,7 +1,9 @@
+import {validateCmsDesign} from '@/client/cms-design.mjs';
+import type {CmsDesign} from '@/client/cms-design.mjs';
 import 'server-only';
 import {validateCmsFields} from '@/client/cms-fields.mjs';
-export type SiteItem={id:string;order:number;title:string;description:string;mediaId:string|null;url:string|null;metadata?:Record<string,unknown>};
-export type SiteSection={id:string;kind:string;order:number;heading:string;body:string;items:SiteItem[];sectionKey?:string;content?:Record<string,unknown>};
+export type SiteItem={id:string;order:number;title:string;description:string;mediaId:string|null;url:string|null;metadata?:Record<string,unknown>;design?:CmsDesign};
+export type SiteSection={id:string;kind:string;order:number;heading:string;body:string;items:SiteItem[];sectionKey?:string;content?:Record<string,unknown>;design?:CmsDesign};
 export type SitePage={schemaVersion:1;slug:string;revision:number;title:string;seoTitle:string;seoDescription:string;sections:SiteSection[]};
 export type SiteSettings={revision:number;settings:{siteTitle:string;tagline:string;footerText:string;contactEmail:string;contactPhone:string|null;logoMediaId:string|null}};
 export type NavItem={slug:string;title:string};
@@ -27,8 +29,8 @@ export async function publicPage(slug:string):Promise<SitePage|null>{
  if(!d||typeof d!=='object'||Array.isArray(d))return null;
  const p=d as Partial<SitePage>;
  if(p.schemaVersion!==1||p.slug!==slug||!Number.isSafeInteger(p.revision)||typeof p.title!=='string'||typeof p.seoTitle!=='string'||!Array.isArray(p.sections)||p.sections.length>60)return null;
- for(const s of p.sections){if(!s||typeof s!=='object'||typeof s.kind!=='string'||typeof s.heading!=='string'||typeof s.body!=='string'||!Array.isArray(s.items)||s.items.length>100||s.sectionKey&&!validateCmsFields(s.sectionKey,s.content))return null;
-  if(s.items.some(i=>i.metadata&&(!s.sectionKey||!validateCmsFields(s.sectionKey,i.metadata,true))))return null;
+ for(const s of p.sections){if(!s||typeof s!=='object'||s.design!==undefined&&!validateCmsDesign(s.design)||typeof s.kind!=='string'||typeof s.heading!=='string'||typeof s.body!=='string'||!Array.isArray(s.items)||s.items.length>100||s.sectionKey&&!validateCmsFields(s.sectionKey,s.content))return null;
+  if(s.items.some(i=>i.design!==undefined&&!validateCmsDesign(i.design)||i.metadata&&(!s.sectionKey||!validateCmsFields(s.sectionKey,i.metadata,true))))return null;
  }
  return p as SitePage;
 }

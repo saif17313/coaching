@@ -1,7 +1,7 @@
 'use client';
 import {useEffect,useState} from 'react';
 import {createPortal} from 'react-dom';
-import Link from 'next/link';
+import Link from '@/components/common/ProgressLink';
 type Entry={label:string;sourceSlug:string;sectionId?:string;schemaKey?:string;selector:string;surface:'home'|'page'};
 export function PublicCmsLinks({entries}:{entries:Entry[]}){
  const [teacher,setTeacher]=useState(false),[targets,setTargets]=useState<{entry:Entry;node:Element}[]>([]);

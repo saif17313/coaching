@@ -1,0 +1,6 @@
+{
+  "checks": [
+    "Actual Student report remains uncollected while pending; Teacher verification and rejection persist in the same isolated ledger"
+  ],
+  "status": "Pass"
+}

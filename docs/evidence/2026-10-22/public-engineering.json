@@ -1,0 +1,130 @@
+{
+  "routes": [
+    {
+      "path": "/site/about",
+      "widths": [
+        375,
+        768,
+        1440,
+        1920
+      ],
+      "status": "Pass"
+    },
+    {
+      "path": "/site/academic-calendar",
+      "widths": [
+        375,
+        768,
+        1440,
+        1920
+      ],
+      "status": "Pass"
+    },
+    {
+      "path": "/site/class-routine",
+      "widths": [
+        375,
+        768,
+        1440,
+        1920
+      ],
+      "status": "Pass"
+    },
+    {
+      "path": "/site/contact",
+      "widths": [
+        375,
+        768,
+        1440,
+        1920
+      ],
+      "status": "Pass"
+    },
+    {
+      "path": "/site/courses",
+      "widths": [
+        375,
+        768,
+        1440,
+        1920
+      ],
+      "status": "Pass"
+    },
+    {
+      "path": "/site/gallery",
+      "widths": [
+        375,
+        768,
+        1440,
+        1920
+      ],
+      "status": "Pass"
+    },
+    {
+      "path": "/",
+      "widths": [
+        375,
+        768,
+        1440,
+        1920
+      ],
+      "status": "Pass"
+    },
+    {
+      "path": "/site/materials",
+      "widths": [
+        375,
+        768,
+        1440,
+        1920
+      ],
+      "status": "Pass"
+    },
+    {
+      "path": "/site/news-events",
+      "widths": [
+        375,
+        768,
+        1440,
+        1920
+      ],
+      "status": "Pass"
+    },
+    {
+      "path": "/site/projects",
+      "widths": [
+        375,
+        768,
+        1440,
+        1920
+      ],
+      "status": "Pass"
+    },
+    {
+      "path": "/site/results",
+      "widths": [
+        375,
+        768,
+        1440,
+        1920
+      ],
+      "status": "Pass"
+    },
+    {
+      "path": "/site/reviews",
+      "widths": [
+        375,
+        768,
+        1440,
+        1920
+      ],
+      "status": "Pass"
+    }
+  ],
+  "checks": [
+    "Brand favicon, apple icon and manifest assets served",
+    "Reduced motion suppresses decorative GPU model and transitions"
+  ],
+  "consoleErrors": [],
+  "status": "Pass"
+}

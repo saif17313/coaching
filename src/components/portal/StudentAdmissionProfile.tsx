@@ -1,6 +1,7 @@
 'use client';
 import {useEffect,useRef,useState,type FormEvent} from 'react';
 import Image from 'next/image';
+import {ProfileAvatar} from './ProfileAvatar';
 import {StudentWorkflowPanel} from './StudentWorkflowPanel';
 import {studentCommand} from '@/client/student-experience.mjs';
 import {admissionFields,admissionId,selfAdmissionFields,validateAdmissionChanges,validateAdmissionProfile,type AdmissionProfile} from '@/client/student-admission.mjs';
@@ -43,11 +44,7 @@ export function StudentAdmissionProfile({role,studentId,onClose,onAssignBatch}:{
   <div className="studio-editor-head student-profile-header-premium">
    <div className="student-profile-identity">
     <div className="student-avatar-large">
-     {photoUrl ? (
-      <Image unoptimized src={photoUrl} alt={profile?.fullName||'Student photograph'} width={76} height={76} className="student-circular-photo"/>
-     ) : (
-      <span className="student-circular-fallback">{(profile?.fullName?.[0]||'S').toUpperCase()}</span>
-     )}
+     <ProfileAvatar key={(photo??'none')+':'+(profile?.id??'student')} src={photoUrl} name={profile?.fullName??'Student'} size={96}/>
      {role==='teacher'&&<label className="student-avatar-edit-badge" title="Upload student photograph"><input type="file" accept="image/jpeg,image/png,image/webp,image/avif" onChange={event=>{const file=event.target.files?.[0];if(file)void upload(file);}}/><span aria-hidden="true">📷</span></label>}
     </div>
     <div>
@@ -69,7 +66,7 @@ export function StudentAdmissionProfile({role,studentId,onClose,onAssignBatch}:{
    <form className="studio-form" onSubmit={event=>void save(event)}><fieldset disabled={busy} className="studio-form">
     {admissionGroups.filter(group=>group.title===profileTab).map(group=><fieldset className="studio-expansion" key={group.title}><legend>{group.title}</legend><div className="portal-form-grid">{group.fields.filter(([key])=>role==='teacher'||key!=='emergencyContact').map(([key,label])=>{const editable=role==='teacher'||selfAdmissionFields.includes(key)&&(profile.revision>0||key==='fullName');return <label key={key}>{label}{key==='presentAddress'?<textarea maxLength={admissionFields[key]} value={fields[key]??''} readOnly={!editable} onChange={event=>setFields(previous=>({...previous,[key]:event.target.value}))}/>:<input type={['dateOfBirth','admittedOn'].includes(key)?'date':['phone','guardianMobile'].includes(key)?'tel':'text'} required={key==='fullName'} minLength={key==='fullName'?2:undefined} maxLength={admissionFields[key]} value={fields[key]??''} readOnly={!editable} onChange={event=>setFields(previous=>({...previous,[key]:event.target.value}))}/>}</label>;})}</div></fieldset>)}
     {role==='teacher'&&profileTab==='Admission fee'&&<fieldset className="studio-expansion"><legend>Admission fee</legend>{chargeError&&<p role="alert">{chargeError}</p>}<label>Associate an existing admission charge<select value={fields.admissionDueId??''} onChange={event=>setFields(previous=>({...previous,admissionDueId:event.target.value}))}><option value="">No linked admission charge</option>{profile.admissionDueId&&!charges.some(charge=>charge.id===profile.admissionDueId)&&<option value={profile.admissionDueId}>Previously linked charge</option>}{charges.map(charge=><option key={charge.id} value={charge.id}>{charge.billPeriod} · ৳{(charge.amountMinor/100).toFixed(2)}</option>)}</select></label><p className="studio-hint">Shows up to 20 existing charges, not necessarily the complete billing history. Create and review any new fee in Student dues before linking it here. Saving this profile does not create a charge or payment.</p></fieldset>}
-    {profileTab==='Photograph'&&<fieldset className="studio-expansion"><legend>Profile photograph</legend>{photoUrl&&<Image unoptimized src={photoUrl} alt="Student profile photograph" width={120} height={120} style={{objectFit:'cover',borderRadius:16}}/>}{role==='teacher'&&<><label>Replace profile photograph<input type="file" accept="image/jpeg,image/png,image/webp,image/avif" onChange={event=>{const file=event.target.files?.[0];if(file)void upload(file);}}/></label>{photo&&<button type="button" className="portal-secondary" onClick={()=>setFields(previous=>({...previous,photoMediaId:''}))}>Remove assigned photo</button>}</>}</fieldset>}
+    {profileTab==='Photograph'&&<fieldset className="studio-expansion"><legend>Profile photograph</legend>{photoUrl&&<Image unoptimized src={photoUrl} alt="Student profile photograph" width={120} height={120} style={{objectFit:'cover',borderRadius:'50%'}}/>}{role==='teacher'&&<><label>Replace profile photograph<input type="file" accept="image/jpeg,image/png,image/webp,image/avif" onChange={event=>{const file=event.target.files?.[0];if(file)void upload(file);}}/></label>{photo&&<button type="button" className="portal-secondary" onClick={()=>setFields(previous=>({...previous,photoMediaId:''}))}>Remove assigned photo</button>}</>}</fieldset>}
     <div className="studio-actions"><button type="button" className="portal-secondary" onClick={()=>{if(dirty&&!window.confirm('Discard unsaved profile edits and reload?'))return;setLoading(true);setVersion(value=>value+1);}}>Reload profile</button><button className="portal-primary">{role==='teacher'&&profile.revision===0?'Create admission & roll':'Save profile'}</button></div>
    </fieldset></form>
    {role==='student'&&profile.revision===0&&<p className="studio-hint">Your Teacher can complete admission before these additional details can be edited.</p>}

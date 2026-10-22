@@ -1,0 +1,346 @@
+{
+  "checks": [
+    "Actual Add Student links the existing controlled identity without duplicate Auth creation or invitation email; photo-before-save control exists",
+    "Student own profile uses circular private photo or initials fallback",
+    "Actual delayed Link navigation shows indeterminate brand progress and clears on completion without fake percentages"
+  ],
+  "scans": [
+    {
+      "role": "teacher",
+      "tab": "Students",
+      "width": 375,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "teacher",
+      "tab": "Students",
+      "width": 768,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "teacher",
+      "tab": "Students",
+      "width": 1440,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "teacher",
+      "tab": "Students",
+      "width": 1920,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "teacher",
+      "tab": "Batches",
+      "width": 375,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "teacher",
+      "tab": "Batches",
+      "width": 768,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "teacher",
+      "tab": "Batches",
+      "width": 1440,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "teacher",
+      "tab": "Batches",
+      "width": 1920,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "teacher",
+      "tab": "Enrollments",
+      "width": 375,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "teacher",
+      "tab": "Enrollments",
+      "width": 768,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "teacher",
+      "tab": "Enrollments",
+      "width": 1440,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "teacher",
+      "tab": "Enrollments",
+      "width": 1920,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "teacher",
+      "tab": "Academics",
+      "width": 375,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "teacher",
+      "tab": "Academics",
+      "width": 768,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "teacher",
+      "tab": "Academics",
+      "width": 1440,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "teacher",
+      "tab": "Academics",
+      "width": 1920,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "teacher",
+      "tab": "Finance",
+      "width": 375,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "teacher",
+      "tab": "Finance",
+      "width": 768,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "teacher",
+      "tab": "Finance",
+      "width": 1440,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "teacher",
+      "tab": "Finance",
+      "width": 1920,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "teacher",
+      "tab": "Receipts",
+      "width": 375,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "teacher",
+      "tab": "Receipts",
+      "width": 768,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "teacher",
+      "tab": "Receipts",
+      "width": 1440,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "teacher",
+      "tab": "Receipts",
+      "width": 1920,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "student",
+      "tab": "Students",
+      "width": 375,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "student",
+      "tab": "Students",
+      "width": 768,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "student",
+      "tab": "Students",
+      "width": 1440,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "student",
+      "tab": "Students",
+      "width": 1920,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "student",
+      "tab": "Batches",
+      "width": 375,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "student",
+      "tab": "Batches",
+      "width": 768,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "student",
+      "tab": "Batches",
+      "width": 1440,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "student",
+      "tab": "Batches",
+      "width": 1920,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "student",
+      "tab": "Enrollments",
+      "width": 375,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "student",
+      "tab": "Enrollments",
+      "width": 768,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "student",
+      "tab": "Enrollments",
+      "width": 1440,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "student",
+      "tab": "Enrollments",
+      "width": 1920,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "student",
+      "tab": "Academics",
+      "width": 375,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "student",
+      "tab": "Academics",
+      "width": 768,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "student",
+      "tab": "Academics",
+      "width": 1440,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "student",
+      "tab": "Academics",
+      "width": 1920,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "student",
+      "tab": "Finance",
+      "width": 375,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "student",
+      "tab": "Finance",
+      "width": 768,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "student",
+      "tab": "Finance",
+      "width": 1440,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "student",
+      "tab": "Finance",
+      "width": 1920,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "student",
+      "tab": "Receipts",
+      "width": 375,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "student",
+      "tab": "Receipts",
+      "width": 768,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "student",
+      "tab": "Receipts",
+      "width": 1440,
+      "overflow": false,
+      "violations": []
+    },
+    {
+      "role": "student",
+      "tab": "Receipts",
+      "width": 1920,
+      "overflow": false,
+      "violations": []
+    }
+  ],
+  "status": "Pass"
+}
