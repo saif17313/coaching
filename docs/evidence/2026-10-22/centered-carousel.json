@@ -1,0 +1,11 @@
+{
+  "checks": [
+    "Centered active card and sequential slide at 375",
+    "Centered active card and sequential slide at 768",
+    "Centered active card and sequential slide at 1440",
+    "Centered active card and sequential slide at 1920",
+    "Automatic rotation resumes and advances the next card",
+    "Reduced motion prevents automatic rotation"
+  ],
+  "status": "Pass"
+}

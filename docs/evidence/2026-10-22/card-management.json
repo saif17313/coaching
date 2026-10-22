@@ -1,0 +1,18 @@
+{
+  "checks": [
+    "UI add/edit/save gallery",
+    "UI add/edit/save news",
+    "UI add/edit/save reviews",
+    "UI add/edit/save results",
+    "UI add/edit/save courses",
+    "UI add/edit/save cards",
+    "UI add/edit/save materials",
+    "UI add/edit/save routine",
+    "UI add/edit/save academic-calendar",
+    "Typed gallery card editor, duplicate, reorder and delete preserve image and field data",
+    "Published cards read back through public API",
+    "Physical Delete removes draft first and public card only after Publish",
+    "CMS mobile view has no horizontal overflow"
+  ],
+  "status": "Pass"
+}

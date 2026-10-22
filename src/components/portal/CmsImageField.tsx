@@ -2,6 +2,7 @@
 import {useState,useRef} from 'react';
 import Image from 'next/image';
 
+let activeUploads=0;
 export type MediaAsset = {
   id: string;
   alt: string;
@@ -50,6 +51,7 @@ export function CmsImageField({
     }
 
     setUploading(true);
+    window.dispatchEvent(new CustomEvent('educentre:media-busy',{detail:++activeUploads}));
     onBusyChange?.(true);
     setError('');
     const effectiveAlt = altText.trim() || `${label} image`;
@@ -82,6 +84,7 @@ export function CmsImageField({
       setError((err as Error).message || 'Failed to upload image.');
     } finally {
       setUploading(false);
+      window.dispatchEvent(new CustomEvent('educentre:media-busy',{detail:--activeUploads}));
       onBusyChange?.(false);
     }
   }
