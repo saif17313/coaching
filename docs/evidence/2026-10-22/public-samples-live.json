@@ -1,0 +1,62 @@
+{
+  "origin": "https://educentre-iota.vercel.app",
+  "checkedAt": "2026-10-22T04:50:23.245Z",
+  "pages": [
+    {
+      "slug": "about",
+      "sampleCards": 6,
+      "status": "Pass"
+    },
+    {
+      "slug": "academic-calendar",
+      "sampleCards": 3,
+      "status": "Pass"
+    },
+    {
+      "slug": "class-routine",
+      "sampleCards": 3,
+      "status": "Pass"
+    },
+    {
+      "slug": "courses",
+      "sampleCards": 4,
+      "status": "Pass"
+    },
+    {
+      "slug": "gallery",
+      "sampleCards": 3,
+      "status": "Pass"
+    },
+    {
+      "slug": "home",
+      "sampleCards": 6,
+      "status": "Pass"
+    },
+    {
+      "slug": "materials",
+      "sampleCards": 3,
+      "status": "Pass"
+    },
+    {
+      "slug": "news-events",
+      "sampleCards": 3,
+      "status": "Pass"
+    },
+    {
+      "slug": "projects",
+      "sampleCards": 3,
+      "status": "Pass"
+    },
+    {
+      "slug": "results",
+      "sampleCards": 6,
+      "status": "Pass"
+    },
+    {
+      "slug": "reviews",
+      "sampleCards": 2,
+      "status": "Pass"
+    }
+  ],
+  "status": "Pass"
+}

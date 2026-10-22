@@ -1,5 +1,5 @@
 import {BrandSymbol} from '@/components/common/BrandSymbol';
-import {publicPageContent,publicText,publicContactEmail} from '@/client/public-content-policy.mjs';
+import {publicPageContent,publicText,publicContactEmail,isPublishedSample} from '@/client/public-content-policy.mjs';
 import './premium-public.css';
 import {CmsDesignScope} from './CmsDesignScope';
 import {Fragment,type ReactNode} from 'react';
@@ -41,7 +41,7 @@ function Card({item,index=0,kind='cards',section}:{item:SiteItem;index?:number;k
  const video=youtubeVideoId(item.url),outgoing=item.url?.startsWith('https://')&&!video?item.url:null;
  return <CmsDesignScope design={item.design}><article id={`item-${item.id.toLowerCase()}`} className={`tale-card tale-card-${kind}`}>
   {kind==='gallery'||item.mediaId?<div className="tale-card-media"><Media item={item}/></div>:<span className="tale-card-symbol" aria-hidden="true">{['✦','◈','◇','✳','✧'][index%5]}</span>}
-  <div className="tale-card-copy">{item.title&&<h3>{item.title}</h3>}{item.description&&<p>{item.description}</p>}{section&&item.metadata&&<ItemDetails section={section} value={item.metadata}/>}{['news','gallery'].includes(kind)&&publicItemLink(kind,item.id)&&<Link href={publicItemLink(kind,item.id)!}>View on page →</Link>}
+  <div className="tale-card-copy">{isPublishedSample(item)&&<span className="tale-sample-label">Sample · illustrative content</span>}{item.title&&<h3>{item.title.replace(/^\[SAMPLE\] /,'')}</h3>}{item.description&&<p>{item.description}</p>}{section&&item.metadata&&<ItemDetails section={section} value={item.metadata}/>}{['news','gallery'].includes(kind)&&publicItemLink(kind,item.id)&&<Link href={publicItemLink(kind,item.id)!}>View on page →</Link>}
   {video?<PublishedVideo videoId={video} title={item.title||'Published class video'}/>:outgoing?<a href={outgoing} target="_blank" rel="noopener noreferrer">Explore more <span aria-hidden="true">↗</span></a>:null}</div>
  </article></CmsDesignScope>;
 }
@@ -54,6 +54,7 @@ function Cards({section,kind='cards',limit}:{section?:SiteSection;kind?:string;l
  </section>;
 }
 function InfoSection({section,slug}:{section:SiteSection;slug:string}){
+ if(!section.sectionKey&&['rich-text','materials','routine','academic-calendar'].includes(section.kind)&&section.items.some(item=>item.mediaId))return <Cards section={section} kind={section.kind}/>;
  if(section.kind==='hero')return <section className="tale-interior-hero" id={`section-${section.id}`}><span className="tale-eyebrow">EDUCENTRE / {slug.replaceAll('-',' ').toUpperCase()}</span><h1>{typeof section.content?.headline==='string'&&section.content.headline||section.heading}</h1>{(section.content?.description||section.body)&&<p>{typeof section.content?.description==='string'&&section.content.description||section.body}</p>}{section.sectionKey&&<TypedContent section={section} omit={['headline','description']}/> }<span className="tale-interior-decoration" aria-hidden="true">✦</span></section>;
  if(section.sectionKey)return <section className={`tale-block tale-info tale-typed-section`} id={`section-${section.id}`}><div className="tale-section-title"><h2>{section.heading}</h2>{section.body&&<p>{section.body}</p>}</div><TypedContent section={section}/>{section.items.length>0&&<div className="tale-cards">{section.items.map((item,index)=><Card key={item.id} item={item} index={index} kind={section.kind} section={section}/>)}</div>}</section>;
 

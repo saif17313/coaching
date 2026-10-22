@@ -1,0 +1,15 @@
+# Public CMS sample content
+
+The user requested visible database-backed sample cards, including Gallery, News & Events, Reviews and Success Stories. Existing published sample records were present, but the previous public-content policy hid demo/placeholder records. Most had no media attached.
+
+The hosted project `rkpwqgwceekuvlizfpeb` now has 42 explicitly disclosed sample records across 11 published pages: About (6), Academic Calendar (3), Class Routine (3), Courses (4), Gallery (3), Home-owned records (6), Materials (3), News & Events (3), Projects (3), Results (6, including three separate success stories), and Reviews (2). Contact/FAQ content and genuine authored content were preserved. The homepage also reads the published related catalogs dynamically.
+
+Three original educational illustrations were uploaded to the existing private CMS media bucket using the authorized Teacher's JWT and registered/attached through the existing guarded RPCs. Every sample record references a database media ID. Public images are served through the existing published-reference resolver; draft-only media remains private. The illustrations explicitly state that they are samples, not actual campus photographs. No external stock-photo dependency, fake student photograph, real testimonial, rank, score or institutional outcome was introduced.
+
+Each published record has a `[SAMPLE]` title and an `Illustrative sample` description. The new policy allows this explicit pair while continuing to hide ambiguous legacy placeholders. Cards display a sample badge. Resource, routine, calendar and informational sections render image cards when their published records include media. All remain editable through Website Studio.
+
+`scripts/seed-public-samples.mjs` defaults to a plan. `--apply` requires the existing local credential-document environment setting, checks for unpublished edits before any content writes, preserves genuine records, uses revision guards and audited Teacher commands, and reuses registered illustration assets on repeated runs. `--only=reviews` can restrict the page scope. No schema changes, new accounts, enrollment writes or financial writes are involved.
+
+Validation: full `npm run verify` passed (753 tests, no production dependency vulnerabilities); the final image-card renderer was rebuilt successfully afterward. `scripts/verify-public-samples.mjs` checks published API counts, media references, displayed records, mobile/desktop overflow, success-story heading and decoded Gallery/News/Reviews/Results images. Separate local and live JSON evidence records the actual deployment observed. The live deployment already displays the newly published cards from the DB; the new sample badge and expanded resource-card styling require deployment of this code update.
+
+Evidence: `docs/evidence/2026-10-22/public-sample-seed.json`, `public-samples-live.json`, `public-samples-local.json`, and the four sample page screenshots. Seed reruns were verified to avoid duplicate cards and images.

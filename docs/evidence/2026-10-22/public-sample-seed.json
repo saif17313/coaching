@@ -1,0 +1,87 @@
+{
+  "target": "rkpwqgwceekuvlizfpeb",
+  "mode": "apply",
+  "pages": [
+    {
+      "slug": "about",
+      "revision": 22,
+      "sampleCards": 6,
+      "withImages": 6
+    },
+    {
+      "slug": "academic-calendar",
+      "revision": 12,
+      "sampleCards": 3,
+      "withImages": 3
+    },
+    {
+      "slug": "class-routine",
+      "revision": 12,
+      "sampleCards": 3,
+      "withImages": 3
+    },
+    {
+      "slug": "courses",
+      "revision": 17,
+      "sampleCards": 4,
+      "withImages": 4
+    },
+    {
+      "slug": "gallery",
+      "revision": 12,
+      "sampleCards": 3,
+      "withImages": 3
+    },
+    {
+      "slug": "home",
+      "revision": 39,
+      "sampleCards": 6,
+      "withImages": 6
+    },
+    {
+      "slug": "materials",
+      "revision": 12,
+      "sampleCards": 3,
+      "withImages": 3
+    },
+    {
+      "slug": "news-events",
+      "revision": 12,
+      "sampleCards": 3,
+      "withImages": 3
+    },
+    {
+      "slug": "projects",
+      "revision": 12,
+      "sampleCards": 3,
+      "withImages": 3
+    },
+    {
+      "slug": "results",
+      "revision": 19,
+      "sampleCards": 6,
+      "withImages": 6
+    },
+    {
+      "slug": "reviews",
+      "revision": 11,
+      "sampleCards": 2,
+      "withImages": 2
+    }
+  ],
+  "media": [
+    {
+      "id": "40701858-a6ae-4f0b-86c6-54b21ee2abf0",
+      "alt": "SAMPLE original learning illustration v1 1 - not an actual campus photograph"
+    },
+    {
+      "id": "a1bf78e1-b76c-4ec7-889c-b32d33d4a97e",
+      "alt": "SAMPLE original learning illustration v1 2 - not an actual campus photograph"
+    },
+    {
+      "id": "75977d12-8b51-4f98-8dcb-516434306b3c",
+      "alt": "SAMPLE original learning illustration v1 3 - not an actual campus photograph"
+    }
+  ],
+  "status": "Pass"
+}

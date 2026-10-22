@@ -15,3 +15,5 @@
 @media(max-width:600px){.tale-site .tale-page-width>.musa-discover{width:calc(100% - 32px);margin-block:16px}.tale-site .tale-interior-hero{padding:48px 24px}.tale-site .tale-interior-hero h1{font-size:clamp(32px,8.5vw,44px)}.tale-interior-decoration{font-size:170px;right:0;opacity:.5}}
 
 .tale-site .tale-copy-only{padding-block:clamp(32px,3.4vw,48px)}.tale-copy-only>.tale-section-title{margin-bottom:0}
+
+.tale-sample-label{display:inline-flex;margin-bottom:.75rem;padding:.3rem .6rem;border:1px solid #b9d7cf;border-radius:999px;background:#eef8f3;color:#23524c;font-size:.7rem;font-weight:700;letter-spacing:.025em}
