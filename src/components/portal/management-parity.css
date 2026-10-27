@@ -1,0 +1,125 @@
+/* Management parity screens (batches, ledger, lifecycle, syllabus, exam sheet) and portal-wide
+   depth/hover refinements. Uses the existing navy / teal / emerald palette from premium-portal.css. */
+.portal-shell{--m-ink:#0a2b43;--m-teal:#007a73;--m-jade:#009583;--m-edge:#dcebed;--m-soft:#f4faf8;--m-shadow:0 1px 2px #06334510,0 8px 24px -12px #0633452e;--m-lift:0 2px 4px #06334512,0 18px 36px -16px #0633453d}
+
+/* Status tones beyond the base active / pending / rejected badges. */
+.portal-shell .premium-badge[data-status=info]{background:#e6f1fb;color:#1b5f98}
+.portal-shell .premium-badge[data-status=completed]{background:#efeafc;color:#5b3fa6}
+.portal-shell .premium-badge[data-status=draft]{background:#eef2f4;color:#4e6474}
+
+/* Portal-wide depth: cards and surfaces lift gently on hover; respects reduced motion. */
+.portal-shell .premium-surface,.portal-shell .portal-panel,.portal-shell .academic-card,.portal-shell .student-record,.portal-shell .student-course,.portal-shell .premium-metric,.portal-shell .portal-metric{box-shadow:var(--m-shadow);transition:transform .22s cubic-bezier(.2,.7,.2,1),box-shadow .22s}
+.portal-shell .academic-card:hover,.portal-shell .student-record:hover,.portal-shell .student-course:hover,.portal-shell .premium-metric:hover,.portal-shell .portal-metric:hover{transform:translateY(-2px);box-shadow:var(--m-lift)}
+.portal-shell .portal-primary{background-image:linear-gradient(180deg,#00988a,#007a73);box-shadow:0 1px 0 #ffffff33 inset,0 6px 14px -6px #007a7399}
+.portal-shell .portal-primary:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 1px 0 #ffffff33 inset,0 10px 20px -8px #007a73b3}
+.portal-shell .portal-primary:active:not(:disabled),.portal-shell .portal-secondary:active:not(:disabled){transform:translateY(0) scale(.98)}
+.portal-shell input:focus-visible,.portal-shell select:focus-visible,.portal-shell textarea:focus-visible{outline:3px solid #20ad9e55;outline-offset:1px;border-color:#20ad9e}
+.portal-shell .teacher-ops-overlay{backdrop-filter:blur(3px);animation:m-fade .18s ease-out}
+.portal-shell .teacher-ops-modal{animation:m-rise .24s cubic-bezier(.2,.8,.2,1);box-shadow:0 30px 70px -20px #04203899}
+@keyframes m-fade{from{opacity:0}}@keyframes m-rise{from{opacity:0;transform:translateY(14px) scale(.985)}}
+
+.mgmt-studio,.mgmt-ledger,.mgmt-syllabus,.mgmt-exam-sheet{display:grid;gap:16px}
+.mgmt-notice{display:flex;align-items:center;justify-content:space-between;gap:12px;background:#e8f7f1;border:1px solid #bfe7d8;color:#05584f;border-radius:12px;padding:10px 14px;font-size:13px}
+.mgmt-hint{font-size:12px;color:#557085;line-height:1.6;margin:4px 0}
+.mgmt-code{font-size:10px;letter-spacing:.14em;color:#3f7c84;font-weight:700}
+.mgmt-danger{color:#b4233c!important;border-color:#f3c7cf!important}
+.mgmt-quick-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.mgmt-inline{display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap}.mgmt-inline input{flex:1;min-width:160px}
+.mgmt-filter{display:flex;flex-direction:column;font-size:11px;color:#4f6b7d;gap:2px}
+
+/* Batch cards */
+.mgmt-batch-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:18px}
+.mgmt-batch-card{background:#fff;border:1px solid var(--m-edge);border-radius:18px;overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--m-shadow);transition:transform .25s cubic-bezier(.2,.7,.2,1),box-shadow .25s;transform-style:preserve-3d}
+.mgmt-batch-card:hover{transform:translateY(-4px) perspective(900px) rotateX(1.2deg);box-shadow:var(--m-lift)}
+.mgmt-batch-card[data-status=archived],.mgmt-batch-card[data-status=cancelled]{opacity:.78}
+.mgmt-batch-cover{position:relative;height:118px;background:radial-gradient(120% 140% at 0% 0%,#0f6f6a,#0a2d3d 60%,#071f2c);display:grid;place-items:center;color:#ffffff2e;font:700 46px/1 var(--premium-serif,Georgia);letter-spacing:.04em;overflow:hidden}
+.mgmt-batch-cover img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.mgmt-batch-cover::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,#0000 40%,#04203866)}
+.mgmt-batch-badges{position:absolute;left:12px;top:12px;display:flex;gap:6px;flex-wrap:wrap;z-index:1}
+.mgmt-batch-badges .premium-badge{box-shadow:0 2px 8px #0003}
+.mgmt-batch-body{padding:14px 16px;display:grid;gap:6px;flex:1}.mgmt-batch-body h3{margin:0;font-size:16px;color:var(--m-ink);line-height:1.3}.mgmt-batch-body>p{margin:0;font-size:12px;color:#557085}
+.mgmt-facts{display:grid;gap:5px;margin:6px 0 2px}.mgmt-facts div{display:flex;justify-content:space-between;gap:10px;font-size:12px}.mgmt-facts dt{color:#6b849a}.mgmt-facts dd{margin:0;color:#163b55;font-weight:600;text-align:right}
+.mgmt-capacity>div{height:6px;border-radius:9px;background:#e7f1f0;overflow:hidden}.mgmt-capacity span{display:block;height:100%;border-radius:9px;background:linear-gradient(90deg,#00a697,#0b7f9a)}.mgmt-capacity small{font-size:11px;color:#5d778b}
+.mgmt-batch-actions{display:flex;gap:8px;padding:12px 16px;border-top:1px solid #edf3f3;background:#fbfdfd}
+.mgmt-skeleton-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:18px}.mgmt-skeleton-card{height:300px;border-radius:18px;background:linear-gradient(100deg,#eef5f4 30%,#f8fbfb 50%,#eef5f4 70%) 0/300% 100%;animation:m-shimmer 1.3s linear infinite}
+@keyframes m-shimmer{to{background-position:-300% 0}}
+
+/* Forms in dialogs */
+.mgmt-modal-wide{width:min(880px,calc(100vw - 24px))!important;max-height:calc(100dvh - 32px);overflow:auto}
+.mgmt-form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}.mgmt-form-grid label,.mgmt-block{display:flex;flex-direction:column;gap:5px;font-size:12px;color:#36556c;font-weight:600}
+.mgmt-form-grid.mgmt-compact{gap:8px;margin-top:10px}.mgmt-span{grid-column:1/-1}
+.mgmt-check{flex-direction:row!important;align-items:center;gap:8px!important;font-weight:500!important}
+.mgmt-fieldset{border:1px solid var(--m-edge);border-radius:14px;padding:12px 14px;margin:12px 0;display:grid;gap:10px}.mgmt-fieldset legend{font-size:12px;font-weight:700;color:var(--m-teal);padding:0 6px}
+.mgmt-day-pills{display:flex;flex-wrap:wrap;gap:6px}.mgmt-day-pills button{border:1px solid var(--m-edge);background:#fff;border-radius:99px;padding:7px 13px;font-size:12px;color:#36556c;min-height:36px}.mgmt-day-pills button.is-on{background:var(--m-teal);border-color:var(--m-teal);color:#fff;box-shadow:0 4px 10px -4px #007a7399}
+.mgmt-cover-field{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:10px 0}.mgmt-cover-field img,.mgmt-cover-empty{width:180px;height:74px;border-radius:12px;object-fit:cover;background:#eef5f4;display:grid;place-items:center;font-size:11px;color:#6b849a}
+.mgmt-file{position:relative;overflow:hidden;cursor:pointer}.mgmt-file input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.mgmt-check-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:6px;max-height:200px;overflow:auto}
+
+/* Batch detail */
+.mgmt-detail-status{display:flex;flex-wrap:wrap;gap:10px;align-items:center;font-size:12px;color:#456377;margin:4px 0 12px}
+.mgmt-detail-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px;margin-top:14px}
+.mgmt-panel{border:1px solid var(--m-edge);border-radius:16px;padding:14px 16px;background:linear-gradient(180deg,#fff,#fbfdfd)}.mgmt-panel h4{margin:0 0 6px;color:var(--m-ink)}
+.mgmt-fee-now{margin:4px 0}.mgmt-fee-now strong{font-size:20px;color:var(--m-teal)}.mgmt-fee-now small{display:block;color:#6b849a;font-size:11px}
+.mgmt-history{list-style:none;padding:0;margin:10px 0 0;display:grid;gap:6px}.mgmt-history li{display:flex;flex-wrap:wrap;gap:6px;align-items:baseline;font-size:12px;padding:8px 10px;border-radius:10px;background:var(--m-soft)}.mgmt-history small{width:100%;color:#6b849a}
+.mgmt-roster{list-style:none;padding:0;margin:0;max-height:220px;overflow:auto}.mgmt-roster li{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px solid #edf3f3;font-size:12px}.mgmt-roster small{color:#6b849a}
+
+/* Ledger */
+.mgmt-ledger-table td strong{color:var(--m-ink)}.mgmt-overdue{color:#b4233c!important;font-weight:700}
+.mgmt-ledger-detail td{background:#f7fbfa}.mgmt-ledger-detail ol{margin:0;padding-left:18px;display:grid;gap:6px}.mgmt-ledger-detail li{display:flex;flex-wrap:wrap;gap:12px;align-items:center;font-size:12px}
+.mgmt-pay-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:8px;margin:8px 0}.mgmt-pay-summary div{background:var(--m-soft);border-radius:10px;padding:8px 10px}.mgmt-pay-summary dt{font-size:10px;color:#6b849a;text-transform:uppercase;letter-spacing:.06em}.mgmt-pay-summary dd{margin:2px 0 0;font-weight:700;color:var(--m-ink)}
+
+/* Lifecycle */
+.mgmt-lifecycle{border:1px solid var(--m-edge);border-radius:16px;padding:12px 16px;margin:12px 0;display:grid;gap:10px;background:linear-gradient(180deg,#fff,#f8fcfb)}.mgmt-lifecycle legend{font-weight:700;color:var(--m-teal);font-size:13px;padding:0 6px}
+.mgmt-lifecycle-head{display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap}.mgmt-lifecycle-head p{margin:0;font-size:12px;color:#4f6b7d;flex:1;min-width:200px}
+.mgmt-lifecycle-confirm{display:grid;gap:8px;padding:12px;border-radius:12px;background:#fff8ef;border:1px solid #f6dfbf}.mgmt-lifecycle-confirm label{display:grid;gap:4px;font-size:12px;font-weight:600}
+.mgmt-history-details summary{cursor:pointer;font-size:12px;color:var(--m-teal);font-weight:600}
+
+/* Syllabus */
+.mgmt-progress{height:7px;border-radius:9px;background:#e6f0ef;overflow:hidden;min-width:80px}.mgmt-progress span{display:block;height:100%;border-radius:9px;background:linear-gradient(90deg,#00a697,#0b7f9a);transition:width .5s cubic-bezier(.2,.7,.2,1)}
+.mgmt-syllabus-summary{display:flex;align-items:center;gap:16px;background:#fff;border:1px solid var(--m-edge);border-radius:16px;padding:14px 18px;box-shadow:var(--m-shadow)}.mgmt-syllabus-summary h4{margin:0}.mgmt-syllabus-summary p{margin:4px 0 0;font-size:12px;color:#557085}
+.mgmt-subject{background:#fff;border:1px solid var(--m-edge);border-radius:16px;padding:14px 16px;box-shadow:var(--m-shadow);display:grid;gap:10px}
+.mgmt-subject>header{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}.mgmt-subject h4{margin:2px 0 0;color:var(--m-ink)}
+.mgmt-subject-meter{display:flex;align-items:center;gap:10px;min-width:180px}.mgmt-subject-meter .mgmt-progress{flex:1}
+.mgmt-chapters{list-style:none;margin:0;padding:0;display:grid;gap:8px}.mgmt-chapters>li{border:1px solid #e8f0f0;border-left:4px solid #c9d9dc;border-radius:12px;padding:10px 12px;display:grid;gap:6px}
+.mgmt-chapters>li[data-status=completed]{border-left-color:#00a697}.mgmt-chapters>li[data-status=in_progress]{border-left-color:#2b84c9}
+.mgmt-unit-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.mgmt-unit-title{flex:1;font-weight:600;color:#163b55;font-size:13px;min-width:140px}.mgmt-unit-title small{font-weight:400;color:#6b849a}
+.mgmt-unit-progress{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;color:var(--m-teal)}.mgmt-unit-dates{font-size:11px;color:#6b849a}
+.mgmt-topics{list-style:none;margin:0 0 0 8px;padding:0;display:grid;gap:4px}.mgmt-topics li{display:flex;align-items:center;gap:8px;font-size:12px;padding:5px 8px;border-radius:8px;background:var(--m-soft)}.mgmt-topics li span:first-child{flex:1}
+.mgmt-topics li[data-status=completed] span:first-child{text-decoration:line-through;text-decoration-color:#00a69780;color:#3b6a66}
+.mgmt-topics select,.mgmt-unit-row select{min-height:32px;font-size:12px;padding:4px 8px}.mgmt-add-topic input{min-height:34px;font-size:12px}
+
+/* Exam sheet */
+.mgmt-exam-head{display:flex;gap:16px;flex-wrap:wrap;justify-content:space-between;background:#fff;border:1px solid var(--m-edge);border-radius:16px;padding:14px 16px;box-shadow:var(--m-shadow)}.mgmt-exam-head h4{margin:6px 0 2px;color:var(--m-ink)}.mgmt-exam-head p{margin:0;font-size:12px;color:#557085}
+.mgmt-exam-head .mgmt-pay-summary{flex:1;min-width:280px;max-width:560px}
+.mgmt-marks{width:84px}.mgmt-exam-sheet td input:not(.mgmt-marks){min-width:140px}
+.mgmt-exam-card .mgmt-score{display:grid;gap:2px;padding:8px 10px;border-radius:10px;background:#eef8f4}.mgmt-score strong{font-size:18px;color:var(--m-teal)}.mgmt-score span{font-size:12px;color:#456377}
+
+@media (max-width:640px){
+ .mgmt-batch-grid,.mgmt-skeleton-grid{grid-template-columns:1fr}
+ .mgmt-detail-grid{grid-template-columns:1fr}
+ .mgmt-form-grid{grid-template-columns:1fr 1fr}
+ .mgmt-batch-actions{flex-wrap:wrap}.mgmt-batch-actions>*{flex:1}
+ .mgmt-subject-meter{min-width:0;width:100%}
+ .portal-shell .teacher-ops-modal{width:calc(100vw - 16px)!important;max-height:calc(100dvh - 16px);overflow:auto;border-radius:16px}
+ .mgmt-exam-head .mgmt-pay-summary{grid-template-columns:repeat(3,1fr)}
+}
+@media (max-width:420px){.mgmt-form-grid{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){
+ .portal-shell *,.portal-shell *::before,.portal-shell *::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+ .mgmt-batch-card:hover,.portal-shell .academic-card:hover,.portal-shell .student-record:hover{transform:none}
+}
+
+/* Compact phone layout: smaller page hero, two filters per row, tighter record-scope card. */
+@media (max-width:640px){
+ .portal-shell .premium-hero{min-height:0!important;padding:14px 0 6px!important;background-image:none!important}
+ .portal-shell .premium-hero::before,.portal-shell .premium-hero::after{display:none!important}
+ .portal-shell .premium-hero h1,.portal-shell .premium-hero h2{font-size:30px!important;line-height:1.08!important;margin:4px 0!important}
+ .portal-shell .premium-hero-copy p{font-size:12px!important;margin:4px 0 0!important;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+ .portal-shell .premium-hero img,.portal-shell .premium-hero svg{display:none!important}.portal-shell .premium-hero-copy{max-width:100%!important;padding:0!important}
+ .portal-shell .teacher-data-source{padding:12px 14px!important;margin:8px 0!important}
+ .portal-shell .teacher-data-source p{font-size:11px!important}
+ .portal-shell .premium-filterbar{display:grid!important;grid-template-columns:1fr 1fr;gap:8px}
+ .portal-shell .premium-filterbar>.premium-search,.portal-shell .premium-filterbar>.portal-primary{grid-column:1/-1}
+ .portal-shell .premium-filterbar select{max-width:none!important;min-height:42px!important;width:100%}
+ .portal-shell .premium-metrics{grid-template-columns:1fr 1fr!important;gap:8px!important}
+}

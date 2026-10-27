@@ -5,3 +5,21 @@
 .tale-site[data-visual-style=premium] .tale-carousel-card .tale-carousel-photo{opacity:calc(1 - var(--card-depth) * .12)}
 .tale-site[data-visual-style=premium] .tale-carousel-eyebrow{color:#805032}
 .tale-site[data-visual-style=premium] .tale-carousel-controls>span{color:#425e69}
+/* Scroll reveal (enabled only by PremiumMotion after hydration; content stays visible without JS). */
+.tale-site.motion-ready .reveal-pending{opacity:0;transform:translate3d(0,26px,0) scale(.985);filter:blur(2px)}
+.tale-site.motion-ready .reveal-pending.is-revealed{opacity:1;transform:none;filter:none;transition:opacity .75s cubic-bezier(.2,.7,.2,1) var(--reveal-delay,0ms),transform .85s cubic-bezier(.2,.7,.2,1) var(--reveal-delay,0ms),filter .75s ease var(--reveal-delay,0ms)}
+/* Hero depth: the visual drifts slower than the page and the copy softly fades while scrolling. */
+.tale-site.motion-ready .tale-home-hero .tale-visual-published,.tale-site.motion-ready .tale-home-hero .tale-visual-orbit{transform:translate3d(0,calc(var(--hero-parallax,0px)*-.6),0);will-change:transform}
+.tale-site.motion-ready .tale-home-hero-copy{opacity:var(--hero-fade,1);transform:translate3d(0,calc(var(--hero-parallax,0px)*.35),0)}
+/* Layered card depth and soft illumination on hover (complements the pointer tilt). */
+.tale-site[data-visual-style=premium] .tale-card{position:relative;transition:transform .35s cubic-bezier(.2,.7,.2,1),box-shadow .35s,border-color .35s;box-shadow:0 1px 2px #0d3b3610,0 14px 34px -22px #0d3b3640}
+.tale-site[data-visual-style=premium] .tale-card::after{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(420px circle at var(--glow-x,50%) var(--glow-y,0%),#ffffff59,transparent 45%);opacity:0;transition:opacity .35s}
+.tale-site[data-visual-style=premium] .tale-card:hover{box-shadow:0 2px 6px #0d3b3614,0 30px 60px -30px #0d3b3666;border-color:#bfe0d5}
+.tale-site[data-visual-style=premium] .tale-card:hover::after{opacity:1}
+/* Section separators: a fine gradient rule with a soft glow between full-width blocks. */
+.tale-site[data-visual-style=premium] .tale-block+.tale-block{position:relative}
+.tale-site[data-visual-style=premium] .tale-block+.tale-block::before{content:'';position:absolute;top:0;left:50%;width:min(1100px,86vw);height:1px;transform:translateX(-50%);background:linear-gradient(90deg,transparent,#8cc9b780 20%,#d8b98199 50%,#8cc9b780 80%,transparent);box-shadow:0 0 18px #8cc9b766}
+.tale-site[data-visual-style=premium] .tale-section-title h2{background:linear-gradient(100deg,var(--tale-ink,#123340) 30%,#0a6f66 70%,#9a6c2c);-webkit-background-clip:text;background-clip:text;color:transparent}
+.tale-site[data-visual-style=premium] .tale-action{transition:transform .25s cubic-bezier(.2,.7,.2,1),box-shadow .25s}.tale-site[data-visual-style=premium] .tale-action:hover{transform:translateY(-2px)}
+@media (prefers-reduced-motion:reduce){.tale-site.motion-ready .reveal-pending{opacity:1;transform:none;filter:none}.tale-site[data-visual-style=premium] .tale-card,.tale-site[data-visual-style=premium] .tale-action{transition:none}}
+@media (max-width:700px){.tale-site.motion-ready .tale-home-hero .tale-visual-published,.tale-site.motion-ready .tale-home-hero .tale-visual-orbit,.tale-site.motion-ready .tale-home-hero-copy{transform:none;opacity:1}}

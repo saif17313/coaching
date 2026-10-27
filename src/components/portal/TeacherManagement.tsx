@@ -1,6 +1,6 @@
 'use client';
 import {CmsImageField} from './CmsImageField';
-import {TeacherBatchDirectory} from './TeacherBatchDirectory';
+import {TeacherBatchStudio} from './TeacherBatchStudio';
 import {TeacherStudentDirectory} from './TeacherStudentDirectory';
 import {StudentAdmissionProfile,admissionGroups} from './StudentAdmissionProfile';
 import {workflowInput} from '@/client/student-workflow.mjs';
@@ -138,7 +138,7 @@ export function TeacherManagement({mode,onNavigate,onSelectBatch}:{mode:Mode;onN
  };
  return <div className="teacher-ops" data-mode={mode}>
   <div className="teacher-ops-top"><div><span className="portal-kicker">TEACHER OPERATIONS</span><h2>{heading(mode)}</h2><p>{mode==='students'?'Edit student profiles and manage account access. Create student Auth accounts securely, then activate and enroll them.':mode==='batches'?'Create batches, adjust capacity and archive completed batches.':'Request membership and review pending enrollment decisions.'}</p></div>
-   <div className="teacher-ops-buttons"><button className="portal-secondary" disabled={loading||saving} onClick={()=>setRefresh(x=>x+1)}>↻ Refresh</button>{mode==='batches'&&<button className="portal-primary" onClick={()=>begin('create')}>+ New batch</button>}{mode==='students'&&<><button className="portal-primary" onClick={()=>begin('offline')}>+ Add student</button><button className="portal-secondary" onClick={()=>begin('invite')}>+ Invite by email</button></>}{mode==='enrollments'&&<button className="portal-primary" onClick={()=>void beginEnrollment()}>+ Enrollment request</button>}</div>
+   <div className="teacher-ops-buttons"><button className="portal-secondary" disabled={loading||saving} onClick={()=>setRefresh(x=>x+1)}>↻ Refresh</button>{false}{mode==='students'&&<><button className="portal-primary" onClick={()=>begin('offline')}>+ Add student</button><button className="portal-secondary" onClick={()=>begin('invite')}>+ Invite by email</button></>}{mode==='enrollments'&&<button className="portal-primary" onClick={()=>void beginEnrollment()}>+ Enrollment request</button>}</div>
   </div>
   <div className="teacher-ops-note" role="note">Active Teacher access is required. Account activation and enrollment approval are separate actions.</div>
   {notice&&<div className="portal-success" role="status">{notice}</div>}
@@ -147,7 +147,7 @@ export function TeacherManagement({mode,onNavigate,onSelectBatch}:{mode:Mode;onN
     <label>Status<select value={filter} onChange={e=>{setFilter(e.target.value);setOffset(0);}}>{stateOptions.enrollments.map(s=><option key={s} value={s}>{s?roleLabel(s):'All statuses'}</option>)}</select></label>
     <span className="teacher-ops-count">{items.length} records on this page</span>
   </div></>}
-  {['students','batches'].includes(mode)?mode==='students'?<TeacherStudentDirectory version={refresh} onAdd={()=>begin('offline')} onCreateAccount={()=>begin('onboard')} onRefresh={()=>setRefresh(value=>value+1)} onOpen={row=>{setAdmissionStudent(row.id);setAdmissionRow(row);}} onRename={row=>begin('edit',row)} onStatus={updateStatus}/>:<TeacherBatchDirectory version={refresh} onCreate={()=>begin('create')} onEdit={row=>begin('edit',row)} onArchive={archive} onDuplicate={row=>{begin('create',row);setCode(`${row.code??'BATCH'}_COPY`.toUpperCase().slice(0,24));setName(`${row.name??'Batch'} (copy)`.slice(0,120));}} onNavigate={(page,id)=>{onSelectBatch?.(id);onNavigate?.(page);}}/>:loading?<div className="portal-loading" role="status">Loading verified records…</div>:<>
+  {['students','batches'].includes(mode)?mode==='students'?<TeacherStudentDirectory version={refresh} onAdd={()=>begin('offline')} onCreateAccount={()=>begin('onboard')} onRefresh={()=>setRefresh(value=>value+1)} onOpen={row=>{setAdmissionStudent(row.id);setAdmissionRow(row);}} onRename={row=>begin('edit',row)} onStatus={updateStatus}/>:<TeacherBatchStudio version={refresh} onNavigate={(page,id)=>{onSelectBatch?.(id);onNavigate?.(page);}}/>:loading?<div className="portal-loading" role="status">Loading verified records…</div>:<>
    {listed.length===0?<div className="teacher-ops-empty"><span>◇</span><h3>{items.length?'No matching records':'No records yet'}</h3><p>{items.length?'Try another search or status.':mode==='batches'?'Create the first batch using the form above.':'Create an enrollment request for an active student and available batch.'}</p></div>:
     <div className="teacher-ops-list">{listed.map(row=><article className="teacher-ops-row" key={row.id}>
       <div className="teacher-ops-row-top"><div className="teacher-ops-avatar">{(row.name||row.code||'E').slice(0,1).toUpperCase()}</div><div className="teacher-ops-row-name"><strong>{row.name||row.code||`Enrollment ${short(row.id)}`}</strong><small>{mode==='batches'?`${row.code} · ${row.capacity} seats`:`Student ${short(row.studentId||'')} · Batch ${short(row.batchId||'')}`}</small></div>
