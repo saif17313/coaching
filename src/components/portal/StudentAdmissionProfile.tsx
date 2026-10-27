@@ -3,6 +3,7 @@ import {useEffect,useRef,useState,type FormEvent} from 'react';
 import Image from 'next/image';
 import {ProfileAvatar} from './ProfileAvatar';
 import {StudentWorkflowPanel} from './StudentWorkflowPanel';
+import {StudentLoginActivation} from './StudentLoginActivation';
 import {studentCommand} from '@/client/student-experience.mjs';
 import {admissionFields,admissionId,selfAdmissionFields,validateAdmissionChanges,validateAdmissionProfile,type AdmissionProfile} from '@/client/student-admission.mjs';
 type Fields=Record<string,string>;
@@ -57,7 +58,8 @@ export function StudentAdmissionProfile({role,studentId,onClose,onAssignBatch}:{
   </div>
   {error&&<p className="portal-alert" role="alert">{error.replaceAll('_',' ')}{error.includes('REVISION_CONFLICT')&&' — another update was saved. Reload before editing again.'}</p>}{notice&&<p className="portal-success" role="status">{notice}</p>}
   {loading?<p role="status">Loading verified Student profile…</p>:profile?<>
-   <dl className="admission-summary"><div><dt>Admission roll</dt><dd>{profile.admissionRoll||'Not admitted yet'}</dd></div><div><dt>Account</dt><dd>{profile.accountStatus}</dd></div><div><dt>Email</dt><dd>{profile.email}</dd></div></dl>
+   <dl className="admission-summary"><div><dt>Admission roll</dt><dd>{profile.admissionRoll||'Not admitted yet'}</dd></div><div><dt>Account</dt><dd>{profile.accountStatus}</dd></div><div><dt>Email</dt><dd>{profile.email||'No portal login'}</dd></div></dl>
+   {role==='teacher'&&<StudentLoginActivation studentId={profile.id}/>}
    <dl className="admission-summary" aria-label="Verified admission details"><div><dt>Student phone</dt><dd>{profile.personal.phone||'Not provided'}</dd></div><div><dt>School / college</dt><dd>{profile.personal.schoolName||'Not provided'}</dd></div><div><dt>Class / group</dt><dd>{[profile.personal.className,profile.personal.stream].filter(Boolean).join(' · ')||'Not provided'}</dd></div><div><dt>Academic session</dt><dd>{profile.personal.academicSession||'Not provided'}</dd></div><div><dt>Guardian</dt><dd>{profile.guardian.fullName||'Not provided'}</dd></div><div><dt>Guardian phone</dt><dd>{profile.guardian.mobile||'Not provided'}</dd></div></dl>
    {role==='teacher'&&profile.accountStatus==='pending'&&<button className="portal-secondary" disabled={busy} onClick={()=>{if(window.confirm('Resend the invitation to this existing pending Student?')){setBusy(true);setError('');void fetch('/api/v1/teacher/students/'+profile.id+'/resend-invite',{method:'POST',headers:{'x-musa-ui':'1','Idempotency-Key':crypto.randomUUID()}}).then(async response=>{const body=await response.json();if(!response.ok||!body.success)throw Error(body.error?.code??'INVITATION_UNAVAILABLE');setNotice(body.data.message);}).catch(e=>setError(e.message)).finally(()=>setBusy(false));}}}>Resend account invitation</button>}
    <p className="studio-hint">Email is managed through verified account settings. Batch enrollment and fee records are managed separately.</p>

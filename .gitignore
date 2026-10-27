@@ -17,3 +17,7 @@ Thumbs.db
 .vscode/
 .idea/
 *.tsbuildinfo
+
+# Local-only tool configuration (may contain access tokens)
+.mcp.json
+.claude/settings.local.json
