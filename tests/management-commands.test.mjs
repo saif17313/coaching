@@ -23,6 +23,13 @@ test('reads are allow-listed and forward exact RPC arguments',()=>{
  // Students can only reach their own academic reads, never Teacher projections.
  rejects(()=>parseRead(STUDENT_READS,'payment-ledger',q({})),'UNKNOWN_ACTION');
  assert.equal(parseRead(STUDENT_READS,'exam-history',q({})).rpc,'coaching_student_exam_history');
+ // Teacher-built Student report and the organisation finance trend.
+ assert.deepEqual(parseRead(TEACHER_READS,'student-exam-history',q({studentId:id})),{rpc:'coaching_teacher_student_exam_history',args:{p_student_id:id}});
+ rejects(()=>parseRead(TEACHER_READS,'student-exam-history',q({})),'INVALID_FILTER');
+ rejects(()=>parseRead(STUDENT_READS,'student-exam-history',q({studentId:id})),'UNKNOWN_ACTION');
+ assert.deepEqual(parseRead(TEACHER_READS,'finance-trend',q({})).args,{p_months:12});
+ assert.deepEqual(parseRead(TEACHER_READS,'finance-trend',q({months:'24'})).args,{p_months:24});
+ for(const bad of ['2','25','12.5','012'])rejects(()=>parseRead(TEACHER_READS,'finance-trend',q({months:bad})),'INVALID_FILTER');
 });
 
 test('student lifecycle command requires a known status and bounded reason',()=>{

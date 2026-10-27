@@ -42,6 +42,8 @@ export const TEACHER_READS={
  'student-lifecycle':{rpc:'coaching_student_lifecycle',keys:['studentId'],args:q=>({p_student_id:requiredUuid(q,'studentId')})},
  'exam-sheet':{rpc:'coaching_teacher_exam_sheet',keys:['examId'],args:q=>({p_exam_id:requiredUuid(q,'examId')})},
  syllabus:{rpc:'coaching_batch_syllabus_progress',keys:['batchId'],args:q=>({p_batch_id:requiredUuid(q,'batchId')})},
+ 'student-exam-history':{rpc:'coaching_teacher_student_exam_history',keys:['studentId'],args:q=>({p_student_id:requiredUuid(q,'studentId')})},
+ 'finance-trend':{rpc:'coaching_teacher_finance_trend',keys:['months'],args:q=>({p_months:Number(filter(q,'months',v=>v===''||/^([3-9]|1\d|2[0-4])$/.test(v))||'12')})},
 };
 
 export const STUDENT_READS={
