@@ -37,6 +37,17 @@ async function nav(page,label){await page.getByRole('complementary').getByRole('
  if(await registered.count()&&await registered.first().isVisible())await registered.first().click();}
 const selectBatch=async(page,id)=>{await page.getByLabel('Selected batch').selectOption(id);};
 let teacher,batchId,studentId,examId;
+// Retire fixtures even after a failure: end every enrollment in the test batch (including the real Student
+// test account's), cancel the offline Student, then cancel the batch. Records and ledger history stay.
+let retiredStatus=null;
+async function retire(){
+ if(!teacher||!batchId||retiredStatus)return retiredStatus;
+ const rows=(await api(teacher,`/api/v1/teacher/management/students?batchId=${batchId}&limit=50`)).body?.data?.students??[];
+ for(const row of rows)for(const e of row.batches)if(e.batchId===batchId&&['pending','active'].includes(e.status))await api(teacher,`/api/v1/teacher/enrollments/${e.id}/decision`,'POST',{decision:'cancel'});
+ if(studentId)await api(teacher,'/api/v1/teacher/management/student-lifecycle','POST',{studentId,status:'cancelled',reason:'E2E fixture retired'});
+ retiredStatus=(await api(teacher,'/api/v1/teacher/management/batch-write','POST',{action:'update',batchId,data:{status:'cancelled',admissionOpen:false}})).body?.data?.status??null;
+ return retiredStatus;
+}
 try{
  teacher=await login('teacher');const student=await login('student');
  const realStudent=(await api(student,'/api/v1/student/profile')).body?.data?.id;assert.match(String(realStudent),/^[0-9a-f-]{36}$/);
@@ -169,9 +180,7 @@ try{
   check(`Public home has no horizontal overflow at ${width}px`,await p.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth+1),true);
   check(`Revealed content visible at ${width}px`,await p.evaluate(()=>document.querySelectorAll('.reveal-pending:not(.is-revealed)').length===0||!document.querySelector('.motion-ready')),true);await p.context().close();}
 
- // Retire fixtures: cancel the offline Student and the batch (records and ledger stay).
- await api(teacher,'/api/v1/teacher/management/student-lifecycle','POST',{studentId,status:'cancelled',reason:'E2E fixture retired'});
- const retired=await api(teacher,'/api/v1/teacher/management/batch-write','POST',{action:'update',batchId,data:{status:'cancelled',admissionOpen:false}});check('Fixture batch cancelled (history kept)',retired.body?.data?.status,'cancelled');
+ check('Fixture batch cancelled (history kept)',await retire(),'cancelled');
  report.status='Pass';
-}catch(e){report.status='Fail';report.failure=e.message;process.exitCode=1;console.error('FAIL',e.message);if(teacher)await teacher.screenshot({path:`${dir}/parity-failure.png`}).catch(()=>{});}
+}catch(e){report.status='Fail';report.failure=e.message;process.exitCode=1;console.error('FAIL',e.message);if(teacher)await teacher.screenshot({path:`${dir}/parity-failure.png`}).catch(()=>{});await retire().catch(()=>{});}
 finally{writeFileSync(`${dir}/management-parity${origin.includes('localhost')?'-local':''}.json`,JSON.stringify(report,null,1));await browser.close();}

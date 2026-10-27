@@ -26,9 +26,9 @@ The demo uses local mock data, so its behaviour was matched against EduCentre's 
 |---|---|---|---|---|
 | Students & lifecycle | 9 | 2 | 0 | 1 |
 | Batches & enrollment | 9 | 1 | 0 | 1 |
-| Tuition, payments, receipts | 9 | 1 | 0 | 1 |
-| Academics (syllabus, exams, results) | 9 | 3 | 1 | 1 |
-| Reports & PDFs | 3 | 2 | 1 | 0 |
+| Tuition, payments, receipts | 10 | 0 | 0 | 1 |
+| Academics (syllabus, exams, results) | 10 | 3 | 0 | 1 |
+| Reports & PDFs | 4 | 2 | 0 | 0 |
 | Settings, audit, notifications, profile | 3 | 2 | 0 | 1 |
 | Student portal | 8 | 1 | 0 | 0 |
 | Public website & CMS | 9 | 1 | 1 | 0 |
@@ -80,7 +80,7 @@ The demo uses local mock data, so its behaviour was matched against EduCentre's 
 | Collection summary (expected/collected/outstanding/rate/methods) | Ledger summary cards | VERIFIED | — |
 | Overpayment protection | Client and database (`PAYMENT_EXCEEDS_BALANCE`) | VERIFIED | E2E "Overpayment blocked" |
 | PDF receipt per payment | Immutable receipt per installment | VERIFIED | E2E "Receipt PDF downloads" |
-| Expenses, net profit, 12-month chart | Per-batch expenses and cashflow statement with CSV | PARTIAL | No organisation-wide 12-month comparison chart |
+| Expenses, net profit, 12-month chart | Per-batch expenses and cashflow statement with CSV; Overview has an organisation-wide 12-month chart (billed, collected, expenses, net) with a table view | VERIFIED | Added 2026-10-28 (`coaching_teacher_finance_trend`) |
 | Edit or delete a payment record | Waiver, refund and correction adjustments | INTENTIONALLY DIFFERENT | Immutable financial history |
 
 ## Academics
@@ -96,7 +96,7 @@ The demo uses local mock data, so its behaviour was matched against EduCentre's 
 | Rank, grade, pass/fail, class stats | Rank on publish (absent unranked), grade, pass rate, average, highest | VERIFIED | E2E "Published sheet" |
 | Publish results | Publish (not-recorded Students stay unpublished) | VERIFIED | — |
 | Result sheet PDF | `/api/v1/teacher/reports/exam/[id]` | VERIFIED | E2E "Result sheet PDF" |
-| Result CSV export | — | MISSING | PDF only |
+| Result CSV export | Result sheet PDF and **Results CSV** (attendance, marks, percent, grade, rank, pass/fail) | VERIFIED | Added 2026-10-28; spreadsheet formula prefixes are neutralised |
 | Assignments and submissions review | Assignments, Student submission and grading | VERIFIED | Previous evidence |
 | Dated class sessions (scheduled/completed/cancelled, room, online link) | Weekly routine slots | PARTIAL | No per-date session status |
 | Study materials: PDF, release date, draft/published | Private PDF materials with release control | PARTIAL | No expiry, download toggle, or link/YouTube item types |
@@ -109,7 +109,7 @@ The demo uses local mock data, so its behaviour was matched against EduCentre's 
 | Student progress report (printable) | Student self-service progress PDF | VERIFIED | E2E "Student progress report PDF" |
 | Exam analysis | Exam sheet statistics and PDF | VERIFIED | — |
 | Monthly collections report | Ledger with month filter and summary | VERIFIED | — |
-| Teacher-built report for any one Student | — | MISSING | Next item |
+| Teacher-built report for any one Student | **Progress report PDF** on every Student profile | VERIFIED | Added 2026-10-28; shows exactly the published results that Student sees (`coaching_teacher_student_exam_history`) |
 | Enrollment ledger, batch/subject performance with CSV | Cashflow/expense CSV only | PARTIAL | — |
 | Student exam analytics (trend chart, mastery) | Averages, best, attempted/absent counts | PARTIAL | No trend chart |
 
@@ -153,17 +153,17 @@ The demo uses local mock data, so its behaviour was matched against EduCentre's 
 | Mobile layout | Compact portal hero, two-column filters, no overflow at 375 px | VERIFIED (E2E) |
 
 ## Remaining gaps, in priority order
-1. A Teacher-built progress report PDF for any one Student. It needs a Teacher RPC for one Student's results.
-2. Result CSV export, plus enrollment and performance reports with CSV.
-3. Dated class sessions with status, room and online link.
-4. Study material expiry, download toggle, and link/YouTube types.
-5. Visitor review submission with moderation, and the month filter on the Wall of Fame.
-6. An organisation-wide finance dashboard with a 12-month chart.
-7. Audit log filters, and a per-Student audit trail.
+1. Enrollment and batch/subject performance reports with CSV.
+2. Dated class sessions with status, room and online link.
+3. Study material expiry, download toggle, and link/YouTube types.
+4. Visitor review submission with moderation, and the month filter on the Wall of Fame.
+5. Audit log filters, and a per-Student audit trail.
 
 ## Test data footprint (production)
 The browser E2E deliberately uses real ledger writes on labelled fixtures. That ran nine times: five local runs failed partway while the script was being fixed, then one local and one production run passed, plus two attempts in between.
 - **Totals:** 9 `E2E-PAR-*` batches, 8 `E2E PARITY Student …` records, and 14 test payments totalling BDT 145. Each run uses a BDT 30 fee.
 - **Retired:** every one of these batches and Students was cancelled through the audited API. Nothing was deleted.
 - **Genuine records** were checked afterwards and are unchanged: 1 payment (60 paisa), 1 receipt, 2 enrollments, 0 orphaned enrollments.
-- **Test Student account:** it is enrolled in the cancelled test batches and has published E2E exam results, so its portal shows them.
+- **Test Student account:** on 2026-10-28 its four active enrollments in the cancelled test batches were cancelled through the audited enrollment decision (as were the offline E2E Students' enrollments), so its portal and the Student directory show only its two real batches. Its earlier E2E exam results stay in history but no longer appear, because exam history only follows active enrollments.
+- **Earlier offline-admission fixtures:** the three `E2E Offline Test Student …` records were cancelled the same day.
+- **Going forward:** the E2E script retires its own fixtures in every case, including failed runs: it ends every enrollment in the test batch, cancels the offline Student and then the batch.
