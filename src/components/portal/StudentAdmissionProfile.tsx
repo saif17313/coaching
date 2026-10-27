@@ -56,7 +56,7 @@ export function StudentAdmissionProfile({role,studentId,onClose,onAssignBatch}:{
      {profile?.admissionRoll&&<span className="student-roll-badge">Roll: {profile.admissionRoll}</span>}
     </div>
    </div>
-   {onClose&&<button className="portal-secondary" onClick={onClose} disabled={busy}>Close profile</button>}
+   <div className="mgmt-quick-row">{role==='teacher'&&profile?.id&&<a className="portal-secondary" href={`/api/v1/teacher/reports/student/${profile.id}`} target="_blank" rel="noopener">Progress report PDF ↗</a>}{onClose&&<button className="portal-secondary" onClick={onClose} disabled={busy}>Close profile</button>}</div>
   </div>
   {error&&<p className="portal-alert" role="alert">{error.replaceAll('_',' ')}{error.includes('REVISION_CONFLICT')&&' — another update was saved. Reload before editing again.'}</p>}{notice&&<p className="portal-success" role="status">{notice}</p>}
   {loading?<p role="status">Loading verified Student profile…</p>:profile?<>

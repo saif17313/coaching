@@ -63,6 +63,16 @@ type ExamType='class_test'|'weekly'|'monthly'|'model_test'|'assignment'|'final';
 export const EXAM_TYPES:Record<ExamType,string>={class_test:'Class test',weekly:'Weekly exam',monthly:'Monthly exam',model_test:'Model test',assignment:'Assignment',final:'Final exam'};
 type SheetRow={studentId:string;fullName:string;admissionRoll:string|null;participation:'attempted'|'absent'|'not_recorded';marks:number|null;rank:number|null;remarks:string;resultStatus:'draft'|'published'|null};
 type Sheet={exam:{id:string;batchId:string;batchName:string;batchCode:string;subject:string;title:string;scheduledAt:string;maxMarks:number;passMarks:number|null;examType:ExamType;durationMinutes:number|null;instructions:string;coverageUnitIds:string[];status:string;lifecycle:string};rows:SheetRow[]};
+const csvCell=(value:string|number|null)=>{const text=value===null?'':String(value);const safe=/^[=+\-@\t\r]/.test(text)?`'${text}`:text;return /[",\r\n]/.test(safe)?`"${safe.replaceAll('"','""')}"`:safe;};
+/** Result sheet as CSV (spreadsheet-safe: formula prefixes neutralised, UTF-8 BOM for Bangla names). */
+function exportResultsCsv(sheet:Sheet){
+ const {exam}=sheet,label={attempted:'Attempted',absent:'Absent',not_recorded:'Not recorded'} as const;
+ const rows=[['Exam',exam.title],['Batch',exam.batchName],['Subject',exam.subject],['Scheduled',new Date(exam.scheduledAt).toISOString()],['Total marks',exam.maxMarks],['Pass marks',exam.passMarks],[],
+  ['Admission roll','Student','Attendance','Marks','Percent','Grade','Rank','Result','Status','Remarks'],
+  ...sheet.rows.map(row=>{const percent=row.marks===null?null:Math.round(row.marks/exam.maxMarks*1000)/10;return [row.admissionRoll,row.fullName,label[row.participation],row.marks,percent,percent===null?'':grade(percent),row.rank,row.marks===null||exam.passMarks===null?'':row.marks>=exam.passMarks?'Pass':'Fail',row.resultStatus??'',row.remarks];})];
+ const blob=new Blob(['﻿'+rows.map(row=>row.map(csvCell).join(',')).join('\r\n')],{type:'text/csv;charset=utf-8'}),url=URL.createObjectURL(blob),link=document.createElement('a');
+ link.href=url;link.download=`results-${exam.title.replace(/[^\w-]+/g,'-').slice(0,60)}.csv`;link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
 const LIFECYCLE:Record<string,string>={draft:'Draft (hidden)',scheduled:'Scheduled',completed:'Held · results pending',result_draft:'Result draft',result_published:'Results published',archived:'Archived'};
 export function grade(percent:number){return percent>=80?'A+':percent>=70?'A':percent>=60?'A-':percent>=50?'B':percent>=40?'C':percent>=33?'D':'F';}
 
@@ -82,7 +92,7 @@ export function ExamResultsSheet({exams}:{exams:{id:string;title:string}[]}){
  async function publish(){if(!sheet||!window.confirm(`Publish results for ${sheet.exam.title}? Students will see their marks, rank and attendance. Students still "not recorded" stay unpublished.`))return;setBusy('publish');setError('');try{await academicPublish('results',sheet.exam.id);setNotice('Results published to enrolled Students.');setVersion(v=>v+1);}catch(e){setError((e as Error).message);}finally{setBusy('');}}
  return <section className="mgmt-exam-sheet" aria-label="Exam result sheet">
   <div className="academic-context"><label>Choose exam<select value={examId} onChange={e=>setExamId(e.target.value)}>{exams.map(x=><option key={x.id} value={x.id}>{x.title}</option>)}</select></label>
-   {sheet&&<div className="mgmt-quick-row"><button className="portal-secondary" onClick={()=>setDetails(true)} disabled={published}>Exam details</button><a className="portal-secondary" href={`/api/v1/teacher/reports/exam/${sheet.exam.id}`} target="_blank" rel="noopener">Result sheet PDF ↗</a></div>}</div>
+   {sheet&&<div className="mgmt-quick-row"><button className="portal-secondary" onClick={()=>setDetails(true)} disabled={published}>Exam details</button><a className="portal-secondary" href={`/api/v1/teacher/reports/exam/${sheet.exam.id}`} target="_blank" rel="noopener">Result sheet PDF ↗</a><button type="button" className="portal-secondary" onClick={()=>exportResultsCsv(sheet)}>Results CSV ↓</button></div>}</div>
   {error&&<div className="portal-alert" role="alert">{error}</div>}{notice&&<div className="portal-success" role="status">✓ {notice}</div>}
   {!sheet?<div className="portal-loading"><div className="portal-spinner"/>Loading result sheet…</div>:<>
    <div className="mgmt-exam-head"><div><span className="premium-badge" data-status={published?'active':'pending'}>{LIFECYCLE[sheet.exam.lifecycle]??sheet.exam.lifecycle}</span><h4>{sheet.exam.title}</h4><p>{EXAM_TYPES[sheet.exam.examType]} · {sheet.exam.subject} · {new Date(sheet.exam.scheduledAt).toLocaleString('en-GB',{dateStyle:'medium',timeStyle:'short'})}{sheet.exam.durationMinutes?` · ${sheet.exam.durationMinutes} min`:''} · Total {sheet.exam.maxMarks}{sheet.exam.passMarks!==null?` · Pass ${sheet.exam.passMarks}`:''}</p></div>

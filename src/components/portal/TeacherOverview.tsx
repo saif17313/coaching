@@ -1,5 +1,6 @@
 'use client';
 import {ManagementFinanceSummary} from './ManagementFinanceSummary';
+import {FinanceTrendChart} from './FinanceTrendChart';
 import {useEffect,useState} from 'react';
 import {academicList,type AcademicItem} from '@/client/teacher-academics.mjs';
 import {financeList,minorToBDT} from '@/client/teacher-finance.mjs';
@@ -33,6 +34,7 @@ export function TeacherOverview({counts,loading,error,version,onNavigate,onSelec
   {error&&<p className="premium-error" role="alert">{error}</p>}
   <div className="premium-metrics">{metrics.map(([label,key,icon,detail])=><PortalMetric key={key} label={label} icon={icon} value={loading?'…':Number.isSafeInteger(summary[key])?String(summary[key]):'—'} detail={detail}/>)}</div>
   <ManagementFinanceSummary onOpenBatch={id=>navigateBatch('finance',id)} onOpenStudents={()=>onNavigate('students')}/>
+  <FinanceTrendChart/>
   {relatedError&&<p className="premium-error" role="status">{relatedError}</p>}
   <div className="premium-dashboard-grid"><section className="premium-surface"><div className="premium-section-title"><h3>Recent activity</h3><button className="portal-text-button" onClick={()=>onNavigate('audit')}>View all ↗</button></div>{activity.length?<ul className="premium-mini-list">{activity.slice(0,6).map(item=><li key={item.id}><span className="premium-avatar"><PortalIcon name={item.action.startsWith('student')?'students':'assignments'} size={18}/></span><div><strong>{actionLabel(item.action)}</strong><small>{new Date(item.occurredAt).toLocaleString('en-BD',{dateStyle:'medium',timeStyle:'short'})}</small></div></li>)}</ul>:<PortalEmpty title="No activity to display" detail="Recorded changes will appear in your audit history."/>}</section>
    <section className="premium-surface"><div className="premium-section-title"><h3>Class schedule</h3><button className="portal-text-button" onClick={()=>onNavigate('routine')}>View routine ↗</button></div><p className="premium-sidebar-note">Weekly classes · first {Math.min(batches.length,5)} open batches</p>{sessions.length?<ul className="premium-mini-list">{sessions.slice(0,5).map(item=><li key={item.id}><span className="premium-date-tile">{['SUN','MON','TUE','WED','THU','FRI','SAT'][Number(item.dayOfWeek)]||'CLASS'}</span><button onClick={()=>navigateBatch('routine',item.batchId)}><strong>{item.batchName}</strong><small><PortalIcon name="clock" size={11}/>{clock(item.startMinute)}–{clock(item.endMinute)}{typeof item.room==='string'&&item.room?' · '+item.room:''}</small></button></li>)}</ul>:<PortalEmpty icon="calendar" title="No classes scheduled" detail="Published batch routines will appear here."/>}</section>

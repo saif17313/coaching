@@ -1,0 +1,91 @@
+/* Portal refinement layer: same layout, navigation and navy/teal identity, with calmer depth and motion.
+   Loaded after premium-portal.css and management-parity.css so it only refines, never restructures. */
+.portal-shell{--r-ease:cubic-bezier(.22,1,.36,1);--r-ring:0 0 0 3px #0aa18f40}
+
+/* Sidebar: a layered gradient replaces the bitmap whose decorative orb sat on top of menu labels. */
+.portal-shell .portal-sidebar{background:radial-gradient(120% 55% at 0% 100%,#0b6b6455,transparent 60%),radial-gradient(90% 40% at 100% 0%,#13586a66,transparent 65%),linear-gradient(180deg,#0a3346 0%,#082c3d 55%,#06283a 100%);box-shadow:inset -1px 0 #ffffff0f,6px 0 30px #04263412;isolation:isolate}
+.portal-shell .portal-sidebar:after{content:'';position:absolute;z-index:-1;inset:auto 0 0;height:180px;pointer-events:none;background:repeating-radial-gradient(circle at 0 100%,transparent 0 38px,#7fd6c90d 39px 40px);mask:linear-gradient(transparent,#000 70%)}
+.portal-shell .portal-nav-link{position:relative;transition:background-color .25s var(--r-ease),color .2s ease,transform .25s var(--r-ease)}
+.portal-shell .portal-nav-link:hover{transform:translateX(3px)}
+.portal-shell .portal-nav-link.selected{transform:none;box-shadow:0 8px 22px #001d2640,inset 0 1px #fff}
+.portal-shell .portal-nav-link:focus-visible{outline:none;box-shadow:var(--r-ring)}
+
+/* Page header: compact, so working content starts above the fold. */
+.portal-shell .premium-hero{min-height:118px;margin-bottom:18px;animation:r-rise .5s var(--r-ease) both}
+.portal-shell .premium-hero h1{font-size:clamp(30px,3.1vw,46px);margin:8px 0 8px;background:linear-gradient(100deg,#08263b 30%,#0b5e60);-webkit-background-clip:text;background-clip:text;color:transparent}
+.portal-shell .premium-hero p{font-size:14px}
+.portal-shell .premium-hero-art{width:300px;margin-top:-28px;animation:r-float 9s ease-in-out infinite}
+
+/* Smooth page changes: each view fades and rises in once when it mounts. */
+.portal-view{animation:r-rise .42s var(--r-ease) both}
+.portal-view .premium-metrics>*{animation:r-rise .5s var(--r-ease) both}
+.portal-view .premium-metrics>*:nth-child(2){animation-delay:.05s}
+.portal-view .premium-metrics>*:nth-child(3){animation-delay:.1s}
+.portal-view .premium-metrics>*:nth-child(4){animation-delay:.15s}
+
+/* Surfaces: soft layered depth, crisp edge highlight and a gentle lift on pointer devices. */
+.portal-shell .premium-metric{position:relative;overflow:hidden;box-shadow:0 1px 2px #0b3a3a0d,0 8px 24px -12px #0b3a3a26,inset 0 1px #fff;transition:transform .3s var(--r-ease),box-shadow .3s var(--r-ease),border-color .3s ease}
+.portal-shell .premium-metric:before{content:'';position:absolute;inset:0 0 auto;height:3px;background:linear-gradient(90deg,#0aa18f,#2b7fa8 60%,transparent);opacity:.55}
+.portal-shell .premium-metric-icon{box-shadow:inset 0 0 0 1px #0a8f8020,0 6px 14px -6px #0a8f8055}
+@media(hover:hover){.portal-shell .premium-metric:hover{transform:translateY(-3px);border-color:#bfe0d6;box-shadow:0 2px 4px #0b3a3a0d,0 18px 36px -16px #0b3a3a40,inset 0 1px #fff}}
+.portal-shell .premium-table tbody tr{transition:background-color .18s ease}
+.portal-shell .premium-table tbody tr:hover{background:#f2faf7}
+
+/* Controls: tactile press, clear focus. */
+.portal-shell .portal-primary,.portal-shell .portal-secondary{transition:transform .18s var(--r-ease),box-shadow .2s ease,background-color .2s ease,border-color .2s ease;cursor:pointer}
+.portal-shell .portal-primary{background:linear-gradient(120deg,#029086,#035d66);box-shadow:0 6px 16px -6px #036a6a99,inset 0 1px #ffffff33}
+@media(hover:hover){.portal-shell .portal-primary:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 10px 22px -8px #036a6ab3,inset 0 1px #ffffff40}.portal-shell .portal-secondary:hover:not(:disabled){border-color:#9fd0c4;background:#f7fcfa}}
+.portal-shell .portal-primary:active:not(:disabled),.portal-shell .portal-secondary:active:not(:disabled){transform:translateY(0) scale(.98)}
+.portal-shell .portal-primary:focus-visible,.portal-shell .portal-secondary:focus-visible,.portal-shell select:focus-visible,.portal-shell input:focus-visible,.portal-shell textarea:focus-visible{outline:none;box-shadow:var(--r-ring)}
+.portal-shell select,.portal-shell input,.portal-shell textarea{transition:border-color .2s ease,box-shadow .2s ease}
+
+/* Loading: a shimmering skeleton instead of a bare spinner line. */
+.portal-shell .portal-loading{position:relative;display:grid;gap:12px;padding:22px;border:1px solid #e1eeea;border-radius:14px;background:#fffffff2;color:#4f6f7b;font-size:13px}
+.portal-shell .portal-loading:after{content:'';display:block;height:96px;border-radius:10px;background:linear-gradient(#0000 0 14px,#fff 14px 26px,#0000 26px 40px,#fff 40px 52px,#0000 52px 66px,#fff 66px 78px,#0000 78px),linear-gradient(90deg,#edf5f2 25%,#f8fcfa 50%,#edf5f2 75%);background-size:100% 100%,300% 100%;animation:r-shimmer 1.4s linear infinite}
+
+/* Dialogs open with depth rather than snapping in. */
+.portal-shell .teacher-ops-overlay{animation:r-fade .2s ease both;backdrop-filter:blur(6px)}
+.portal-shell .teacher-ops-modal{animation:r-pop .32s var(--r-ease) both;box-shadow:0 30px 80px -20px #04263466,0 0 0 1px #ffffff80 inset}
+
+.portal-shell .portal-topbar{position:sticky;top:0;z-index:20}
+.portal-shell .portal-footnote{opacity:.75}
+
+@keyframes r-rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes r-fade{from{opacity:0}to{opacity:1}}
+@keyframes r-pop{from{opacity:0;transform:translateY(12px) scale(.975)}to{opacity:1;transform:none}}
+@keyframes r-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@keyframes r-shimmer{from{background-position:0 0,100% 0}to{background-position:0 0,-200% 0}}
+
+@media(max-width:700px){.portal-shell .premium-hero{min-height:0;margin-bottom:12px}.portal-shell .premium-hero h1{font-size:30px}.portal-shell .premium-hero-art{animation:none}}
+@media(prefers-reduced-motion:reduce){.portal-shell .premium-hero,.portal-view,.portal-view .premium-metrics>*,.portal-shell .premium-hero-art,.portal-shell .teacher-ops-overlay,.portal-shell .teacher-ops-modal,.portal-shell .portal-loading:after{animation:none}.portal-shell .portal-nav-link:hover,.portal-shell .premium-metric:hover,.portal-shell .portal-primary:hover{transform:none}}
+
+/* 12-month finance trend (FinanceTrendChart). Text uses ink tokens; only marks carry series colour. */
+.finance-trend{margin-top:18px;min-width:0;max-width:100%}
+.finance-trend-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:0 20px 14px}
+.finance-trend-stats>div{padding:12px 14px;border:1px solid #e1eeea;border-radius:12px;background:#fbfdfc}
+.finance-trend-stats dt{font-size:12px;color:#557280}
+.finance-trend-stats dd{margin:4px 0 0;font:700 20px/1.2 var(--premium-serif,Georgia,serif);color:#0b2c40;font-variant-numeric:tabular-nums}
+.finance-trend-stats dd[data-tone=negative]{color:#a1361f}
+.finance-trend-stats small{display:block;margin-top:2px;font-size:11px;color:#6a8590}
+.finance-trend-legend{display:flex;flex-wrap:wrap;gap:6px 18px;list-style:none;margin:0 20px 6px;padding:0;font-size:12px;color:#33525f}
+.finance-trend-legend li{display:inline-flex;align-items:center;gap:7px}
+.finance-trend-legend i,.finance-trend-tip i{display:inline-block;width:10px;height:10px;border-radius:3px}
+.finance-trend-plot{position:relative;margin:0 20px;min-width:0;overflow:hidden;padding-top:2px}
+.finance-trend-plot svg{display:block;overflow:visible}
+.finance-trend-plot text{font-size:11px;fill:#5d7884;font-variant-numeric:tabular-nums}
+.finance-trend-plot line.grid{stroke:#e8f0ed;stroke-width:1}
+.finance-trend-plot line.baseline{stroke:#c3d6d0;stroke-width:1}
+.finance-trend-plot .hit{fill:transparent;cursor:crosshair;outline:none}
+.finance-trend-plot g.is-active .hit{fill:#0a8f7e0f}
+.finance-trend-plot g.is-active .hit:focus-visible{stroke:#0a8f7e;stroke-width:1.5}
+.finance-trend-plot g path{transition:opacity .18s ease;pointer-events:none}
+.finance-trend-plot g.is-dim path{opacity:.4}
+.finance-trend-tip{position:absolute;top:4px;transform:translateX(-50%);display:grid;gap:5px;min-width:170px;padding:10px 12px;border:1px solid #dbe9e4;border-radius:10px;background:#fffffff7;box-shadow:0 14px 30px -12px #0b3c4a4d;font-size:12px;color:#2e4d5a;pointer-events:none;z-index:2}
+.finance-trend-tip strong{color:#0b2c40;font-size:12.5px}
+.finance-trend-tip span{display:flex;align-items:center;gap:7px}
+.finance-trend-tip b{margin-left:auto;font-variant-numeric:tabular-nums;color:#0b2c40}
+.finance-trend-tip .net{padding-top:5px;border-top:1px solid #e6efec}
+.finance-trend-empty{padding:28px 0;text-align:center;color:#557280;font-size:13px}
+.finance-trend-table{margin:10px 20px 18px;font-size:13px}
+.finance-trend-table summary{cursor:pointer;color:#0b6b62;font-weight:650;padding:6px 0}
+@media(max-width:700px){.finance-trend-stats{grid-template-columns:repeat(2,minmax(0,1fr));margin:0 14px 12px}.finance-trend-legend,.finance-trend-plot,.finance-trend-table{margin-left:14px;margin-right:14px}}
