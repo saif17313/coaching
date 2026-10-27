@@ -9,6 +9,10 @@ const TARGETS='.tale-section-title,.tale-card,.tale-trust-strip,.tale-soft-panel
  * content never disappears without JavaScript, and reduced-motion users see no animation at all.
  */
 export function PremiumMotion({enabled=true}:{enabled?:boolean}){
+ // Header glass firms up once the page has scrolled; independent of motion preferences.
+ useEffect(()=>{const site=document.querySelector<HTMLElement>('.tale-site');if(!site)return;let frame=0;
+  const update=()=>{frame=0;site.dataset.scrolled=String(window.scrollY>24);};const onScroll=()=>{if(!frame)frame=requestAnimationFrame(update);};
+  update();window.addEventListener('scroll',onScroll,{passive:true});return()=>{cancelAnimationFrame(frame);window.removeEventListener('scroll',onScroll);delete site.dataset.scrolled;};},[]);
  useEffect(()=>{
   const site=document.querySelector<HTMLElement>('.tale-site');
   if(!site||!enabled||matchMedia('(prefers-reduced-motion: reduce)').matches||!('IntersectionObserver' in window))return;

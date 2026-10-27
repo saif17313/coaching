@@ -1,0 +1,57 @@
+/* Premium depth layer for the public site: one WebGL hero element, CSS 3D for everything else.
+   Same navy/teal/gold identity; every effect collapses to a static layout for reduced motion. */
+.tale-site[data-visual-style=premium]{--depth-ease:cubic-bezier(.22,1,.36,1)}
+
+/* Hero: WebGL atom sits behind the portrait; the whole visual tilts toward the pointer in 3D. */
+.tale-site[data-visual-style=premium] .tale-hero-visual{perspective:1200px;transform-style:preserve-3d}
+.tale-hero-depth{position:absolute;inset:-14% -18%;z-index:0;pointer-events:none;opacity:0;transition:opacity 1.2s ease}
+.tale-hero-depth.is-live{opacity:1}
+.tale-hero-depth canvas{width:100%!important;height:100%!important;display:block}
+.tale-site[data-visual-style=premium] .tale-hero-visual>.tale-visual-orbit{z-index:1}
+.tale-site[data-visual-style=premium] .tale-hero-visual:has(.tale-hero-depth.is-live)>.tale-visual-orbit{opacity:1}
+.tale-site[data-visual-style=premium] .tale-visual-published,.tale-site[data-visual-style=premium] .tale-visual-book{rotate:x var(--hero-tilt-x,0deg);transition:rotate .7s var(--depth-ease)}
+.tale-site[data-visual-style=premium] .tale-hero-visual>.tale-visual-orbit{rotate:y var(--hero-tilt-y,0deg);transition:rotate .7s var(--depth-ease)}
+.tale-site[data-visual-style=premium] .tale-visual-published{box-shadow:0 2px 0 #ffffffb3 inset,0 40px 80px -30px #0b3c4a73,0 18px 40px -20px #0f6b6259}
+.tale-site[data-visual-style=premium] .tale-visual-published:after{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(125deg,#ffffff4d,transparent 38%,transparent 70%,#0a4c5626)}
+.tale-site[data-visual-style=premium] .tale-floating-note{z-index:3;translate:0 0 60px;animation:depth-hover 6s ease-in-out infinite;background:linear-gradient(135deg,#fffffff2,#f3fbf8e6);box-shadow:0 1px 0 #fff inset,0 24px 50px -18px #0b4d5059}
+
+/* A receding perspective floor grounds the hero in space. */
+.tale-site[data-visual-style=premium] .tale-home-hero{position:relative}
+.tale-site[data-visual-style=premium] .tale-home-hero:before{content:'';position:absolute;left:-25%;right:-25%;bottom:-4%;height:34%;z-index:0;pointer-events:none;background:linear-gradient(90deg,#0f7c701a 1px,transparent 1px) 0 0/64px 64px,linear-gradient(#0f7c701a 1px,transparent 1px) 0 0/64px 64px;transform:perspective(520px) rotateX(64deg);transform-origin:50% 100%;mask:linear-gradient(to top,#000 0%,#0006 35%,transparent 75%)}
+
+/* Hero headline: a soft gold underline sweep and layered text depth. */
+.tale-site[data-visual-style=premium] .tale-home-hero-copy h1{text-shadow:0 1px 0 #fff,0 18px 40px #0b3c4a1f}
+.tale-site[data-visual-style=premium] .tale-home-hero-copy h1 em{position:relative;background:linear-gradient(100deg,#0b7a6f,#1d5f86 55%,#a87533);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:none}
+.tale-site[data-visual-style=premium] .tale-pill{box-shadow:0 1px 0 #fff inset,0 10px 24px -14px #0b6b6266;background:linear-gradient(135deg,#ffffffe6,#e8f6f1e6)}
+
+/* Buttons: light sweep on hover and a tactile press. */
+.tale-site[data-visual-style=premium] .tale-action,.tale-site[data-visual-style=premium] .tale-account{position:relative;overflow:hidden;isolation:isolate}
+.tale-site[data-visual-style=premium] .tale-action:before,.tale-site[data-visual-style=premium] .tale-account:before{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(110deg,transparent 30%,#ffffff40 48%,transparent 66%);transform:translateX(-120%);transition:transform .8s var(--depth-ease)}
+.tale-site[data-visual-style=premium] .tale-action:hover:before,.tale-site[data-visual-style=premium] .tale-account:hover:before{transform:translateX(120%)}
+.tale-site[data-visual-style=premium] .tale-action:active,.tale-site[data-visual-style=premium] .tale-action-outlined:active{transform:translateY(0) scale(.98)}
+.tale-site[data-visual-style=premium] .tale-action-outlined{transition:transform .25s var(--depth-ease),box-shadow .25s,border-color .25s,background-color .25s}
+.tale-site[data-visual-style=premium] .tale-action-outlined:hover{transform:translateY(-2px);border-color:#8fc9bb;background:#ffffffd9;box-shadow:0 14px 30px -18px #0b4d5066}
+
+/* Header: glass that firms up once the page scrolls. */
+.tale-site[data-visual-style=premium] .tale-header{transition:background-color .35s ease,box-shadow .35s ease,border-color .35s ease}
+.tale-site[data-scrolled=true][data-visual-style=premium] .tale-header{background:#ffffffd9;box-shadow:0 1px 0 #ffffff inset,0 12px 40px -18px #0b3c4a40;border-bottom-color:#d3e6df}
+
+/* Reveal: sections rise out of depth (slight backwards tilt) rather than only fading. */
+.tale-site.motion-ready[data-visual-style=premium] .reveal-pending{transform:perspective(1100px) translate3d(0,34px,-40px) rotateX(7deg);transform-origin:50% 100%}
+.tale-site.motion-ready[data-visual-style=premium] .reveal-pending.is-revealed{transform:none}
+
+/* Trust strip and mentor: floating glass slabs with a crisp top edge. */
+.tale-site[data-visual-style=premium] .tale-trust-strip{position:relative;z-index:2;background:linear-gradient(135deg,#ffffffeb,#f5fbf8e0);backdrop-filter:blur(16px);box-shadow:0 1px 0 #fff inset,0 30px 70px -36px #0b3c4a59,0 8px 20px -12px #0b3c4a1f}
+.tale-site[data-visual-style=premium] .tale-mentor-portrait{transform:perspective(1000px) rotateX(var(--premium-tilt-x,0deg)) rotateY(var(--premium-tilt-y,0deg));transition:transform .5s var(--depth-ease);box-shadow:0 40px 80px -40px #0b3c4a59}
+.tale-site[data-visual-style=premium] .tale-soft-panel{box-shadow:0 1px 0 #ffffffb3 inset}
+
+/* Footer: a horizon of perspective lines under the dark band. */
+.tale-site[data-visual-style=premium] .tale-footer:after{content:'';position:absolute;left:-20%;right:-20%;bottom:0;height:70%;pointer-events:none;background:linear-gradient(90deg,#7fd6c91a 1px,transparent 1px) 0 0/72px 72px,linear-gradient(#7fd6c91a 1px,transparent 1px) 0 0/72px 72px;transform:perspective(480px) rotateX(66deg);transform-origin:50% 100%;mask:linear-gradient(to top,#000,transparent 85%)}
+.tale-site[data-visual-style=premium] .tale-footer>*{position:relative;z-index:1}
+
+@keyframes depth-hover{0%,100%{translate:0 0 60px}50%{translate:0 -8px 60px}}
+
+@media(max-width:700px){.tale-hero-depth{inset:-8% -10%}.tale-site[data-visual-style=premium] .tale-home-hero:before{display:none}.tale-site.motion-ready[data-visual-style=premium] .reveal-pending{transform:translate3d(0,22px,0)}}
+@media(prefers-reduced-motion:reduce){.tale-hero-depth{display:none}.tale-site[data-visual-style=premium] .tale-floating-note{animation:none}.tale-site[data-visual-style=premium] .tale-visual-published,.tale-site[data-visual-style=premium] .tale-visual-book,.tale-site[data-visual-style=premium] .tale-hero-visual>.tale-visual-orbit,.tale-site[data-visual-style=premium] .tale-mentor-portrait{rotate:none;transform:none;transition:none}.tale-site[data-visual-style=premium] .tale-action:before,.tale-site[data-visual-style=premium] .tale-account:before{display:none}.tale-site.motion-ready[data-visual-style=premium] .reveal-pending{transform:none}}
+.tale-site[data-motion=off] .tale-hero-depth{display:none}
+.tale-site[data-motion=off] .tale-floating-note{animation:none}
