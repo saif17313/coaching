@@ -1,0 +1,145 @@
+{
+ "time": "2026-10-27T03:43:26.758Z",
+ "origin": "https://educentre-iota.vercel.app",
+ "scope": "Offline admission test Student and test batch only; no payments recorded",
+ "checks": [
+  {
+   "label": "Add student form has no Student email or password field",
+   "status": "Pass",
+   "actual": [
+    0,
+    0
+   ]
+  },
+  {
+   "label": "Offline create returns 201",
+   "status": "Pass",
+   "actual": 201
+  },
+  {
+   "label": "Admission details saved",
+   "status": "Pass",
+   "actual": 200
+  },
+  {
+   "label": "Profile shows no portal login",
+   "status": "Pass",
+   "actual": "none"
+  },
+  {
+   "label": "Photograph upload accepted",
+   "status": "Pass",
+   "actual": true
+  },
+  {
+   "label": "Profile saved with photograph",
+   "status": "Pass",
+   "actual": 200
+  },
+  {
+   "label": "Persisted after reload: name",
+   "status": "Pass",
+   "actual": "E2E Offline Test Student 202610270343"
+  },
+  {
+   "label": "Persisted after reload: no email",
+   "status": "Pass",
+   "actual": ""
+  },
+  {
+   "label": "Persisted after reload: phone/class/guardian",
+   "status": "Pass",
+   "actual": [
+    "01700000000",
+    "HSC 1st Year",
+    "E2E Test Guardian"
+   ]
+  },
+  {
+   "label": "Admission roll issued",
+   "status": "Pass",
+   "actual": true
+  },
+  {
+   "label": "Photograph linked",
+   "status": "Pass",
+   "actual": "string"
+  },
+  {
+   "label": "Account active without Auth",
+   "status": "Pass",
+   "actual": "active"
+  },
+  {
+   "label": "Login state none",
+   "status": "Pass",
+   "actual": "none"
+  },
+  {
+   "label": "Test batch created",
+   "status": "Pass",
+   "actual": true
+  },
+  {
+   "label": "Enrollment requested",
+   "status": "Pass",
+   "actual": true
+  },
+  {
+   "label": "Enrollment approved",
+   "status": "Pass",
+   "actual": true
+  },
+  {
+   "label": "Enrollment visible on profile",
+   "status": "Pass",
+   "actual": [
+    [
+     "a5e51420-a60f-44b4-a5ba-e791467d17be",
+     "active"
+    ]
+   ]
+  },
+  {
+   "label": "Duplicate enrollment rejected",
+   "status": "Pass",
+   "actual": true
+  },
+  {
+   "label": "Linking an already registered email is rejected",
+   "status": "Pass",
+   "actual": [
+    409,
+    "EMAIL_ALREADY_REGISTERED"
+   ]
+  },
+  {
+   "label": "Student cannot create offline students",
+   "status": "Pass",
+   "actual": 403
+  },
+  {
+   "label": "Student cannot read another Student",
+   "status": "Pass",
+   "actual": true
+  },
+  {
+   "label": "Student cannot activate logins",
+   "status": "Pass",
+   "actual": 403
+  },
+  {
+   "label": "Anonymous offline create denied",
+   "status": "Pass",
+   "actual": 401
+  },
+  {
+   "label": "Existing registered Student still reads own profile",
+   "status": "Pass",
+   "actual": 200
+  }
+ ],
+ "studentId": "d218e160-4076-48ab-8a51-29d7e7f6301f",
+ "batchId": "a5e51420-a60f-44b4-a5ba-e791467d17be",
+ "status": "Pass"
+}
