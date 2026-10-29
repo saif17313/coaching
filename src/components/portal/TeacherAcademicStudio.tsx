@@ -37,7 +37,7 @@ function recordDescription(mode:AcademicMode,row:AcademicItem,subjects:Named[]){
 }
 const itemTitle=(mode:AcademicMode,row:AcademicItem)=>mode==='routine'?`${asStr(row.room)||'Class session'}`:mode==='results'?`Result ${short(row.id)}`:asStr(row.title)||short(row.id);
 const formFields:Record<AcademicMode,string[]>={subjects:['code','title'],syllabus:['title','position'],routine:['subjectId','dayOfWeek','startMinute','endMinute','room'],assignments:['subjectId','title','instructions','releaseAt','dueAt','maxPoints','allowResubmit'],exams:['subjectId','title','scheduledAt','maxMarks'],results:['studentId','marks']};
-const createNames:Record<AcademicMode,string>={subjects:'Add subject',syllabus:'Add syllabus unit',routine:'Add class session',assignments:'Create assignment draft',exams:'Create exam draft',results:'Save result draft'};
+const createNames:Record<AcademicMode,string>={subjects:'Add subject',syllabus:'Add syllabus unit',routine:'Add weekly class',assignments:'Create assignment draft',exams:'Create exam draft',results:'Save result draft'};
 export function TeacherAcademicStudio({mode,batchId,onNavigate}:{mode:AcademicMode;batchId:string;onNavigate:(m:AcademicMode)=>void}){
  const [review,setReview]=useState<AcademicItem|null>(null),[detailsId,setDetailsId]=useState('');
  const planner=mode==='syllabus'||mode==='results';
