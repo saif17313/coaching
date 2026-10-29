@@ -62,7 +62,7 @@
 .tale-site[data-visual-style=premium] .tale-section-title .tale-eyebrow:before{content:'';width:6px;height:6px;border-radius:50%;background:linear-gradient(135deg,#0a8f7e,#c6913d)}
 .tale-site[data-visual-style=premium] .tale-section-title h2{position:relative;padding-bottom:18px}
 .tale-site[data-visual-style=premium] .tale-section-title h2:after{content:'';position:absolute;left:50%;bottom:0;width:72px;height:3px;border-radius:3px;transform:translateX(-50%);background:linear-gradient(90deg,#0a8f7e,#2b6f9e 55%,#c6913d)}
-.tale-site[data-visual-style=premium] .tale-mentor .tale-section-title h2:after,.tale-site[data-visual-style=premium] .tale-info .tale-section-title h2:after{left:0;transform:none}
+.tale-site[data-visual-style=premium] .tale-mentor .tale-section-title h2:after{left:0;transform:none}
 
 /* Cards: gradient hairline frame that warms on hover, framed media and a readable lift. */
 .tale-site[data-visual-style=premium] .tale-card:before{content:'';position:absolute;inset:0;border-radius:inherit;padding:1px;pointer-events:none;z-index:1;background:linear-gradient(160deg,#cfe7df,#ffffff00 38%,#ffffff00 62%,#ead6b4);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;transition:background .4s ease}

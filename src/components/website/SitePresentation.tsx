@@ -20,6 +20,7 @@ import {PublishedVideo} from './PublishedVideo';
 import {youtubeVideoId} from '@/client/cms-video.mjs';
 import {SiteDiscovery} from './SiteDiscovery';
 import {ReferenceCourseCarousel} from './ReferenceCourseCarousel';
+import {GuardianReviews} from './GuardianReviews';
 import {buildPublishedDirectory} from '@/client/public-discovery.mjs';
 import {publicItemLink} from '@/client/public-item-links.mjs';
 
@@ -51,17 +52,18 @@ function Card({item,index=0,kind='cards',section,ui={}}:{item:SiteItem;index?:nu
   {video?<PublishedVideo videoId={video} title={item.title||'Published class video'}/>:outgoing?<a href={outgoing} target="_blank" rel="noopener noreferrer">{uiText(ui,'exploreMore','Explore more')} <span aria-hidden="true">↗</span></a>:null}</div>
  </article></CmsDesignScope>;
 }
-function Cards({section,kind='cards',limit,ui={}}:{section?:SiteSection;kind?:string;limit?:number;ui?:InterfaceLabels}){
+function Cards({section,kind='cards',limit,ui={},reviewMode='grid',interval}:{section?:SiteSection;kind?:string;limit?:number;ui?:InterfaceLabels;reviewMode?:'grid'|'carousel';interval?:number}){
  if(!section)return null;
  const items=visibleItems(section).slice(0,limit??30);
  return <section className={`tale-block tale-block-${kind}`} id={`section-${section.id}`}>
   <div className="tale-section-title"><span className="tale-eyebrow">{kind==='courses'?uiText(ui,'coursesEyebrow','LEARNING PROGRAMS'):kind==='gallery'?uiText(ui,'galleryEyebrow','OUR MOMENTS'):kind==='news'?uiText(ui,'newsEyebrow','WHAT IS NEW'):kind==='reviews'?uiText(ui,'reviewsEyebrow','STUDENT VOICES'):kind==='results'?uiText(ui,'resultsEyebrow','ACHIEVEMENTS'):uiText(ui,'benefitsEyebrow','WHY LEARN WITH US')}</span><h2>{section.heading}</h2>{section.body&&<p>{section.body}</p>}</div><TypedContent section={section}/>
-  {items.length>0&&(kind==='courses'?<ReferenceCourseCarousel items={items} labels={ui}/>:<div className={`tale-cards tale-cards-${kind}`}>{items.map((i,index)=><Card item={i} index={index} kind={kind} section={section} ui={ui} key={i.id}/>)}</div>)}
+  {items.length>0&&(kind==='courses'?<ReferenceCourseCarousel items={items} labels={ui}/>:kind==='reviews'?<GuardianReviews items={items} mode={reviewMode} intervalSeconds={interval} motion={ui.__motion!=='off'}/>:<div className={`tale-cards tale-cards-${kind}`}>{items.map((i,index)=><Card item={i} index={index} kind={kind} section={section} ui={ui} key={i.id}/>)}</div>)}
  </section>;
 }
 function InfoSection({section,slug,ui={}}:{section:SiteSection;slug:string;ui?:InterfaceLabels}){
  if(!section.sectionKey&&['rich-text','materials','routine','academic-calendar'].includes(section.kind)&&section.items.some(item=>item.mediaId))return <Cards section={section} kind={section.kind} ui={ui}/>;
  if(section.kind==='hero')return <section className="tale-interior-hero" id={`section-${section.id}`}><span className="tale-eyebrow">EDUCENTRE / {slug.replaceAll('-',' ').toUpperCase()}</span><h1>{typeof section.content?.headline==='string'&&section.content.headline||section.heading}</h1>{(section.content?.description||section.body)&&<p>{typeof section.content?.description==='string'&&section.content.description||section.body}</p>}{section.sectionKey&&<TypedContent section={section} omit={['headline','description']}/> }<span className="tale-interior-decoration" aria-hidden="true">✦</span></section>;
+ if(section.sectionKey==='REVIEWS_ITEMS')return <Cards section={section} kind="reviews" ui={ui}/>;
  if(section.sectionKey)return <section className={`tale-block tale-info tale-typed-section`} id={`section-${section.id}`}><div className="tale-section-title"><h2>{section.heading}</h2>{section.body&&<p>{section.body}</p>}</div><TypedContent section={section}/>{section.items.length>0&&<div className="tale-cards">{section.items.map((item,index)=><Card key={item.id} item={item} index={index} kind={section.kind} section={section} ui={ui}/>)}</div>}</section>;
 
  if(section.kind==='faq')return <section id={`section-${section.id}`} className="tale-block tale-faq"><div className="tale-section-title"><span className="tale-eyebrow">HELPFUL ANSWERS</span><h2>{section.heading}</h2>{section.body&&<p>{section.body}</p>}</div><TypedContent section={section}/><div className="tale-faq-list">{visibleItems(section).map(x=><details key={x.id}><summary>{x.title}<span>+</span></summary><p>{x.description}</p></details>)}</div></section>;
@@ -110,7 +112,7 @@ function Home({page,related,ui={}}:{page:SitePage;related:Record<string,SitePage
   HOME_TOP_STUDENTS:(achievements&&<div className="tale-top-students"><TypedContent section={achievements}/><div className="tale-compact-label">✦ STUDENT ACHIEVEMENT SPOTLIGHT</div><div className="tale-top-student-grid">{visibleItems(achievements).slice(0,3).map((item,i)=><div key={item.id}><span>#{String(i+1).padStart(2,'0')}</span><strong>{item.title}</strong><small>{item.description}</small></div>)}</div></div>),
   HOME_STUDENT_SUCCESS:(results&&<Cards section={results} kind="results" limit={5} ui={ui}/>),
   HOME_YOUTUBE_CLASSES:(<section id={videoSection?`section-${videoSection.id}`:"homepage-video-classes"} className="tale-block tale-video-showcase"><div className="tale-section-title"><span className="tale-eyebrow">{uiText(ui,'videoEyebrow','WATCH AND LEARN')}</span><h2>{videoSection?.heading||'Video classes'}</h2></div>{videoSection?.sectionKey==='HOME_YOUTUBE_CLASSES'&&Array.isArray(videoSection.content?.classes)&&videoSection.content.classes.length>0?<TypedContent section={videoSection}/>:videos.length>0?<div className="tale-cards tale-cards-videos">{videos.map(x=><Card item={x} kind="videos" ui={ui} key={x.id}/>)}</div>:<div className="tale-unpublished-note">{uiText(ui,'videoEmpty','Video lessons will appear here when available.')}</div>}</section>),
-  HOME_TESTIMONIALS:(reviews&&<div className="tale-soft-panel"><Cards section={reviews} kind="reviews" limit={6} ui={ui}/><div className="tale-centered-link"><Link href={href('reviews')}>{uiText(ui,'allReviews','All student perspectives')} →</Link></div></div>),
+  HOME_TESTIMONIALS:(reviews&&<div className="tale-soft-panel"><Cards section={reviews} kind="reviews" limit={12} ui={ui} reviewMode="carousel" interval={Number(ordered(page).find(s=>s.sectionKey==='HOME_TESTIMONIALS')?.content?.autoplaySeconds)||6}/><div className="tale-centered-link"><Link href={href('reviews')}>{uiText(ui,'allReviews','All student perspectives')} →</Link></div></div>),
   HOME_NEWS_EVENTS:(news&&<Cards section={news} kind="news" limit={3} ui={ui}/>),
   HOME_GALLERY:(gallery&&<div className="tale-soft-panel tale-last-gallery"><Cards section={gallery} kind="gallery" limit={4} ui={ui}/><div className="tale-centered-link"><Link href={href('gallery')}>{uiText(ui,'exploreGallery','Explore gallery')} →</Link></div></div>),
  };
