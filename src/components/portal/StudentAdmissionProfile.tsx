@@ -47,7 +47,7 @@ export function StudentAdmissionProfile({role,studentId,onClose,onAssignBatch}:{
   <div className="studio-editor-head student-profile-header-premium">
    <div className="student-profile-identity">
     <div className="student-avatar-large">
-     <ProfileAvatar key={(photo??'none')+':'+(profile?.id??'student')} src={photoUrl} name={profile?.fullName??'Student'} size={96}/>
+     <ProfileAvatar key={(photo??'none')+':'+(profile?.id??'student')} src={photoUrl} name={profile?.fullName??'Student'} size={96} zoomable caption={profile?.admissionRoll??undefined}/>
      {role==='teacher'&&<label className="student-avatar-edit-badge" title="Upload student photograph"><input type="file" accept="image/jpeg,image/png,image/webp,image/avif" onChange={event=>{const file=event.target.files?.[0];if(file)void upload(file);}}/><span aria-hidden="true">📷</span></label>}
     </div>
     <div>

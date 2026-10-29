@@ -34,7 +34,7 @@ export function TeacherPaymentLedger({studentId,batchId:fixedBatch,initialBatch,
  return <section className={'mgmt-ledger'+(compact?' is-compact':'')} aria-label={studentId?'Student payment history':'Tuition payment ledger'}>
   <div className="premium-filterbar">
    {!studentId&&<label className="premium-search"><span className="sr-only">Search ledger</span><PortalIcon name="search"/><input value={search} maxLength={100} onChange={e=>setSearch(e.target.value)} placeholder="Search Student, roll or batch…"/></label>}
-   <label className="mgmt-filter">Billing month<input type="month" aria-label="Billing month" value={period} onChange={e=>{setPeriod(e.target.value);setOffset(0);}}/></label>
+   <label className="mgmt-filter" title="Billing month"><span className="sr-only">Billing month</span><input type="month" aria-label="Billing month" value={period} onChange={e=>{setPeriod(e.target.value);setOffset(0);}}/></label>
    {period&&<button className="portal-text-button" onClick={()=>{setPeriod('');setOffset(0);}}>All months</button>}
    {!fixedBatch&&batches.length>0&&<select aria-label="Batch filter" value={batchId} onChange={e=>{setBatchId(e.target.value);setOffset(0);}}><option value="">All batches</option>{batches.map(b=><option key={b.id} value={b.id}>{b.name}</option>)}</select>}
    <select aria-label="Payment status filter" value={status} onChange={e=>{setStatus(e.target.value);setOffset(0);}}><option value="">All statuses</option><option value="paid">Paid</option><option value="partial">Partially paid</option><option value="unpaid">Unpaid</option><option value="overdue">Overdue</option><option value="waived">Waived</option><option value="refunded">Refunded</option></select>

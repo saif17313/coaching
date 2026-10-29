@@ -7,7 +7,7 @@ export const LIFECYCLE_TONE:Record<Lifecycle,string>={active:'active',inactive:'
 import {PortalEmpty,PortalIcon,PortalMetric} from './PortalPrimitives';
 import type {TeacherRow} from '@/client/teacher-management.mjs';
 const asRow=(row:DirectoryStudent):TeacherRow=>({id:row.id,name:row.fullName,status:row.accountStatus});
-function Avatar({student}:{student:DirectoryStudent}){return <ProfileAvatar key={student.id+':'+student.photoMediaId} src={student.photoMediaId?`/api/v1/teacher/students/${student.id}/photo`:null} name={student.fullName} size={36}/>;}
+function Avatar({student}:{student:DirectoryStudent}){return <ProfileAvatar key={student.id+':'+student.photoMediaId} src={student.photoMediaId?`/api/v1/teacher/students/${student.id}/photo`:null} name={student.fullName} size={36} zoomable caption={student.admissionRoll??undefined}/>;}
 function decimalMinor(value:string){const amount=BigInt(value);return (amount/100n).toString()+'.'+(amount%100n).toString().padStart(2,'0');}
 function csvCell(value:unknown){const text=String(value??'');return '"'+text.replace(/^[\s\uFEFF]*([=+@\-])/,"'$1").replaceAll('"','""')+'"';}
 function batchSummary(batches:{name:string;status:string}[]){const active=batches.filter(batch=>batch.status==='active').map(batch=>batch.name);return active.length?active.slice(0,2).join(', ')+(active.length>2?` +${active.length-2} more`:''):'No active batch';}
