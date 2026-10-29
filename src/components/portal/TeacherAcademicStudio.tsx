@@ -1,4 +1,5 @@
 'use client';
+import {ClassSessionsPanel} from './ClassSessions';
 import {PortalScreen} from './PortalScreen';
 import {AssignmentReview} from './AssignmentReview';
 import {ExamDetailsLoader,ExamResultsSheet,SyllabusPlanner} from './TeacherAcademicPlanner';
@@ -88,6 +89,7 @@ export function TeacherAcademicStudio({mode,batchId,onNavigate}:{mode:AcademicMo
    !resolved?<div className="academic-empty"><span>◎</span><h4>Choose a batch</h4><p>Select an item above to begin.</p></div>:
    items.length===0?<div className="academic-empty"><span>✧</span><h4>Nothing here yet</h4><p>{mode==='subjects'?'Start by adding a subject to this batch.':'Use the action above to begin the first record.'}</p></div>:
    <div className="academic-cards">{items.map(row=><article key={row.id} className="academic-card"><div className="academic-card-icon">{descriptor.symbol}</div><div className="academic-card-content"><h4>{itemTitle(mode,row)}</h4><p>{recordDescription(mode,row,subjectOptions)}</p><small>Record {short(row.id)}</small></div><div className="academic-card-actions">{typeof row.status==='string'&&<span className={'academic-state '+(row.status==='published'?'good':row.status==='draft'?'draft':'')}>{row.status}</span>}{mode==='assignments'&&row.status==='draft'&&<button type="button" className="portal-secondary" disabled={saving} onClick={()=>void publish('assignment',row.id,itemTitle(mode,row))}>Publish ↗</button>}{mode==='assignments'&&row.status==='published'&&<button type="button" className="portal-secondary" onClick={()=>setReview(row)}>Review submissions</button>}{mode==='exams'&&<button type="button" className="portal-secondary" onClick={()=>setDetailsId(row.id)}>Details</button>}{mode==='exams'&&row.status==='draft'&&<button type="button" className="portal-secondary" disabled={saving} onClick={()=>void publish('exam',row.id,itemTitle(mode,row))}>Schedule (publish) ↗</button>}</div></article>)}</div>}
+  {mode==='routine'&&batchId&&<ClassSessionsPanel key={batchId} batchId={batchId} role="teacher"/>}
   {review&&<AssignmentReview assignmentId={review.id} title={String(review.title)} maxPoints={Number(review.maxPoints)} onClose={()=>setReview(null)}/>}
   {resolved&&<div className="teacher-ops-pagination"><button className="portal-secondary" disabled={offset===0||loading||saving} onClick={()=>setOffset(n=>Math.max(0,n-20))}>← Previous</button><span>Page {Math.floor(offset/20)+1}</span><button className="portal-secondary" disabled={items.length<20||loading||saving} onClick={()=>setOffset(n=>n+20)}>Next →</button></div>}
   </>}

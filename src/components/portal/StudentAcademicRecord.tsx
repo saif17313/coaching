@@ -2,6 +2,7 @@
 import {useEffect,useMemo,useState} from 'react';
 import {managementRead} from '@/client/management-api';
 import {EXAM_TYPES,grade} from './TeacherAcademicPlanner';
+import {StudentPerformanceCharts} from './StudentPerformanceCharts';
 
 type Exam={id:string;batchId:string;batchName:string;subject:string;title:string;scheduledAt:string;maxMarks:number;passMarks:number|null;examType:keyof typeof EXAM_TYPES;durationMinutes:number|null;instructions:string;coverage:string[];upcoming:boolean;resultPublished:boolean;participation:'upcoming'|'attempted'|'absent'|'not_recorded';marks:number|null;rank:number|null;remarks:string;participants:number|null};
 const PARTICIPATION:Record<Exam['participation'],{label:string;tone:string}>={upcoming:{label:'Upcoming',tone:'info'},attempted:{label:'Attempted',tone:'active'},absent:{label:'Absent',tone:'rejected'},not_recorded:{label:'Result not published yet',tone:'pending'}};
@@ -18,6 +19,7 @@ export function StudentExamHistory({batchId}:{batchId?:string}){
  return <section className="mgmt-student-exams" aria-label="My examinations">
   <div className="student-metric-grid"><div className="student-metric"><span>Average score</span><strong>{average===null?'—':average+'%'}</strong></div><div className="student-metric"><span>Best score</span><strong>{best===null?'—':best+'%'}</strong></div>
    <div className="student-metric"><span>Attempted</span><strong>{list.filter(x=>x.participation==='attempted').length}</strong></div><div className="student-metric"><span>Absent</span><strong>{list.filter(x=>x.participation==='absent').length}</strong></div><div className="student-metric"><span>Upcoming</span><strong>{list.filter(x=>x.upcoming).length}</strong></div></div>
+  <StudentPerformanceCharts exams={(exams??[]).filter(x=>!batchId||x.batchId===batchId)}/>
   <div className="student-controls"><label>Show<select value={filter} onChange={e=>setFilter(e.target.value)}><option value="">All exams</option><option value="upcoming">Upcoming</option><option value="attempted">Attempted</option><option value="absent">Absent</option><option value="not_recorded">Awaiting result</option></select></label><a className="portal-secondary" href="/api/v1/student/reports/progress" target="_blank" rel="noopener">Download progress report (PDF) ↗</a></div>
   {list.length===0?<p className="portal-muted">No examinations to show.</p>:<div className="student-grid">{list.map(x=>{const percent=x.marks!==null?Number(x.marks)/x.maxMarks*100:null;return <article key={x.id} className="student-record mgmt-exam-card">
    <span className="premium-badge" data-status={PARTICIPATION[x.participation].tone}>{PARTICIPATION[x.participation].label}</span>

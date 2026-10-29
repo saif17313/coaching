@@ -1,0 +1,24 @@
+/* Dated class schedule (ClassSessionsPanel). */
+.cls{display:grid;gap:14px;margin:22px 0}
+.cls-toolbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.cls-month{display:inline-flex;align-items:center;gap:4px}
+.cls-month input{min-height:40px;padding:6px 10px;border:1px solid #d3e5df;border-radius:10px;background:#fff;font-weight:650;color:#0b3a47}
+.cls-month .portal-secondary{min-width:40px}
+.cls-counts{max-width:520px;grid-template-columns:repeat(3,minmax(0,1fr))!important}
+.cls-days{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.cls-days>li{padding:14px 16px;border:1px solid #dcebe7;border-radius:14px;background:#fffffff5;box-shadow:0 10px 26px -24px #0b3a3a59}
+.cls-days>li.is-today{border-color:#9fd0c4;box-shadow:0 0 0 3px #0aa18f1a,0 10px 26px -24px #0b3a3a59}
+.cls-days h4{display:flex;align-items:center;gap:10px;margin:0 0 10px;font-size:13px;color:#33525f;text-transform:uppercase;letter-spacing:.06em}
+.cls-days ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.cls-item{display:grid;grid-template-columns:64px minmax(0,1fr) auto auto;align-items:center;gap:12px;padding:10px 12px;border-radius:11px;background:#f6faf8}
+.cls-item.is-cancelled{opacity:.7}
+.cls-item.is-cancelled .cls-body strong{text-decoration:line-through;text-decoration-color:#c0392b80}
+.cls-time{display:grid;place-items:center;padding:6px 0;border-radius:9px;background:#fff;box-shadow:0 0 0 1px #dcebe7;font-weight:800;color:#0a5f5a;font-variant-numeric:tabular-nums}
+.cls-time small{font-size:11px;font-weight:600;color:#5a7682}
+.cls-body{min-width:0;display:grid;gap:3px}
+.cls-body strong{color:#0b2c40;font-size:13.5px}
+.cls-body strong span{font-weight:600;color:#33525f}
+.cls-body small{color:#5a7682;font-size:12px;overflow-wrap:anywhere}
+.cls-body a{color:#0b6b62;font-weight:700}
+.cls-notes{font-style:italic}
+@media(max-width:760px){.cls-item{grid-template-columns:58px minmax(0,1fr)}.cls-item>.premium-badge,.cls-item>.premium-table-actions{grid-column:2}.cls-item>.premium-table-actions{flex-wrap:wrap}}

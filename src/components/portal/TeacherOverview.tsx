@@ -1,6 +1,7 @@
 'use client';
 import {ManagementFinanceSummary} from './ManagementFinanceSummary';
 import {FinanceTrendChart} from './FinanceTrendChart';
+import {TeacherDashboardAnalytics} from './TeacherDashboardAnalytics';
 import {useEffect,useState} from 'react';
 import {academicList,type AcademicItem} from '@/client/teacher-academics.mjs';
 import {financeList,minorToBDT} from '@/client/teacher-finance.mjs';
@@ -33,6 +34,7 @@ export function TeacherOverview({counts,loading,error,version,onNavigate,onSelec
   <nav className="premium-dashboard-nav" aria-label="Teacher shortcuts">{[['overview','Overview'],['students','Students'],['batches','Batches'],['enrollments','Enrollments'],['assignments','Assignments'],['exams','Examinations'],['finance','Finance']].map(([page,label])=><button className={page==='overview'?'portal-primary':'portal-secondary'} key={page} onClick={()=>onNavigate(page)}><PortalIcon name={page} size={17}/>{label}</button>)}</nav>
   {error&&<p className="premium-error" role="alert">{error}</p>}
   <div className="premium-metrics">{metrics.map(([label,key,icon,detail])=><PortalMetric key={key} label={label} icon={icon} value={loading?'…':Number.isSafeInteger(summary[key])?String(summary[key]):'—'} detail={detail}/>)}</div>
+  <TeacherDashboardAnalytics onNavigate={onNavigate} onOpenBatch={navigateBatch} version={version}/>
   <ManagementFinanceSummary onOpenBatch={id=>navigateBatch('finance',id)} onOpenStudents={()=>onNavigate('students')}/>
   <FinanceTrendChart/>
   {relatedError&&<p className="premium-error" role="status">{relatedError}</p>}

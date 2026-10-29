@@ -1,4 +1,5 @@
 'use client';
+import {managementRead} from '@/client/management-api';
 import {CmsImageField} from './CmsImageField';
 import {TeacherBatchStudio} from './TeacherBatchStudio';
 import {TeacherStudentDirectory} from './TeacherStudentDirectory';
@@ -29,6 +30,11 @@ export function TeacherManagement({mode,onNavigate,onSelectBatch}:{mode:Mode;onN
  const [email,setEmail]=useState(''),[initialPassword,setInitialPassword]=useState('');
  const [photoUploading,setPhotoUploading]=useState(false);
  const [registration,setRegistration]=useState<Record<string,string>>({});
+ // Enrollment rows carry only IDs; resolve readable Student and batch names from the directories.
+ const [names,setNames]=useState<{students:Record<string,string>;batches:Record<string,string>}>({students:{},batches:{}});
+ useEffect(()=>{if(mode!=='enrollments')return;let active=true;void Promise.allSettled([managementRead<{students:{id:string;fullName:string;admissionRoll:string|null}[]}>('students',{limit:50}),managementRead<{batches:{id:string;name:string;code:string}[]}>('batches',{limit:50})]).then(([students,batches])=>{if(!active)return;
+  setNames({students:students.status==='fulfilled'?Object.fromEntries(students.value.students.map(row=>[row.id,row.fullName+(row.admissionRoll?` (${row.admissionRoll})`:'')])):{},batches:batches.status==='fulfilled'?Object.fromEntries(batches.value.batches.map(row=>[row.id,`${row.name} · ${row.code}`])):{}});});
+  return()=>{active=false;};},[mode,refresh]);
  const [students,setStudents]=useState<TeacherRow[]>([]),[batches,setBatches]=useState<TeacherRow[]>([]);
  const [search,setSearch]=useState('');
  const [admissionStudent,setAdmissionStudent]=useState<string|null>(null),[admissionRow,setAdmissionRow]=useState<TeacherRow|null>(null);
@@ -152,7 +158,7 @@ export function TeacherManagement({mode,onNavigate,onSelectBatch}:{mode:Mode;onN
   {['students','batches'].includes(mode)?mode==='students'?<TeacherStudentDirectory version={refresh} onAdd={()=>begin('offline')} onCreateAccount={()=>begin('onboard')} onRefresh={()=>setRefresh(value=>value+1)} onOpen={row=>{setAdmissionStudent(row.id);setAdmissionRow(row);}} onRename={row=>begin('edit',row)} onStatus={updateStatus}/>:<TeacherBatchStudio version={refresh} onNavigate={(page,id)=>{onSelectBatch?.(id);onNavigate?.(page);}}/>:loading?<div className="portal-loading" role="status">Loading verified records…</div>:<>
    {listed.length===0?<div className="teacher-ops-empty"><span>◇</span><h3>{items.length?'No matching records':'No records yet'}</h3><p>{items.length?'Try another search or status.':mode==='batches'?'Create the first batch using the form above.':'Create an enrollment request for an active student and available batch.'}</p></div>:
     <div className="teacher-ops-list">{listed.map(row=><article className="teacher-ops-row" key={row.id}>
-      <div className="teacher-ops-row-top"><div className="teacher-ops-avatar">{(row.name||row.code||'E').slice(0,1).toUpperCase()}</div><div className="teacher-ops-row-name"><strong>{row.name||row.code||`Enrollment ${short(row.id)}`}</strong><small>{mode==='batches'?`${row.code} · ${row.capacity} seats`:`Student ${short(row.studentId||'')} · Batch ${short(row.batchId||'')}`}</small></div>
+      <div className="teacher-ops-row-top"><div className="teacher-ops-avatar">{(row.name||row.code||(mode==='enrollments'?names.students[row.studentId||'']:'')||'E').slice(0,1).toUpperCase()}</div><div className="teacher-ops-row-name"><strong>{row.name||row.code||(mode==='enrollments'?names.students[row.studentId||'']||`Student ${short(row.studentId||'')}`:`Enrollment ${short(row.id)}`)}</strong><small>{mode==='batches'?`${row.code} · ${row.capacity} seats`:mode==='enrollments'?names.batches[row.batchId||'']||`Batch ${short(row.batchId||'')}`:`Student ${short(row.studentId||'')} · Batch ${short(row.batchId||'')}`}</small></div>
         <span className={'teacher-ops-pill '+((row.status==='active'||!row.archived&&mode==='batches')?'good':row.status==='rejected'||row.archived?'off':'wait')}>{mode==='batches'?(row.archived?'Archived':'Open'):roleLabel(row.status)}</span></div>
       <div className="teacher-ops-row-actions">
        {mode==='batches'&&<><button className="portal-secondary" disabled={saving||!!row.archived} onClick={()=>begin('edit',row)}>Edit batch</button>{!row.archived&&<button className="portal-secondary teacher-ops-danger" disabled={saving||photoUploading} onClick={()=>archive(row)}>Archive</button>}</>}
