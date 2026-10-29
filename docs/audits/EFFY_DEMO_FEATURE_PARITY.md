@@ -27,10 +27,10 @@ The demo uses local mock data, so its behaviour was matched against EduCentre's 
 | Students & lifecycle | 9 | 2 | 0 | 1 |
 | Batches & enrollment | 9 | 1 | 0 | 1 |
 | Tuition, payments, receipts | 10 | 0 | 0 | 1 |
-| Academics (syllabus, exams, results) | 10 | 3 | 0 | 1 |
-| Reports & PDFs | 4 | 2 | 0 | 0 |
+| Academics (syllabus, exams, results) | 11 | 2 | 0 | 1 |
+| Reports & PDFs | 5 | 1 | 0 | 0 |
 | Settings, audit, notifications, profile | 3 | 2 | 0 | 1 |
-| Student portal | 8 | 1 | 0 | 0 |
+| Student portal | 9 | 0 | 0 | 0 |
 | Public website & CMS | 9 | 1 | 1 | 0 |
 
 ## Students & lifecycle
@@ -98,7 +98,7 @@ The demo uses local mock data, so its behaviour was matched against EduCentre's 
 | Result sheet PDF | `/api/v1/teacher/reports/exam/[id]` | VERIFIED | E2E "Result sheet PDF" |
 | Result CSV export | Result sheet PDF and **Results CSV** (attendance, marks, percent, grade, rank, pass/fail) | VERIFIED | Added 2026-10-28; spreadsheet formula prefixes are neutralised |
 | Assignments and submissions review | Assignments, Student submission and grading | VERIFIED | Previous evidence |
-| Dated class sessions (scheduled/completed/cancelled, room, online link) | Weekly routine slots | PARTIAL | No per-date session status |
+| Dated class sessions (scheduled/completed/cancelled, room, online link) | Weekly routine plus dated classes: fill a month from the routine, add/edit a class with subject, syllabus topic, topic text and room or online link; mark completed (optionally completing the syllabus topic) or cancelled; Students see the next six weeks | VERIFIED | Added 2026-10-30 (`class_sessions`; rolled-back DB checks) |
 | Study materials: PDF, release date, draft/published | Private PDF materials with release control | PARTIAL | No expiry, download toggle, or link/YouTube item types |
 | Online exam taking | Not provided | INTENTIONALLY DIFFERENT | Exams are offline by design |
 
@@ -111,7 +111,7 @@ The demo uses local mock data, so its behaviour was matched against EduCentre's 
 | Monthly collections report | Ledger with month filter and summary | VERIFIED | — |
 | Teacher-built report for any one Student | **Progress report PDF** on every Student profile | VERIFIED | Added 2026-10-28; shows exactly the published results that Student sees (`coaching_teacher_student_exam_history`) |
 | Enrollment ledger, batch/subject performance with CSV | Cashflow/expense CSV only | PARTIAL | — |
-| Student exam analytics (trend chart, mastery) | Averages, best, attempted/absent counts | PARTIAL | No trend chart |
+| Student exam analytics (trend chart, mastery) | Score trend (% of each exam's total), subject averages, participation (attempted / absent / awaiting result) and a like-for-like change vs the previous exam of the same type and subject | VERIFIED | Added 2026-10-30; published results only |
 
 ## Settings, audit, notifications, profile
 
@@ -136,7 +136,7 @@ The demo uses local mock data, so its behaviour was matched against EduCentre's 
 | Profile edit | Own profile (limited fields) | VERIFIED |
 | Assignments and submission | Assignments | VERIFIED |
 | Notifications | Notifications | VERIFIED |
-| Exam trend charts and goals | — | PARTIAL |
+| Exam trend charts and goals | Trend, subject and participation charts on the Student dashboard and Exams page (no goal setting) | PARTIAL |
 
 ## Public website & CMS (Website Admin)
 
@@ -153,11 +153,16 @@ The demo uses local mock data, so its behaviour was matched against EduCentre's 
 | Mobile layout | Compact portal hero, two-column filters, no overflow at 375 px | VERIFIED (E2E) |
 
 ## Remaining gaps, in priority order
-1. Enrollment and batch/subject performance reports with CSV.
-2. Dated class sessions with status, room and online link.
-3. Study material expiry, download toggle, and link/YouTube types.
-4. Visitor review submission with moderation, and the month filter on the Wall of Fame.
-5. Audit log filters, and a per-Student audit trail.
+1. Study material expiry, download toggle, and link/YouTube types (materials are private PDFs today).
+2. Audit log filters, and a per-Student audit trail.
+3. Visitor review submission with moderation, and the month filter on the Wall of Fame.
+4. Enrollment and batch/subject performance reports with CSV.
+5. The supplied promotional video (`1000087930.mp4`) was not available on this machine, so parity is measured against the live Effy demo and Shifat's Tales.
+
+## Added 2026-10-30
+- **Teacher dashboard analytics** (`coaching_teacher_dashboard_analytics`): payment-status donut, collection by batch, Student status mix, seats and syllabus per batch, exams due and awaiting results; every figure reconciles with the payment ledger.
+- **Guardian reviews**: CMS review cards gain relationship, Student/class context and review date (all optional); the homepage shows an auto-advancing, swipeable 3D carousel (pause, arrows, dots, keyboard, reduced motion) and the reviews page a grid. DEMO-flagged reviews never render publicly, and structured reviews also require approval and consent.
+- **Enrollments** list shows Student and batch names instead of IDs.
 
 ## Test data footprint (production)
 The browser E2E deliberately uses real ledger writes on labelled fixtures. That ran nine times: five local runs failed partway while the script was being fixed, then one local and one production run passed, plus two attempts in between.
