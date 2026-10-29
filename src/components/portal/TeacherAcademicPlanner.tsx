@@ -1,5 +1,6 @@
 'use client';
-import {useEffect,useMemo,useState,type FormEvent} from 'react';
+import {useEffect,useMemo,useState,type FormEvent,type ReactNode} from 'react';
+import {PortalScreen} from './PortalScreen';
 import {managementCommand,managementRead} from '@/client/management-api';
 import {academicPublish} from '@/client/teacher-academics.mjs';
 
@@ -49,14 +50,14 @@ export function SyllabusPlanner({batchId,readOnly=false,role='teacher'}:{batchId
 function UnitEditor({unit,onClose,onSaved}:{unit:Topic;onClose:()=>void;onSaved:()=>void}){
  const [form,setForm]=useState({title:unit.title,weight:String(unit.weight),plannedStart:unit.plannedStart??'',plannedEnd:unit.plannedEnd??'',notes:unit.notes}),[busy,setBusy]=useState(false),[error,setError]=useState('');
  async function submit(e:FormEvent){e.preventDefault();setBusy(true);setError('');try{await managementCommand('syllabus-write',{action:'update',unitId:unit.id,data:{title:form.title.trim(),weight:Number(form.weight),plannedStart:form.plannedStart,plannedEnd:form.plannedEnd,notes:form.notes}});onSaved();}catch(err){setError((err as Error).message);}finally{setBusy(false);}}
- return <div className="teacher-ops-overlay" onMouseDown={e=>{if(e.target===e.currentTarget&&!busy)onClose();}}><form className="teacher-ops-modal" role="dialog" aria-modal="true" aria-labelledby="unit-editor-heading" onSubmit={submit}>
+ return <PortalScreen trail={[unit.title,'Edit']} kicker="SYLLABUS UNIT" title={`Edit ${unit.title}`} onBack={()=>{if(!busy)onClose();}}><form className="teacher-ops-modal" aria-label={`Edit ${unit.title}`} onSubmit={submit}>
   <div className="teacher-ops-modal-head"><div><span className="portal-kicker">SYLLABUS UNIT</span><h3 id="unit-editor-heading">Edit {unit.title}</h3></div><button type="button" className="portal-secondary" onClick={onClose} aria-label="Close">✕</button></div>
   <label>Title<input required minLength={2} maxLength={160} value={form.title} onChange={e=>setForm({...form,title:e.target.value})}/></label>
   <div className="mgmt-form-grid"><label>Weight (1–100)<input type="number" min={1} max={100} value={form.weight} onChange={e=>setForm({...form,weight:e.target.value})}/></label><label>Planned start<input type="date" value={form.plannedStart} onChange={e=>setForm({...form,plannedStart:e.target.value})}/></label><label>Planned end<input type="date" value={form.plannedEnd} onChange={e=>setForm({...form,plannedEnd:e.target.value})}/></label></div>
   <label>Notes<textarea maxLength={1000} rows={3} value={form.notes} onChange={e=>setForm({...form,notes:e.target.value})}/></label>
   {error&&<div className="portal-alert" role="alert">{error}</div>}
   <div className="teacher-ops-modal-actions"><button type="button" className="portal-secondary" onClick={onClose}>Cancel</button><button className="portal-primary" disabled={busy}>{busy?'Saving…':'Save unit'}</button></div>
- </form></div>;
+ </form></PortalScreen>;
 }
 
 type ExamType='class_test'|'weekly'|'monthly'|'model_test'|'assignment'|'final';
@@ -114,7 +115,7 @@ export function ExamResultsSheet({exams}:{exams:{id:string;title:string}[]}){
 }
 
 /** Exam details: type, schedule, duration, total/pass marks, instructions and syllabus coverage. */
-export function ExamDetailsDialog({exam,onClose,onSaved}:{exam:Sheet['exam'];onClose:()=>void;onSaved:()=>void}){
+export function ExamDetailsDialog({exam,onClose,onSaved,bare=false}:{exam:Sheet['exam'];onClose:()=>void;onSaved:()=>void;bare?:boolean}){
  const local=(iso:string)=>{const d=new Date(iso);return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,16);};
  const [form,setForm]=useState({title:exam.title,scheduledAt:local(exam.scheduledAt),examType:exam.examType,maxMarks:String(exam.maxMarks),passMarks:exam.passMarks===null?'':String(exam.passMarks),durationMinutes:exam.durationMinutes===null?'':String(exam.durationMinutes),instructions:exam.instructions,coverage:exam.coverageUnitIds});
  const [units,setUnits]=useState<{id:string;title:string}[]>([]),[busy,setBusy]=useState(false),[error,setError]=useState('');
@@ -123,7 +124,7 @@ export function ExamDetailsDialog({exam,onClose,onSaved}:{exam:Sheet['exam'];onC
   if(pass!==null&&(pass<0||pass>max))return setError('Pass marks must be between 0 and the total marks.');setBusy(true);
   try{await managementCommand('exam-details',{examId:exam.id,title:form.title.trim(),scheduledAt:new Date(form.scheduledAt).toISOString(),maxMarks:max,passMarks:pass,instructions:form.instructions,coverageUnitIds:form.coverage,examType:form.examType,durationMinutes:form.durationMinutes===''?null:Number(form.durationMinutes)});onSaved();}
   catch(err){setError((err as Error).message);}finally{setBusy(false);}}
- return <div className="teacher-ops-overlay" onMouseDown={e=>{if(e.target===e.currentTarget&&!busy)onClose();}}><form className="teacher-ops-modal mgmt-modal-wide" role="dialog" aria-modal="true" aria-labelledby="exam-details-heading" onSubmit={submit}>
+ const view=<form className="teacher-ops-modal mgmt-modal-wide" aria-label={`Exam details for ${exam.title}`} onSubmit={submit}>
   <div className="teacher-ops-modal-head"><div><span className="portal-kicker">OFFLINE EXAMINATION</span><h3 id="exam-details-heading">Exam details</h3></div><button type="button" className="portal-secondary" onClick={onClose} aria-label="Close">✕</button></div>
   <div className="mgmt-form-grid"><label className="mgmt-span">Title<input required minLength={2} maxLength={120} value={form.title} onChange={e=>setForm({...form,title:e.target.value})}/></label>
    <label>Type<select value={form.examType} onChange={e=>setForm({...form,examType:e.target.value as ExamType})}>{(Object.keys(EXAM_TYPES) as ExamType[]).map(t=><option key={t} value={t}>{EXAM_TYPES[t]}</option>)}</select></label>
@@ -135,13 +136,17 @@ export function ExamDetailsDialog({exam,onClose,onSaved}:{exam:Sheet['exam'];onC
   {units.length>0&&<fieldset className="mgmt-fieldset"><legend>Syllabus coverage</legend><div className="mgmt-check-list">{units.map(u=><label key={u.id} className="mgmt-check"><input type="checkbox" checked={form.coverage.includes(u.id)} onChange={e=>setForm({...form,coverage:e.target.checked?[...form.coverage,u.id]:form.coverage.filter(x=>x!==u.id)})}/>{u.title}</label>)}</div></fieldset>}
   {error&&<div className="portal-alert" role="alert">{error}</div>}
   <div className="teacher-ops-modal-actions"><button type="button" className="portal-secondary" onClick={onClose}>Cancel</button><button className="portal-primary" disabled={busy}>{busy?'Saving…':'Save exam details'}</button></div>
- </form></div>;
+ </form>;
+ return bare?view:<ExamScreen exam={exam} onBack={()=>{if(!busy)onClose();}}>{view}</ExamScreen>;
 }
 
 /** Loads an exam's details for the exams list, then opens the details dialog. */
 export function ExamDetailsLoader({examId,onClose,onSaved}:{examId:string;onClose:()=>void;onSaved:()=>void}){
  const [exam,setExam]=useState<Sheet['exam']|null>(null),[error,setError]=useState('');
  useEffect(()=>{let active=true;managementRead<Sheet>('exam-sheet',{examId}).then(s=>{if(active)setExam(s.exam);}).catch(e=>{if(active)setError(e.message);});return()=>{active=false;};},[examId]);
- if(exam)return <ExamDetailsDialog exam={exam} onClose={onClose} onSaved={onSaved}/>;
- return <div className="teacher-ops-overlay"><div className="teacher-ops-modal" role="dialog" aria-modal="true" aria-label="Loading exam">{error?<><div className="portal-alert">{error}</div><button className="portal-secondary" onClick={onClose}>Close</button></>:<div className="portal-loading"><div className="portal-spinner"/>Loading exam…</div>}</div></div>;
+ // The screen stays mounted from loading to loaded, so opening it adds exactly one history entry.
+ return <ExamScreen exam={exam} onBack={onClose}>{exam?<ExamDetailsDialog bare exam={exam} onClose={onClose} onSaved={onSaved}/>:error?<div className="portal-alert" role="alert">{error}</div>:<div className="portal-loading" role="status">Loading exam…</div>}</ExamScreen>;
+}
+function ExamScreen({exam,onBack,children}:{exam:Sheet['exam']|null;onBack:()=>void;children:ReactNode}){
+ return <PortalScreen trail={[exam?.title||'Exam','Details']} kicker="OFFLINE EXAMINATION" title="Exam details" subtitle={exam?`${exam.title} · ${exam.subject} · ${exam.batchName}`:undefined} onBack={onBack}>{children}</PortalScreen>;
 }

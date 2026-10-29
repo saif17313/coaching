@@ -3,6 +3,7 @@ import {Fragment,useEffect,useRef,useState,type FormEvent} from 'react';
 import {PortalEmpty,PortalIcon,PortalMetric} from './PortalPrimitives';
 import {currentPeriod,managementRead,periodLabel,taka,toMinor} from '@/client/management-api';
 import {financeCommand} from '@/client/teacher-finance.mjs';
+import {PortalScreen} from './PortalScreen';
 
 type Payment={id:string;amountMinor:string;method:'cash'|'bank'|'mobile_banking';reference:string;createdAt:string;receiptNumber:string|null};
 type Row={dueId:string;period:string;dueOn:string;label:string;batchId:string;batchName:string;batchCode:string;studentId:string;studentName:string;admissionRoll:string|null;amountMinor:string;paidMinor:string;waivedMinor:string;refundedMinor:string;correctedMinor:string;outstandingMinor:string;status:'paid'|'partial'|'unpaid'|'waived';overdue:boolean;payments:Payment[]};
@@ -66,7 +67,7 @@ function PaymentDialog({row,onClose,onSaved}:{row:Row;onClose:()=>void;onSaved:(
   try{await financeCommand('payment',row.dueId,{studentId:row.studentId,amountMinor:minor,method,reference:reference.trim()});onSaved(taka(minor));}
   catch(err){submitted.current=false;setError((err as Error).message.replaceAll('_',' ').toLowerCase());}finally{setBusy(false);}
  }
- return <div className="teacher-ops-overlay" onMouseDown={e=>{if(e.target===e.currentTarget&&!busy)onClose();}}><form className="teacher-ops-modal" role="dialog" aria-modal="true" aria-labelledby="ledger-pay-heading" onSubmit={submit}>
+ return <PortalScreen trail={[row.studentName,'Record payment']} kicker="RECORD OFFLINE PAYMENT" title="Record payment" subtitle={<>{row.studentName}{row.admissionRoll?` · ${row.admissionRoll}`:''} · {row.batchName} · {periodLabel(row.period)}</>} onBack={()=>{if(!busy)onClose();}}><form className="teacher-ops-modal mgmt-pay-screen" aria-label={`Record payment for ${row.studentName}`} onSubmit={submit}>
   <div className="teacher-ops-modal-head"><div><span className="portal-kicker">RECORD OFFLINE PAYMENT</span><h3 id="ledger-pay-heading">{row.studentName}</h3><p className="portal-muted">{periodLabel(row.period)} · {row.batchName}</p></div><button type="button" className="portal-secondary" onClick={onClose} aria-label="Close payment form">✕</button></div>
   <dl className="mgmt-pay-summary"><div><dt>Expected</dt><dd>{taka(row.amountMinor)}</dd></div><div><dt>Paid so far</dt><dd>{taka(row.paidMinor)}</dd></div><div><dt>Outstanding</dt><dd><strong>{taka(row.outstandingMinor)}</strong></dd></div></dl>
   <label>Amount received (BDT)<input autoFocus required inputMode="decimal" value={amount} onChange={e=>setAmount(e.target.value)} placeholder={String(Number(outstanding)/100)}/></label>
@@ -75,5 +76,6 @@ function PaymentDialog({row,onClose,onSaved}:{row:Row;onClose:()=>void;onSaved:(
   <label>Reference {method==='cash'?'(optional)':''}<input maxLength={120} value={reference} onChange={e=>setReference(e.target.value)} placeholder={method==='cash'?'Receipt book no.':'Transaction ID'}/></label>
   {error&&<div className="portal-alert" role="alert">{error}</div>}
   <div className="teacher-ops-modal-actions"><button type="button" className="portal-secondary" onClick={onClose} disabled={busy}>Cancel</button><button className="portal-primary" disabled={busy}>{busy?'Recording…':'Record payment'}</button></div>
- </form></div>;
+  {row.payments.length>0&&<section className="mgmt-pay-history" aria-label="Earlier payments for this month"><h4>Earlier payments this month</h4><ol>{row.payments.map((p,i)=><li key={p.id}><span>#{i+1} · {new Date(p.createdAt).toLocaleDateString('en-GB')} · {METHOD[p.method]}{p.reference?` · ${p.reference}`:''}</span><strong>{taka(p.amountMinor)}</strong></li>)}</ol></section>}
+ </form></PortalScreen>;
 }

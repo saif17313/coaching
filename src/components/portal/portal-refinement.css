@@ -2,9 +2,7 @@
    Loaded after premium-portal.css and management-parity.css so it only refines, never restructures. */
 .portal-shell{--r-ease:cubic-bezier(.22,1,.36,1);--r-ring:0 0 0 3px #0aa18f40}
 
-/* Sidebar: a layered gradient replaces the bitmap whose decorative orb sat on top of menu labels. */
-.portal-shell .portal-sidebar{background:radial-gradient(120% 55% at 0% 100%,#0b6b6455,transparent 60%),radial-gradient(90% 40% at 100% 0%,#13586a66,transparent 65%),linear-gradient(180deg,#0a3346 0%,#082c3d 55%,#06283a 100%);box-shadow:inset -1px 0 #ffffff0f,6px 0 30px #04263412;isolation:isolate}
-.portal-shell .portal-sidebar:after{content:'';position:absolute;z-index:-1;inset:auto 0 0;height:180px;pointer-events:none;background:repeating-radial-gradient(circle at 0 100%,transparent 0 38px,#7fd6c90d 39px 40px);mask:linear-gradient(transparent,#000 70%)}
+/* Sidebar keeps its original illustrated background (premium-portal.css); only link motion is refined. */
 .portal-shell .portal-nav-link{position:relative;transition:background-color .25s var(--r-ease),color .2s ease,transform .25s var(--r-ease)}
 .portal-shell .portal-nav-link:hover{transform:translateX(3px)}
 .portal-shell .portal-nav-link.selected{transform:none;box-shadow:0 8px 22px #001d2640,inset 0 1px #fff}
@@ -89,3 +87,73 @@
 .finance-trend-table{margin:10px 20px 18px;font-size:13px}
 .finance-trend-table summary{cursor:pointer;color:#0b6b62;font-weight:650;padding:6px 0}
 @media(max-width:700px){.finance-trend-stats{grid-template-columns:repeat(2,minmax(0,1fr));margin:0 14px 12px}.finance-trend-legend,.finance-trend-plot,.finance-trend-table{margin-left:14px;margin-right:14px}}
+
+/* In-portal screens (PortalScreen): while one is open, the page underneath is hidden but stays mounted,
+   so Back returns to the same filters and scroll position. Only the newest nested screen is shown. */
+.portal-screen-slot:empty{display:none}
+.portal-main:has(>.portal-screen-slot:not(:empty))>:not(.portal-screen-slot){display:none}
+.portal-screen-slot>.portal-screen:not(:last-child){display:none}
+.portal-screen{display:grid;gap:18px;min-width:0;animation:r-screen .34s var(--r-ease,cubic-bezier(.22,1,.36,1)) both}
+.portal-screen-bar{position:sticky;top:73px;z-index:15;display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:-6px -8px 0;padding:10px 8px;background:linear-gradient(#f6fbf9f2,#f6fbf9e6);backdrop-filter:blur(10px);border-bottom:1px solid #dcebe6}
+.portal-screen-back{display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:8px 15px 8px 12px;border:1px solid #cfe3dc;border-radius:10px;background:#fff;color:#0b4f55;font-size:13px;font-weight:700;cursor:pointer;box-shadow:0 1px 2px #0b3a3a14;transition:transform .18s ease,box-shadow .2s ease,border-color .2s ease}
+.portal-screen-back span{font-size:16px;line-height:1;transition:transform .2s ease}
+.portal-screen-back:hover{border-color:#94cbbd;box-shadow:0 6px 16px -8px #0b3a3a59}
+.portal-screen-back:hover span{transform:translateX(-3px)}
+.portal-screen-back:focus-visible,.portal-screen-crumbs button:focus-visible{outline:none;box-shadow:0 0 0 3px #0aa18f40}
+.portal-screen-crumbs{min-width:0;flex:1}
+.portal-screen-crumbs ol{display:flex;align-items:center;flex-wrap:wrap;gap:4px;margin:0;padding:0;list-style:none;font-size:13px;color:#5a7682}
+.portal-screen-crumbs li{display:inline-flex;align-items:center;gap:4px;min-width:0}
+.portal-screen-crumbs li+li:before{content:'›';color:#9bb4bb;margin-right:2px}
+.portal-screen-crumbs button{border:0;background:none;padding:4px 6px;border-radius:6px;color:#0b6b62;font:inherit;font-weight:650;cursor:pointer}
+.portal-screen-crumbs button:hover{background:#e6f4ef;text-decoration:underline}
+.portal-screen-crumbs [aria-current=page]{color:#0b2c40;font-weight:750;overflow-wrap:anywhere}
+.portal-screen-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:4px 2px 0}
+.portal-screen-head h2{margin:6px 0 4px;font:700 clamp(26px,2.6vw,38px)/1.12 var(--premium-serif,Georgia,serif);letter-spacing:-.03em;color:#08263b;outline:none}
+.portal-screen-head p{margin:0;font-size:14px;color:#526d85}
+.portal-screen-actions{display:flex;gap:8px;flex-wrap:wrap}
+.portal-screen-body{min-width:0}
+/* Former dialogs render as full-width cards inside a screen. */
+.portal-screen .teacher-ops-modal{position:static;inset:auto;transform:none;width:auto;max-width:none;max-height:none;overflow:visible;margin:0;animation:none;box-shadow:0 1px 2px #0b3a3a0d,0 18px 40px -26px #0b3a3a40;border:1px solid #dcebe6;border-radius:16px;background:#fff}
+.portal-screen .teacher-ops-modal-head{display:none}
+.portal-screen .admission-profile>.studio-editor-head .portal-screen-hide{display:none}
+@keyframes r-screen{from{opacity:0;transform:translateX(14px)}to{opacity:1;transform:none}}
+@media(max-width:900px){.portal-screen-bar{position:static}}
+@media(max-width:700px){.portal-screen-bar{margin:-4px -4px 0;padding:8px 4px}.portal-screen-head h2{font-size:26px}}
+@media(prefers-reduced-motion:reduce){.portal-screen{animation:none}}
+
+/* Website Admin: editor and a large live preview side by side; the preview fills the viewport height. */
+.portal-shell .cms-context-grid{grid-template-columns:minmax(340px,.92fr) minmax(420px,1.08fr)}
+.portal-shell .cms-context-grid.show-preview{grid-template-columns:minmax(0,1fr)}
+.portal-shell .cms-context-grid.show-preview .cms-context-editor{display:none}
+.portal-shell .cms-context-preview{top:88px;padding:14px;border-radius:16px;box-shadow:0 1px 2px #0b3a3a0d,0 22px 50px -32px #0b3a3a59}
+.cms-preview{display:grid;gap:10px}
+.cms-preview-controls{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.cms-preview-devices{display:inline-flex;gap:3px;padding:3px;border:1px solid #dbe9e4;border-radius:10px;background:#f3f8f6}
+.cms-preview-devices button{min-height:32px;padding:5px 12px;border:0;border-radius:7px;background:none;color:#2d5f66;font-size:12px;font-weight:650;cursor:pointer;transition:background-color .2s ease,box-shadow .2s ease}
+.cms-preview-devices button[aria-pressed=true]{background:#fff;color:#065c5c;box-shadow:0 1px 3px #0b3a3a1f,0 0 0 1px #c9e2da}
+.cms-preview-live{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:#6b8590}
+.cms-preview-live:before{content:'';width:7px;height:7px;border-radius:50%;background:#c4d3d0}
+.cms-preview-live.is-ready{color:#0b6b62}
+.cms-preview-live.is-ready:before{background:#10a38f;box-shadow:0 0 0 4px #10a38f24;animation:cms-pulse 2s ease-in-out infinite}
+.cms-preview-reload{margin-left:auto;width:36px;height:36px;border:1px solid #d7e7e2;border-radius:9px;background:#fff;color:#0b4f55;font-size:17px;cursor:pointer;transition:transform .3s ease}
+.cms-preview-reload:hover{transform:rotate(90deg)}
+.cms-preview-devices button:focus-visible,.cms-preview-reload:focus-visible{outline:none;box-shadow:0 0 0 3px #0aa18f40}
+.cms-preview-stage{position:relative;height:clamp(460px,calc(100vh - 250px),1100px);overflow:hidden;border-radius:12px;background:repeating-linear-gradient(45deg,#f1f6f4 0 10px,#eef4f1 10px 20px);border:1px solid #e1ece8}
+.cms-preview-device{height:100%;margin:0 auto;overflow:hidden;background:#fff;box-shadow:0 10px 30px -18px #0b3a3a66;transition:width .35s cubic-bezier(.22,1,.36,1)}
+.cms-preview-device[data-device=mobile],.cms-preview-device[data-device=tablet]{border-left:1px solid #dbe7e3;border-right:1px solid #dbe7e3}
+.cms-preview-device iframe{display:block;border:0;transform-origin:top left;background:#fff}
+.cms-preview-loading{position:absolute;inset:0;display:grid;place-items:center;font-size:13px;color:#4f6f7b;background:linear-gradient(90deg,#f4f9f7 25%,#fbfdfc 50%,#f4f9f7 75%) 0 0/300% 100%;animation:r-shimmer 1.4s linear infinite}
+.cms-preview-note{margin:0;font-size:11.5px;line-height:1.6;color:#5f7a85}
+.cms-section-picker .cms-section-main{width:100%}
+.cms-section-picker li{transition:border-color .2s ease,box-shadow .2s ease}
+.cms-section-picker li:hover{border-color:#9fd0c4;box-shadow:0 10px 24px -18px #0b3a3a66}
+@keyframes cms-pulse{0%,100%{box-shadow:0 0 0 3px #10a38f2e}50%{box-shadow:0 0 0 6px #10a38f12}}
+@media(max-width:1190px){.portal-shell .cms-context-grid{grid-template-columns:minmax(0,1fr)}.cms-preview-stage{height:clamp(420px,calc(100vh - 220px),900px)}}
+@media(prefers-reduced-motion:reduce){.cms-preview-live.is-ready:before,.cms-preview-loading{animation:none}.cms-preview-device{transition:none}}
+.portal-screen .teacher-ops-modal{max-width:780px}
+.portal-screen .teacher-ops-modal.mgmt-modal-wide,.portal-screen .teacher-ops-modal.mgmt-detail,.portal-screen .teacher-ops-modal.finance-dialog,.portal-screen .teacher-ops-modal.student-assignment-dialog{max-width:none}
+.mgmt-pay-history{margin-top:6px;padding-top:14px;border-top:1px solid #e6efec}
+.mgmt-pay-history h4{margin:0 0 8px;font-size:13px;color:#33525f}
+.mgmt-pay-history ol{margin:0;padding:0;list-style:none;display:grid;gap:6px}
+.mgmt-pay-history li{display:flex;justify-content:space-between;gap:12px;padding:8px 10px;border-radius:8px;background:#f6faf8;font-size:12.5px;color:#46636e}
+.mgmt-pay-history li strong{color:#0b2c40;font-variant-numeric:tabular-nums}

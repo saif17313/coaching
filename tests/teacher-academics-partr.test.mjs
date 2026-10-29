@@ -72,6 +72,7 @@ test('Part R portal routes all six academic sections to Studio and retains manag
  for(const key of academicModes){assert.match(portal,new RegExp(`id:'${key}',label:`));}
  assert.match(studio,/window\.confirm\(/);
  assert.match(studio,/activeBatchRoster\(/);
- assert.match(studio,/role="dialog"/);
+ // Create forms open as an in-portal screen (breadcrumb + Back), not a modal dialog.
+ assert.match(studio,/<PortalScreen trail=/);
  assert.doesNotMatch(studio,/service_role|SUPABASE_SERVICE|localStorage|sessionStorage/);
 });

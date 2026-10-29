@@ -12,7 +12,7 @@ try{
   const profile=page.getByRole('region',{name:role==='teacher'?'Student admission and full profile':'Your admission and profile',exact:true});await profile.getByRole('button',{name:'Reload profile',exact:true}).click();await profile.getByRole('button',{name:'Save profile',exact:true}).waitFor();
   if(role==='teacher'){
    await profile.getByRole('button',{name:'Assign another batch',exact:true}).click();
-   const modal=page.getByRole('dialog');await modal.getByLabel('Active student',{exact:true}).waitFor();assert.equal(await modal.getByLabel('Active student',{exact:true}).inputValue(),'e6b148e2-dfe4-4f3a-8b35-6046e2fa57de');await modal.getByRole('button',{name:'Cancel',exact:true}).click();
+   const modal=page.locator('.portal-screen-slot>.portal-screen').last();await modal.getByLabel('Active student',{exact:true}).waitFor();assert.equal(await modal.getByLabel('Active student',{exact:true}).inputValue(),'e6b148e2-dfe4-4f3a-8b35-6046e2fa57de');await modal.getByRole('button',{name:'Cancel',exact:true}).click();
   }
   for(const [label,width,height] of [['desktop',1440,1000],['tablet',820,1180],['mobile',390,844]]){
    await page.setViewportSize({width,height});await profile.scrollIntoViewIfNeeded();

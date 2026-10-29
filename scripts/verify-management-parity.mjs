@@ -55,7 +55,7 @@ try{
  // 1. Batch create through the studio form (profile, schedule, fees).
  await nav(teacher,'Batches');
  await teacher.getByRole('button',{name:'Create batch',exact:true}).first().click();
- const form=teacher.getByRole('dialog');
+ const form=teacher.locator('.portal-screen-slot>.portal-screen').last();
  await form.getByLabel('Batch name').fill(batchName);await form.getByLabel('Batch code').fill(batchCode);
  await form.getByLabel('Subject').fill('Physics (E2E)');await form.getByLabel('Class / level').fill('HSC 2027');await form.getByLabel('Academic session').fill('2026-27');
  await form.getByLabel('Capacity').fill('5');await form.getByLabel('Status').selectOption('running');
@@ -71,13 +71,13 @@ try{
  check('Batch profile persisted',[profile.status,profile.capacity,profile.scheduleDays,profile.currentFee.monthlyFeeMinor],['running',5,[1,3,6],'3000']);
  // Edit capacity through the form.
  await card.getByRole('button',{name:'Edit',exact:true}).click();
- const edit=teacher.getByRole('dialog');await edit.getByLabel('Capacity').fill('6');
+ const edit=teacher.locator('.portal-screen-slot>.portal-screen').last();await edit.getByLabel('Capacity').fill('6');
  const saved=teacher.waitForResponse(r=>r.url().endsWith('/batch-write'));await edit.getByRole('button',{name:'Save changes'}).click();check('Batch edit saved',(await (await saved).json()).data.capacity,6);
 
  // 2. Offline admission, enrollment, lifecycle transitions in the profile.
  await nav(teacher,'Students');
   await teacher.getByRole('button',{name:'Add student',exact:true}).first().click();
- const modal=teacher.getByRole('dialog');await modal.getByLabel('Student name',{exact:true}).fill(studentName);
+ const modal=teacher.locator('.portal-screen-slot>.portal-screen').last();await modal.getByLabel('Student name',{exact:true}).fill(studentName);
  await modal.getByLabel('New Student Student phone').fill('01700000000');await modal.getByLabel('New Student Class').fill('HSC 2027');
  await modal.getByLabel('New Student Guardian name').fill('E2E Guardian');await modal.getByLabel('New Student Relationship').fill('Mother');await modal.getByLabel('New Student Guardian mobile').fill('01800000000');
  const offline=teacher.waitForResponse(r=>r.url().endsWith('/api/v1/teacher/students/offline'));await modal.getByRole('button',{name:'Admit student',exact:true}).click();
@@ -95,20 +95,20 @@ try{
 
  // 3. Monthly billing from the batch detail, then installments in the ledger.
  await nav(teacher,'Batches');await teacher.locator('.mgmt-batch-card',{hasText:batchName}).getByRole('button',{name:'Manage'}).click();
- const detail=teacher.getByRole('dialog');await detail.getByLabel('Billing month').fill(period);
+ const detail=teacher.locator('.portal-screen-slot>.portal-screen').last();await detail.getByLabel('Billing month').fill(period);
  const billed=teacher.waitForResponse(r=>r.url().endsWith('/bill-period'));await detail.getByRole('button',{name:'Generate dues'}).click();
  const bill=(await (await billed).json()).data;check('Monthly dues generated from fee rule',[bill.amountMinor,bill.created,bill.planCreated],['3000',1,true]);
  await detail.getByRole('button',{name:'Close batch details'}).click();
  await nav(teacher,'Payment ledger');await teacher.getByPlaceholder('Search Student, roll or batch…').fill(studentName);await teacher.locator('.mgmt-ledger-table tbody tr',{hasText:studentName}).first().waitFor();
  const ledgerRow=()=>teacher.locator('.mgmt-ledger-table tbody tr',{hasText:studentName}).first();
- async function pay(amount,method,reference){await ledgerRow().getByRole('button',{name:'Record payment'}).click();const d=teacher.getByRole('dialog');await d.getByLabel('Amount received (BDT)').fill(amount);await d.getByLabel('Method').selectOption(method);if(reference)await d.getByLabel(/Reference/).fill(reference);
+ async function pay(amount,method,reference){await ledgerRow().getByRole('button',{name:'Record payment'}).click();const d=teacher.locator('.portal-screen-slot>.portal-screen').last();await d.getByLabel('Amount received (BDT)').fill(amount);await d.getByLabel('Method').selectOption(method);if(reference)await d.getByLabel(/Reference/).fill(reference);
   const posted=teacher.waitForResponse(r=>/\/payments\/post$/.test(r.url()));await d.getByRole('button',{name:'Record payment'}).click();return (await posted).status();}
  check('Installment 1 (BDT 10, cash) recorded',await pay('10','cash',''),201);
  let row=(await api(teacher,`/api/v1/teacher/management/payment-ledger?batchId=${batchId}&period=${period}`)).body.data.rows[0];check('After installment 1: partial, BDT 20 due',[row.status,row.paidMinor,row.outstandingMinor],['partial','1000','2000']);
  check('Installment 2 (BDT 15, mobile banking) recorded',await pay('15','mobile_banking','E2E-TRX-'+tag),201);
  row=(await api(teacher,`/api/v1/teacher/management/payment-ledger?batchId=${batchId}&period=${period}`)).body.data.rows[0];check('After installment 2: partial, BDT 5 due, 2 separate payments',[row.status,row.outstandingMinor,row.payments.length],['partial','500',2]);
  await ledgerRow().getByText('৳5',{exact:true}).waitFor();
- await ledgerRow().getByRole('button',{name:'Record payment'}).click();const over=teacher.getByRole('dialog');await over.getByLabel('Amount received (BDT)').fill('6');await over.getByRole('button',{name:'Record payment'}).click();
+ await ledgerRow().getByRole('button',{name:'Record payment'}).click();const over=teacher.locator('.portal-screen-slot>.portal-screen').last();await over.getByLabel('Amount received (BDT)').fill('6');await over.getByRole('button',{name:'Record payment'}).click();
  check('Overpayment blocked',await over.getByRole('alert').innerText().then(t=>/more than the outstanding|larger than the outstanding|exceeds/i.test(t)),true);await over.getByRole('button',{name:'Cancel'}).click();
  check('Ledger unchanged after blocked overpayment',(await api(teacher,`/api/v1/teacher/management/payment-ledger?batchId=${batchId}&period=${period}`)).body.data.rows[0].outstandingMinor,'500');
  check('Final installment (BDT 5) recorded',await pay('5','cash',''),201);
@@ -132,11 +132,11 @@ try{
  await teacher.locator('.mgmt-syllabus-summary').getByText('50%').waitFor();
  check('Syllabus progress 50% after 1 of 2 topics',(await api(teacher,`/api/v1/teacher/management/syllabus?batchId=${batchId}`)).body.data.progressBasisPoints,5000);
  const past=new Date(Date.now()-3600000),local=new Date(past.getTime()-past.getTimezoneOffset()*60000).toISOString().slice(0,16);
- await nav(teacher,'Examinations');await teacher.getByRole('button',{name:'+ Create exam draft'}).click();const examForm=teacher.getByRole('dialog');
+ await nav(teacher,'Examinations');await teacher.getByRole('button',{name:'+ Create exam draft'}).click();const examForm=teacher.locator('.portal-screen-slot>.portal-screen').last();
  await examForm.getByLabel('Subject').selectOption({label:'Physics E2E'});await examForm.getByLabel('Title').fill('E2E PARITY Weekly '+tag);await examForm.getByLabel('Scheduled date').fill(local);await examForm.getByLabel('Maximum marks').fill('50');
  await examForm.getByRole('button',{name:/Save securely/}).click();await teacher.getByText('E2E PARITY Weekly '+tag).waitFor();
  const examCard=teacher.locator('.academic-card',{hasText:'E2E PARITY Weekly '+tag});await examCard.getByRole('button',{name:'Details'}).click();
- const details=teacher.getByRole('dialog');await details.getByLabel('Type').selectOption('weekly');await details.getByLabel('Pass marks').fill('20');await details.getByLabel('Duration (minutes)').fill('60');
+ const details=teacher.locator('.portal-screen-slot>.portal-screen').last();await details.getByLabel('Type').selectOption('weekly');await details.getByLabel('Pass marks').fill('20');await details.getByLabel('Duration (minutes)').fill('60');
  await details.getByLabel('Vectors',{exact:true}).check();const examSaved=teacher.waitForResponse(r=>r.url().endsWith('/exam-details'));await details.getByRole('button',{name:'Save exam details'}).click();
  examId=(await (await examSaved).json()).data.id;check('Exam details saved (type, pass marks, coverage)',typeof examId,'string');
  await examCard.getByRole('button',{name:/Schedule \(publish\)/}).click();await examCard.getByText('published').waitFor();

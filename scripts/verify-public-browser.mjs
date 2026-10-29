@@ -31,7 +31,7 @@ try{
   await carousel.getByRole('button',{name:'Pause automatic rotation',exact:true}).click();
   check('course autoplay pause control is explicit',await carousel.getByRole('button',{name:'Resume automatic rotation',exact:true}).getAttribute('aria-pressed'),'true');
   await carousel.locator('.tale-carousel-card.is-current').getByRole('button').click();
-  const dialog=page.getByRole('dialog');await dialog.waitFor();
+  const dialog=page.locator('.portal-screen-slot>.portal-screen').last();await dialog.waitFor();
   check('course dialog receives keyboard focus',await dialog.evaluate(el=>el.contains(document.activeElement)),true);
   for(let i=0;i<5;i++)await page.keyboard.press('Tab');
   check('course dialog contains tab focus',await dialog.evaluate(el=>el.contains(document.activeElement)),true);

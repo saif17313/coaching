@@ -33,7 +33,7 @@ try{
  await teacher.getByRole('complementary').getByRole('button',{name:'Students',exact:true}).click();
  await teacher.getByRole('button',{name:'Registered records',exact:true}).click();
  await teacher.getByRole('button',{name:'Add student',exact:true}).click();
- const modal=teacher.getByRole('dialog');
+ const modal=teacher.locator('.portal-screen-slot>.portal-screen').last();
  check('Add student form has no Student email or password field',[await modal.getByLabel('Student email').count(),await modal.locator('input[type=password]').count()],[0,0]);
  await modal.getByLabel('Student name',{exact:true}).fill(name);
  await modal.getByLabel('New Student Student phone').fill('01700000000');

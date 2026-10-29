@@ -15,7 +15,7 @@ try{
  const row=page.locator('.teacher-ops-row').filter({hasText:'DEMO Audit Student'});
  const response=page.waitForResponse(r=>r.url().endsWith(`/students/${studentId}/status`)&&r.request().method()==='PATCH');await row.getByRole('button',{name:'Activate',exact:true}).click();check('Teacher activates confirmed DEMO Student through UI',(await response).status(),200);
  await page.getByRole('button',{name:'Enrollments',exact:true}).click();await page.getByRole('button',{name:'+ Enrollment request',exact:true}).click();
- const dialog=page.getByRole('dialog');await dialog.getByRole('combobox').nth(0).selectOption(studentId);await dialog.getByRole('combobox').nth(1).selectOption(batchId);
+ const dialog=page.locator('.portal-screen-slot>.portal-screen').last();await dialog.getByRole('combobox').nth(0).selectOption(studentId);await dialog.getByRole('combobox').nth(1).selectOption(batchId);
  const enrolled=page.waitForResponse(r=>r.url().endsWith('/enrollment-requests')&&r.request().method()==='POST');await dialog.getByRole('button',{name:'Save changes',exact:true}).click();const r=await enrolled;check('Teacher requests DEMO enrollment through UI',r.status(),201);report.enrollmentId=(await r.json()).data.id;
  const enrollmentRow=page.locator('.teacher-ops-row').filter({hasText:studentId.slice(0,8)}).filter({hasText:batchId.slice(0,8)});
  const approved=page.waitForResponse(r=>r.url().endsWith(`/enrollments/${report.enrollmentId}/decision`)&&r.request().method()==='POST');await enrollmentRow.getByRole('button',{name:'Approve',exact:true}).click();check('Teacher approves DEMO enrollment through UI',(await approved).status(),200);

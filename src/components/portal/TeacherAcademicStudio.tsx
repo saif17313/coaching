@@ -1,4 +1,5 @@
 'use client';
+import {PortalScreen} from './PortalScreen';
 import {AssignmentReview} from './AssignmentReview';
 import {ExamDetailsLoader,ExamResultsSheet,SyllabusPlanner} from './TeacherAcademicPlanner';
 import {useCallback,useEffect,useState,type FormEvent} from 'react';
@@ -91,7 +92,7 @@ export function TeacherAcademicStudio({mode,batchId,onNavigate}:{mode:AcademicMo
   {resolved&&<div className="teacher-ops-pagination"><button className="portal-secondary" disabled={offset===0||loading||saving} onClick={()=>setOffset(n=>Math.max(0,n-20))}>← Previous</button><span>Page {Math.floor(offset/20)+1}</span><button className="portal-secondary" disabled={items.length<20||loading||saving} onClick={()=>setOffset(n=>n+20)}>Next →</button></div>}
   </>}
   {detailsId&&<ExamDetailsLoader examId={detailsId} onClose={()=>setDetailsId('')} onSaved={()=>{setDetailsId('');setNotice('Exam details saved.');refreshAll();}}/>}
-  {formOpen&&<div className="teacher-ops-overlay" onMouseDown={e=>{if(e.target===e.currentTarget&&!saving)setFormOpen(false);}}><section className="teacher-ops-modal academic-dialog" role="dialog" aria-modal="true" aria-labelledby="academic-form-heading"><div className="teacher-ops-modal-head"><div><span className="portal-kicker">SECURE ACADEMIC ACTION</span><h3 id="academic-form-heading">{createNames[mode]}</h3></div><button type="button" className="portal-secondary" aria-label="Close" disabled={saving} onClick={()=>setFormOpen(false)}>✕</button></div>
+  {formOpen&&<PortalScreen trail={[createNames[mode]]} kicker="SECURE ACADEMIC ACTION" title={createNames[mode]} onBack={()=>{if(!saving)setFormOpen(false);}}><section className="teacher-ops-modal academic-dialog" aria-label={createNames[mode]}><div className="teacher-ops-modal-head"><div><span className="portal-kicker">SECURE ACADEMIC ACTION</span><h3 id="academic-form-heading">{createNames[mode]}</h3></div><button type="button" className="portal-secondary" aria-label="Close" disabled={saving} onClick={()=>setFormOpen(false)}>✕</button></div>
    <p className="academic-form-note">For batch-specific records, only available subjects and enrolled students can be selected.</p>
    {error&&<div className="portal-alert" role="alert">{error}</div>}
    <form className="teacher-ops-form academic-form" onSubmit={e=>void save(e)}>{formFields[mode].map(field=><label key={field}>{fieldLabels[field]}
@@ -105,6 +106,6 @@ export function TeacherAcademicStudio({mode,batchId,onNavigate}:{mode:AcademicMo
      ['maxPoints','maxMarks','position','marks'].includes(field)?<input type="number" required min={field==='marks'?0:1} max={field==='marks'?10000:field==='maxPoints'?1000:field==='position'?10000:10000} step={field==='marks'?'0.01':'1'} value={values[field]||''} onChange={e=>update(field,e.target.value)}/>:
      <input required={field!=='room'} minLength={field==='room'?0:field==='code'?2:2} maxLength={field==='room'?100:field==='code'?24:160} value={values[field]||''} onChange={e=>update(field,field==='code'?e.target.value.toUpperCase():e.target.value)} placeholder={field==='code'?'MATH_01':field==='room'?'Room 204':'Enter '+fieldLabels[field].toLowerCase()}/>}</label>)}
     <div className="teacher-ops-form-actions"><button type="button" className="portal-secondary" disabled={saving} onClick={()=>setFormOpen(false)}>Cancel</button><button className="portal-primary" disabled={saving}>{saving?'Saving…':'Save securely ↗'}</button></div>
-   </form></section></div>}
+   </form></section></PortalScreen>}
  </div>;
 }

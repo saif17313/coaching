@@ -1,4 +1,5 @@
 'use client';
+import {PortalScreen} from './PortalScreen';
 import Image from 'next/image';
 import {useEffect,useState,type FormEvent} from 'react';
 import {PortalEmpty,PortalIcon,PortalMetric} from './PortalPrimitives';
@@ -77,7 +78,7 @@ function BatchEditor({state,onClose,onSaved}:{state:{id:string|null;form:Form;lo
   catch(err){setError((err as Error).message);}finally{setBusy(false);}
  }
  async function chooseCover(file:File|undefined){if(!file)return;setUploading(true);setError('');try{set('coverMediaId',await uploadImage(file,`${form.name||'Batch'} cover image`));}catch(e){setError((e as Error).message);}finally{setUploading(false);}}
- return <div className="teacher-ops-overlay" onMouseDown={e=>{if(e.target===e.currentTarget&&!busy)onClose();}}><form className="teacher-ops-modal mgmt-modal-wide" role="dialog" aria-modal="true" aria-labelledby="batch-editor-heading" onSubmit={submit}>
+ return <PortalScreen trail={create?['Create batch']:[state.form.name||'Batch','Edit']} kicker="BATCH PROFILE" title={create?'Create a batch':`Edit ${state.form.name}`} subtitle={create?'Profile, class schedule, capacity and fees.':'Changes apply immediately; fee changes take effect from the month you choose.'} onBack={()=>{if(!busy)onClose();}}><form className="teacher-ops-modal mgmt-modal-wide" aria-label={create?'Create a batch':`Edit ${state.form.name}`} onSubmit={submit}>
   <div className="teacher-ops-modal-head"><div><span className="portal-kicker">BATCH PROFILE</span><h3 id="batch-editor-heading">{create?'Create a batch':`Edit ${state.form.name}`}</h3></div><button type="button" className="portal-secondary" onClick={onClose} aria-label="Close batch editor">✕</button></div>
   {!create&&state.locked&&<p className="mgmt-hint">The batch code is locked because this batch already has enrollments or is past the draft stage.</p>}
   <div className="mgmt-form-grid">
@@ -99,7 +100,7 @@ function BatchEditor({state,onClose,onSaved}:{state:{id:string|null;form:Form;lo
   <div className="mgmt-cover-field">{form.coverMediaId?<Image unoptimized src={cover(form.coverMediaId)!} alt="Batch cover preview" width={320} height={130}/>:<div className="mgmt-cover-empty">No cover image</div>}<label className="portal-secondary mgmt-file">{uploading?'Uploading…':form.coverMediaId?'Replace cover':'Upload cover'}<input type="file" accept="image/jpeg,image/png,image/webp" disabled={uploading} onChange={e=>void chooseCover(e.target.files?.[0])}/></label>{form.coverMediaId&&<button type="button" className="portal-text-button" onClick={()=>set('coverMediaId','')}>Remove</button>}</div>
   {error&&<div className="portal-alert" role="alert">{error}</div>}
   <div className="teacher-ops-modal-actions"><button type="button" className="portal-secondary" onClick={onClose} disabled={busy}>Cancel</button><button type="submit" className="portal-primary" disabled={busy||uploading}>{busy?'Saving…':create?'Create batch':'Save changes'}</button></div>
- </form></div>;
+ </form></PortalScreen>;
 }
 
 function BatchDetail({batchId,onClose,onChanged,onEdit,onNavigate}:{batchId:string;onClose:()=>void;onChanged:(message:string)=>void;onEdit:(batch:Batch)=>void;onNavigate?:(page:string,batchId:string)=>void}){
@@ -108,10 +109,11 @@ function BatchDetail({batchId,onClose,onChanged,onEdit,onNavigate}:{batchId:stri
  useEffect(()=>{let active=true;Promise.all([managementRead<Profile>('batch-profile',{batchId}),managementRead<Roster>('students',{batchId,limit:50})]).then(([p,r])=>{if(active){setProfile(p);setRoster(r.students);
    if(p.currentFee)setFee(f=>({...f,admission:String(Number(p.currentFee!.admissionFeeMinor)/100),dueDay:String(p.currentFee!.dueDay)}));}}).catch(e=>{if(active)setError(e.message);});return()=>{active=false;};},[batchId,version]);
  async function act(label:string,action:string,body:unknown,done:string){setBusy(label);setError('');setMessage('');try{const result=await managementCommand<Record<string,unknown>>(action,body);setMessage(typeof done==='string'?done.replace('{created}',String(result?.created??'')).replace('{applied}',String(result?.concessionsApplied??'')):'Saved.');setVersion(v=>v+1);onChanged('');}catch(e){setError((e as Error).message);}finally{setBusy('');}}
- if(!profile)return <div className="teacher-ops-overlay"><div className="teacher-ops-modal" role="dialog" aria-modal="true" aria-label="Loading batch">{error?<div className="portal-alert">{error}<button className="portal-secondary" onClick={onClose}>Close</button></div>:<div className="portal-loading"><div className="portal-spinner"/>Loading batch…</div>}</div></div>;
+ // One screen for both the loading and loaded states, so it is never remounted (one history entry).
+ if(!profile)return <PortalScreen trail={['Batch']} kicker="BATCH" title="Loading batch…" onBack={onClose}>{error?<div className="portal-alert" role="alert">{error}</div>:<div className="portal-loading" role="status">Loading batch…</div>}</PortalScreen>;
  const p=profile,active=roster.filter(s=>s.batches.some(b=>b.batchId===batchId&&b.status==='active'));
  const transition=(status:Status,label:string)=>void act(status,'batch-write',{action:'update',batchId,data:{status}},`Batch marked ${label.toLowerCase()}.`);
- return <div className="teacher-ops-overlay" onMouseDown={e=>{if(e.target===e.currentTarget&&!busy)onClose();}}><section className="teacher-ops-modal mgmt-modal-wide mgmt-detail" role="dialog" aria-modal="true" aria-labelledby="batch-detail-heading">
+ return <PortalScreen trail={[p.name]} kicker={p.code} title={p.name} subtitle={[p.subject,p.academicLevel,p.academicSession].filter(Boolean).join(' · ')||undefined} onBack={()=>{if(!busy)onClose();}}><section className="teacher-ops-modal mgmt-modal-wide mgmt-detail" aria-label={`${p.name} details`}>
   <div className="teacher-ops-modal-head"><div><span className="portal-kicker">{p.code}</span><h3 id="batch-detail-heading">{p.name}</h3><p className="portal-muted">{[p.subject,p.academicLevel,p.academicSession].filter(Boolean).join(' · ')}</p></div><button className="portal-secondary" onClick={onClose} aria-label="Close batch details">✕</button></div>
   <div className="mgmt-detail-status"><StatusBadge status={p.status}/><span className="premium-badge" data-status={p.admissionOpen?'active':'disabled'}>{p.admissionOpen?'Admission open':'Admission closed'}</span><span>{scheduleText(p.scheduleDays,p.classStartMinute,p.classEndMinute)}</span><span>{p.enrolled}/{p.capacity} enrolled{p.pending?` · ${p.pending} pending`:''}</span></div>
   {message&&<div className="mgmt-notice" role="status">{message}</div>}{error&&<div className="portal-alert" role="alert">{error}</div>}
@@ -145,5 +147,5 @@ function BatchDetail({batchId,onClose,onChanged,onEdit,onNavigate}:{batchId:stri
    <section className="mgmt-panel"><h4>Students ({active.length})</h4>{active.length?<ul className="mgmt-roster">{active.map(s=><li key={s.id}><span>{s.fullName}</span><small>{s.admissionRoll??'No roll yet'}{s.lifecycleStatus&&s.lifecycleStatus!=='active'?` · ${s.lifecycleStatus}`:''}</small></li>)}</ul>:<p className="portal-muted">No active Students yet.</p>}
     <div className="mgmt-quick-row"><button className="portal-text-button" onClick={()=>onNavigate?.('enrollments',batchId)}>Enrollments →</button><button className="portal-text-button" onClick={()=>onNavigate?.('syllabus',batchId)}>Syllabus →</button><button className="portal-text-button" onClick={()=>onNavigate?.('exams',batchId)}>Exams →</button><button className="portal-text-button" onClick={()=>onNavigate?.('materials',batchId)}>Materials →</button></div></section>
   </div>
- </section></div>;
+ </section></PortalScreen>;
 }
