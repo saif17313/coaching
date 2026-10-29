@@ -55,3 +55,51 @@
 @media(prefers-reduced-motion:reduce){.tale-hero-depth{display:none}.tale-site[data-visual-style=premium] .tale-floating-note{animation:none}.tale-site[data-visual-style=premium] .tale-visual-published,.tale-site[data-visual-style=premium] .tale-visual-book,.tale-site[data-visual-style=premium] .tale-hero-visual>.tale-visual-orbit,.tale-site[data-visual-style=premium] .tale-mentor-portrait{rotate:none;transform:none;transition:none}.tale-site[data-visual-style=premium] .tale-action:before,.tale-site[data-visual-style=premium] .tale-account:before{display:none}.tale-site.motion-ready[data-visual-style=premium] .reveal-pending{transform:none}}
 .tale-site[data-motion=off] .tale-hero-depth{display:none}
 .tale-site[data-motion=off] .tale-floating-note{animation:none}
+
+/* ——— Homepage polish: same sections, order and content; presentation only. ——— */
+/* Section labels: a refined pill with hairline rules, and headings with a soft gold flourish. */
+.tale-site[data-visual-style=premium] .tale-section-title .tale-eyebrow{display:inline-flex;align-items:center;gap:12px;padding:6px 14px;border-radius:999px;background:linear-gradient(135deg,#fff8ef,#f2faf6);box-shadow:0 0 0 1px #ecdcc3,0 8px 20px -14px #8c5b2566;color:#8c5b25}
+.tale-site[data-visual-style=premium] .tale-section-title .tale-eyebrow:before{content:'';width:6px;height:6px;border-radius:50%;background:linear-gradient(135deg,#0a8f7e,#c6913d)}
+.tale-site[data-visual-style=premium] .tale-section-title h2{position:relative;padding-bottom:18px}
+.tale-site[data-visual-style=premium] .tale-section-title h2:after{content:'';position:absolute;left:50%;bottom:0;width:72px;height:3px;border-radius:3px;transform:translateX(-50%);background:linear-gradient(90deg,#0a8f7e,#2b6f9e 55%,#c6913d)}
+.tale-site[data-visual-style=premium] .tale-mentor .tale-section-title h2:after,.tale-site[data-visual-style=premium] .tale-info .tale-section-title h2:after{left:0;transform:none}
+
+/* Cards: gradient hairline frame that warms on hover, framed media and a readable lift. */
+.tale-site[data-visual-style=premium] .tale-card:before{content:'';position:absolute;inset:0;border-radius:inherit;padding:1px;pointer-events:none;z-index:1;background:linear-gradient(160deg,#cfe7df,#ffffff00 38%,#ffffff00 62%,#ead6b4);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;transition:background .4s ease}
+.tale-site[data-visual-style=premium] .tale-card:hover:before{background:linear-gradient(160deg,#0a8f7e,#7fb9d699 45%,#c6913d)}
+.tale-site[data-visual-style=premium] .tale-card-media{position:relative}
+.tale-site[data-visual-style=premium] .tale-card-media:after{content:'';position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,#ffffff00 55%,#0b2c4012),radial-gradient(120% 80% at 0 0,#ffffff40,#ffffff00 50%)}
+.tale-site[data-visual-style=premium] .tale-card-copy h3{transition:color .3s ease}
+.tale-site[data-visual-style=premium] .tale-card:hover .tale-card-copy h3{color:#0a6f66}
+.tale-site[data-visual-style=premium] .tale-card-copy a{transition:gap .25s ease,color .25s ease}
+.tale-site[data-visual-style=premium] .tale-sample-label{box-shadow:0 0 0 1px #d4e9e1 inset}
+.tale-site[data-visual-style=premium] .tale-card-symbol{background:radial-gradient(circle at 30% 25%,#ffffff,#e5f4ee 60%,#d3ebe2);box-shadow:0 10px 24px -14px #0b6b6280,inset 0 1px #fff}
+
+/* "View all" links become pill buttons with a moving arrow. */
+.tale-site[data-visual-style=premium] .tale-centered-link a{background:linear-gradient(#fff,#fff) padding-box,linear-gradient(120deg,#0a8f7e,#c6913d) border-box;border:1px solid transparent;color:#0b4f55;box-shadow:0 12px 26px -18px #0b4d5080;transition:transform .25s var(--depth-ease),box-shadow .25s ease}
+.tale-site[data-visual-style=premium] .tale-centered-link a:hover{transform:translateY(-2px);box-shadow:0 18px 34px -18px #0b4d5099;color:#0a6f66}
+.tale-site[data-visual-style=premium] .tale-centered-link a span{transition:transform .25s ease}
+.tale-site[data-visual-style=premium] .tale-centered-link a:hover span{transform:translateX(4px)}
+
+/* Soft panels: layered mesh light instead of a flat tint, framed by hairline rules. */
+.tale-site[data-visual-style=premium] .tale-soft-panel{position:relative;overflow:hidden;background:radial-gradient(60% 70% at 0% 0%,#dff2ea 0%,#ffffff00 60%),radial-gradient(50% 60% at 100% 100%,#fbead2 0%,#ffffff00 60%),linear-gradient(130deg,#f2f9f6,#fffbf5 50%,#f5f9fd);border-block:1px solid #e3eee9}
+.tale-site[data-visual-style=premium] .tale-soft-panel:before{content:'';position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(#0f7c701c 1px,transparent 1px);background-size:22px 22px;mask:radial-gradient(70% 60% at 50% 40%,#000,transparent)}
+.tale-site[data-visual-style=premium] .tale-soft-panel>*{position:relative}
+
+/* Trust strip and achievement tiles: glass with icon medallions. */
+.tale-site[data-visual-style=premium] .tale-trust-strip>div>span,.tale-site[data-visual-style=premium] .tale-top-student-grid>div>span{display:inline-grid;place-items:center;min-width:42px;height:42px;border-radius:14px;background:linear-gradient(140deg,#e3f5ee,#fff4e4);box-shadow:inset 0 1px #fff,0 8px 18px -12px #0b6b6280;color:#0a6f66}
+.tale-site[data-visual-style=premium] .tale-top-student-grid>div{transition:transform .3s var(--depth-ease),box-shadow .3s ease}
+.tale-site[data-visual-style=premium] .tale-top-student-grid>div:hover{transform:translateY(-4px);box-shadow:0 22px 40px -26px #0b3c4a66}
+
+/* FAQ: calmer accordions with a rotating marker. */
+.tale-site[data-visual-style=premium] .tale-faq-list details{transition:box-shadow .3s ease,border-color .3s ease}
+.tale-site[data-visual-style=premium] .tale-faq-list details[open]{box-shadow:0 18px 40px -28px #0b3c4a59;border-color:#bfe0d5}
+.tale-site[data-visual-style=premium] .tale-faq-list summary span{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;background:#eef7f3;transition:transform .3s ease,background-color .3s ease}
+.tale-site[data-visual-style=premium] .tale-faq-list details[open] summary span{transform:rotate(45deg);background:#d9efe7}
+
+/* Call-to-action banner: deep navy-teal with light sweep. */
+.tale-site[data-visual-style=premium] .tale-banner{position:relative;overflow:hidden;background:radial-gradient(70% 120% at 100% 0%,#0f7c7066,transparent 60%),linear-gradient(135deg,#0a2f42,#0b4a4f);color:#eaf7f3;border-radius:28px;box-shadow:0 40px 80px -40px #0a2f4299}
+.tale-site[data-visual-style=premium] .tale-banner h2,.tale-site[data-visual-style=premium] .tale-banner p{color:inherit;-webkit-text-fill-color:currentColor}
+.tale-site[data-visual-style=premium] .tale-banner-actions a{background:#fff;color:#0b4f55;border-radius:999px}
+
+@media(prefers-reduced-motion:reduce){.tale-site[data-visual-style=premium] .tale-card:before,.tale-site[data-visual-style=premium] .tale-centered-link a,.tale-site[data-visual-style=premium] .tale-top-student-grid>div,.tale-site[data-visual-style=premium] .tale-faq-list summary span{transition:none}}
