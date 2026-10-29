@@ -31,7 +31,7 @@ try{
  await page.getByRole('button',{name:'Reload preview',exact:true}).click();
  await canvas.getByRole('heading',{name:'DEMO unsaved parity preview',exact:true}).waitFor({timeout:30000});
  report.checks.push('Reloaded iframe receives the latest unsaved draft');
- await page.getByLabel('Preview viewport',{exact:true}).selectOption('1440');
+ await page.getByRole('group',{name:'Preview viewport'}).getByRole('button',{name:'Desktop',exact:true}).click();
  assert.equal(await page.locator('iframe').evaluate(node=>node.style.width),'1440px');
  report.checks.push('Desktop viewport uses 1440px presentation');
  await page.screenshot({path:directory+'/cms-shared-preview.png',fullPage:true});
