@@ -1,5 +1,6 @@
 /** Browser helpers for the Teacher management API and Student academic reads. */
 const ERRORS:Record<string,string>={
+ SESSION_IN_FUTURE:'A class can only be marked completed on or after its date.',INVALID_SESSION_TRANSITION:'The class already has that status.',INVALID_SESSION:'Check the class date and times (the end must be after the start).',
  INVALID_LIFECYCLE_TRANSITION:'That status change is not allowed from the current status.',LIFECYCLE_REASON_REQUIRED:'Add a short reason for this status change.',LIFECYCLE_UNCHANGED:'The Student already has this status.',
  BATCH_CODE_EXISTS:'Another batch already uses this code.',BATCH_CODE_IMMUTABLE:'The batch code is locked once Students have enrolled.',CAPACITY_BELOW_ACTIVE:'Capacity cannot be lower than the number of active Students.',
  BATCH_NOT_BILLABLE:'Only open or running batches can be billed.',NO_FEE_RULE:'Set a monthly fee for this batch before billing.',FEE_RULE_EXISTS_FOR_PERIOD:'A fee change already starts in that month.',

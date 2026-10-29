@@ -30,6 +30,10 @@ test('reads are allow-listed and forward exact RPC arguments',()=>{
  assert.deepEqual(parseRead(TEACHER_READS,'finance-trend',q({})).args,{p_months:12});
  assert.deepEqual(parseRead(TEACHER_READS,'finance-trend',q({months:'24'})).args,{p_months:24});
  for(const bad of ['2','25','12.5','012'])rejects(()=>parseRead(TEACHER_READS,'finance-trend',q({months:bad})),'INVALID_FILTER');
+ assert.deepEqual(parseRead(TEACHER_READS,'dashboard',q({period:'2026-10'})),{rpc:'coaching_teacher_dashboard_analytics',args:{p_period:'2026-10'}});
+ assert.deepEqual(parseRead(TEACHER_READS,'dashboard',q({})).args,{p_period:''});
+ rejects(()=>parseRead(TEACHER_READS,'dashboard',q({period:'2026'})),'INVALID_FILTER');
+ rejects(()=>parseRead(STUDENT_READS,'dashboard',q({})),'UNKNOWN_ACTION');
 });
 
 test('student lifecycle command requires a known status and bounded reason',()=>{
@@ -109,4 +113,20 @@ test('management routes require teacher/student verification and the write gate'
  assert.match(route,/allowedBrowserMutation/);assert.match(route,/COACHING_ENABLE_MUTATION_APIS/);assert.match(route,/actor\.role!==role/);assert.match(route,/actor\.role!=='teacher'/);
  assert.match(readFileSync('src/app/api/v1/student/academic/[action]/route.ts','utf8'),/managementRead\('student'\)/);
  assert.doesNotMatch(readFileSync('src/app/api/v1/student/academic/[action]/route.ts','utf8'),/POST/);
+});
+
+test('class session reads are range-checked and commands validate exact data keys',()=>{
+ assert.deepEqual(parseRead(TEACHER_READS,'sessions',q({batchId:id,from:'2026-10-01',to:'2026-10-31'})),{rpc:'coaching_class_sessions',args:{p_batch_id:id,p_from:'2026-10-01',p_to:'2026-10-31'}});
+ assert.equal(parseRead(STUDENT_READS,'sessions',q({batchId:id,from:'2026-10-01',to:'2026-10-31'})).rpc,'coaching_class_sessions');
+ rejects(()=>parseRead(TEACHER_READS,'sessions',q({batchId:id,from:'2026-10-31',to:'2026-10-01'})),'INVALID_FILTER');
+ rejects(()=>parseRead(TEACHER_READS,'sessions',q({batchId:id})),'INVALID_FILTER');
+ const create={action:'create',data:{batchId:id,date:'2026-11-02',startMinute:960,endMinute:1050,topic:'Vectors',location:'Room 2'}};
+ assert.deepEqual(parseCommand('session-write',create,op).args,{p_action:'create',p_session_id:null,p_data:create.data,p_operation_id:op});
+ rejects(()=>parseCommand('session-write',{...create,data:{...create.data,endMinute:900}},op),'INVALID_INPUT');
+ rejects(()=>parseCommand('session-write',{...create,data:{...create.data,evil:1}},op),'INVALID_INPUT');
+ rejects(()=>parseCommand('session-write',{action:'update',sessionId:id,data:{batchId:id}},op),'INVALID_INPUT');
+ assert.equal(parseCommand('session-write',{action:'status',sessionId:id,data:{status:'completed',markTopicCompleted:true}},op).rpc,'coaching_class_session_write');
+ rejects(()=>parseCommand('session-write',{action:'status',sessionId:id,data:{status:'deleted'}},op),'INVALID_INPUT');
+ assert.equal(parseCommand('session-generate',{batchId:id,from:'2026-11-01',to:'2026-11-30'},op).rpc,'coaching_generate_class_sessions');
+ rejects(()=>parseCommand('session-generate',{batchId:id,from:'2026-11-01',to:'2027-02-01'},op),'INVALID_INPUT');
 });

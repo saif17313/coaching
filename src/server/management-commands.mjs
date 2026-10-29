@@ -26,6 +26,7 @@ const optionalUuid=(query,key)=>{const value=query.get(key)??'';if(value&&!isUui
 const requiredUuid=(query,key)=>{const value=query.get(key)??'';if(!isUuid(value))fail(400,'INVALID_FILTER');return value;};
 const search=value=>text(value,100);
 
+const sessionRange={rpc:'coaching_class_sessions',keys:['batchId','from','to'],args:q=>{const from=filter(q,'from',v=>DATE.test(v)),to=filter(q,'to',v=>DATE.test(v));if(to<from)fail(400,'INVALID_FILTER');return {p_batch_id:requiredUuid(q,'batchId'),p_from:from,p_to:to};}};
 export const TEACHER_READS={
  students:{rpc:'coaching_teacher_student_directory_v2',keys:['q','accountStatus','className','feeStatus','lifecycle','batchId','limit','offset'],args:q=>({
   p_search:filter(q,'q',search).trim(),p_status:filter(q,'accountStatus',v=>['','pending','active','disabled','rejected'].includes(v)),
@@ -43,11 +44,14 @@ export const TEACHER_READS={
  'exam-sheet':{rpc:'coaching_teacher_exam_sheet',keys:['examId'],args:q=>({p_exam_id:requiredUuid(q,'examId')})},
  syllabus:{rpc:'coaching_batch_syllabus_progress',keys:['batchId'],args:q=>({p_batch_id:requiredUuid(q,'batchId')})},
  'student-exam-history':{rpc:'coaching_teacher_student_exam_history',keys:['studentId'],args:q=>({p_student_id:requiredUuid(q,'studentId')})},
+ sessions:sessionRange,
+ dashboard:{rpc:'coaching_teacher_dashboard_analytics',keys:['period'],args:q=>({p_period:filter(q,'period',v=>v===''||PERIOD.test(v))})},
  'finance-trend':{rpc:'coaching_teacher_finance_trend',keys:['months'],args:q=>({p_months:Number(filter(q,'months',v=>v===''||/^([3-9]|1\d|2[0-4])$/.test(v))||'12')})},
 };
 
 export const STUDENT_READS={
  'exam-history':{rpc:'coaching_student_exam_history',keys:[],args:()=>({})},
+ sessions:sessionRange,
  syllabus:{rpc:'coaching_batch_syllabus_progress',keys:['batchId'],args:q=>({p_batch_id:requiredUuid(q,'batchId')})},
  'batch-profile':{rpc:'coaching_batch_profile',keys:['batchId'],args:q=>({p_batch_id:requiredUuid(q,'batchId')})},
 };
@@ -83,6 +87,21 @@ function validBatchData(data,create){
  return true;
 }
 
+const SESSION_KEYS=['batchId','subjectId','date','startMinute','endMinute','topic','unitId','location','notes'];
+function validSession(data,create){
+ if(!only(data,SESSION_KEYS))return false;
+ if(create&&!(isUuid(data.batchId)&&DATE.test(data.date??'')&&'startMinute' in data&&'endMinute' in data))return false;
+ if(!create&&'batchId' in data)return false;
+ for(const key of ['subjectId','unitId'])if(key in data&&!(data[key]===''||isUuid(data[key])))return false;
+ if('date' in data&&!DATE.test(data.date))return false;
+ if(('startMinute' in data)!==('endMinute' in data))return false;
+ if('startMinute' in data&&!(int(data.startMinute,0,1439)&&int(data.endMinute,1,1440)&&data.endMinute>data.startMinute))return false;
+ if('topic' in data&&!text(data.topic,200))return false;
+ if('location' in data&&!text(data.location,300))return false;
+ if('notes' in data&&!longText(data.notes,1000))return false;
+ return true;
+}
+
 export const TEACHER_COMMANDS={
  'student-lifecycle':{rpc:'coaching_set_student_lifecycle',valid:b=>only(b,['studentId','status','reason'])&&isUuid(b.studentId)&&oneOf(b.status,['active','inactive','cancelled','completed'])&&(b.reason===undefined||text(b.reason,500)),
   args:(b,op)=>({p_student_id:b.studentId,p_status:b.status,p_reason:(b.reason??'').trim(),p_operation_id:op})},
@@ -104,6 +123,13 @@ export const TEACHER_COMMANDS={
  'exam-attendance':{rpc:'coaching_record_exam_attendance',valid:b=>only(b,['examId','studentId','attendance','marks','remarks'])&&isUuid(b.examId)&&isUuid(b.studentId)&&oneOf(b.attendance,['attempted','absent'])
    &&(b.attendance==='absent'?b.marks===null:typeof b.marks==='number'&&Number.isFinite(b.marks)&&b.marks>=0&&b.marks<=10000&&Math.round(b.marks*100)===b.marks*100)&&text(b.remarks??'',500),
   args:(b,op)=>({p_exam_id:b.examId,p_student_id:b.studentId,p_attendance:b.attendance,p_marks:b.marks,p_remarks:(b.remarks??'').trim(),p_operation_id:op})},
+ 'session-write':{rpc:'coaching_class_session_write',valid:b=>only(b,['action','sessionId','data'])&&oneOf(b.action,['create','update','status'])&&plain(b.data)
+   &&(b.action==='create'?b.sessionId===undefined:isUuid(b.sessionId))
+   &&(b.action==='status'?only(b.data,['status','markTopicCompleted'])&&oneOf(b.data.status,['scheduled','completed','cancelled'])&&(b.data.markTopicCompleted===undefined||typeof b.data.markTopicCompleted==='boolean')
+    :validSession(b.data,b.action==='create')),
+  args:(b,op)=>({p_action:b.action,p_session_id:b.sessionId??null,p_data:b.data,p_operation_id:op})},
+ 'session-generate':{rpc:'coaching_generate_class_sessions',valid:b=>only(b,['batchId','from','to'])&&isUuid(b.batchId)&&DATE.test(b.from??'')&&DATE.test(b.to??'')&&b.from<=b.to
+   &&(Date.parse(b.to)-Date.parse(b.from))/86400000<=61,args:(b,op)=>({p_batch_id:b.batchId,p_from:b.from,p_to:b.to,p_operation_id:op})},
  'syllabus-write':{rpc:'coaching_syllabus_unit_write',valid:b=>only(b,['action','unitId','subjectId','data'])&&oneOf(b.action,['create','update','status'])&&plain(b.data)
    &&(b.action==='create'?isUuid(b.subjectId)&&b.unitId===undefined:isUuid(b.unitId)&&b.subjectId===undefined)
    &&(b.action==='status'?only(b.data,['status','completedOn'])&&oneOf(b.data.status,['planned','in_progress','completed'])&&(b.data.completedOn===undefined||DATE.test(b.data.completedOn))
@@ -128,6 +154,7 @@ const KNOWN=new Map(Object.entries({
  INVALID_CONCESSION:400,STUDENT_NOT_ENROLLED:409,CONCESSION_OVERLAP:409,CONCESSION_NOT_ACTIVE:409,INVALID_INPUT:400,
  INVALID_EXAM:400,EXAM_NOT_EDITABLE:409,MARKS_EXCEED_MAX:400,COVERAGE_SUBJECT_MISMATCH:400,INVALID_RESULT:400,EXAM_NOT_SCHEDULED:409,EXAM_NOT_HELD:409,
  STUDENT_NOT_ACTIVE:409,RESULT_ALREADY_PUBLISHED:409,
+ INVALID_SESSION:400,INVALID_SESSION_TRANSITION:409,SESSION_NOT_FOUND:404,SESSION_IN_FUTURE:409,
  INVALID_SYLLABUS:400,PARENT_SUBJECT_MISMATCH:400,SYLLABUS_DEPTH_EXCEEDED:409,SYLLABUS_TOO_LARGE:409,COMPLETION_IN_FUTURE:400,INVALID_FILTER:400,
 }));
 /** Maps a PostgREST RPC error body to a safe status/code; unknown errors never leak details. */
