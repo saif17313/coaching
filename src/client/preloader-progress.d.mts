@@ -7,4 +7,5 @@ export function milestoneFraction(signals:PreloaderSignals,id:PreloaderMilestone
 export function progressTarget(signals:PreloaderSignals):number;
 export function currentMilestone(signals:PreloaderSignals):PreloaderMilestone|null;
 export function easeProgress(display:number,target:number,elapsedMs:number):number;
+export function shouldExit(state:{now:number;introUntil:number;deadline:number;completeAt:number;holdMs:number;target:number}):boolean;
 export function displayPercent(display:number):number;

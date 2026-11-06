@@ -1,6 +1,6 @@
 'use client';
 import {useEffect,useRef,type CSSProperties} from 'react';
-import {currentMilestone,displayPercent,easeProgress,progressTarget,type PreloaderSignals} from '@/client/preloader-progress.mjs';
+import {currentMilestone,displayPercent,easeProgress,progressTarget,shouldExit,type PreloaderSignals} from '@/client/preloader-progress.mjs';
 import {EduCentreLogo} from './EduCentreLogo';
 import {InlineScript} from './InlineScript';
 import './preloader.css';
@@ -13,6 +13,8 @@ const INTRO_MS=2600,INTRO_REDUCED_MS=300;
 const COMPLETE_HOLD_MS=520,EXIT_MS=950;
 /** Once the interface is running, slow images never hold the site hostage beyond this. */
 const MAX_WAIT_MS=6000;
+/** Once everything has loaded the bar may still be animating; the guard timer allows for that final stretch. */
+const FINISH_GRACE_MS=1500;
 /** Matches the CSS failsafe that hides the overlay if scripts never arrive. */
 const FAILSAFE_MS=11000;
 
@@ -55,7 +57,8 @@ export function EduCentrePreloader(){
    if(!alive)return;
    try{
     if(now-sampled>150){sampled=now;sampleMedia();}
-    display=easeProgress(display,progressTarget(signals),now-last);last=now;
+    const target=progressTarget(signals);
+    display=easeProgress(display,target,now-last);last=now;
     el.style.setProperty('--ec-p',display.toFixed(4));
     const pct=displayPercent(display),text=currentMilestone(signals)?.label??(pct===100?'Ready':'Finishing up');
     if(pct!==shown||text!==label){
@@ -64,13 +67,13 @@ export function EduCentrePreloader(){
      bar.setAttribute('aria-valuetext',`${pct}% · ${text}`);
     }
     if(display>=1&&!completeAt){completeAt=now;el.dataset.complete='';}
-    if(now>=introUntil&&((completeAt&&now-completeAt>=COMPLETE_HOLD_MS)||now>=deadline)){exit();return;}
+    if(shouldExit({now,introUntil,deadline,completeAt,holdMs:COMPLETE_HOLD_MS,target})){exit();return;}
    }catch{exit();return;}
    frame=requestAnimationFrame(step);
   };
   frame=requestAnimationFrame(step);
-  // rAF pauses in background tabs; this still releases the page.
-  const guard=window.setTimeout(exit,deadline-started+COMPLETE_HOLD_MS);
+  // rAF pauses in background tabs; this still releases the page (with room for a bar that is finishing its last stretch).
+  const guard=window.setTimeout(exit,deadline-started+COMPLETE_HOLD_MS+FINISH_GRACE_MS);
   const block=(e:Event)=>e.preventDefault();
   const onKey=(e:KeyboardEvent)=>{if(e.key==='Escape')exit();};
   el.addEventListener('wheel',block,{passive:false});el.addEventListener('touchmove',block,{passive:false});

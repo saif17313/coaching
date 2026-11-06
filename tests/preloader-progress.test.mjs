@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {PRELOADER_MILESTONES,progressTarget,currentMilestone,easeProgress,displayPercent,mediaFraction} from '../src/client/preloader-progress.mjs';
+import {PRELOADER_MILESTONES,progressTarget,currentMilestone,easeProgress,displayPercent,mediaFraction,shouldExit} from '../src/client/preloader-progress.mjs';
 const none=()=>({document:false,interface:false,typography:false,resources:false,media:{done:0,total:0}});
 const all=()=>({document:true,interface:true,typography:true,resources:true,media:{done:4,total:4}});
 test('milestone weights cover the whole bar exactly once',()=>{
@@ -32,6 +32,15 @@ test('displayed progress is monotonic, never overshoots and never jumps',()=>{
  assert.equal(d,1,'reaches completion exactly');
  assert.ok(frames>=55,'a full sweep takes at least ~0.9s at 60fps');
  assert.ok(frames<240,'and settles within a few seconds');
+});
+test('exit waits for the reveal, shows completion, and only cuts off while something is still loading',()=>{
+ const base={introUntil:2600,deadline:7400,completeAt:0,holdMs:520,target:.6};
+ assert.equal(shouldExit({...base,now:2000,completeAt:1500}),false,'never before the brand reveal');
+ assert.equal(shouldExit({...base,now:3000,completeAt:2700}),false,'holds so completion is seen');
+ assert.equal(shouldExit({...base,now:3300,completeAt:2700}),true);
+ assert.equal(shouldExit({...base,now:7000}),false);
+ assert.equal(shouldExit({...base,now:7400}),true,'slow assets cannot hold visitors past the deadline');
+ assert.equal(shouldExit({...base,now:7600,target:1}),false,'everything loaded: let the bar reach 100%');
 });
 test('100% is shown only on genuine completion',()=>{
  assert.equal(displayPercent(0),0);

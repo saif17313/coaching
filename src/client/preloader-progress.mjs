@@ -45,5 +45,16 @@ export function easeProgress(display,target,elapsedMs){
  return target-next<.0015?target:next;
 }
 
+/**
+ * When the overlay may leave: never before the brand reveal, then once completion has been shown for `holdMs`.
+ * The deadline releases visitors from slow assets, but only while something is still outstanding; once everything
+ * has loaded, the bar finishes its last stretch rather than vanishing short of 100%.
+ */
+export function shouldExit({now,introUntil,deadline,completeAt,holdMs,target}){
+ if(now<introUntil)return false;
+ if(completeAt)return now-completeAt>=holdMs;
+ return now>=deadline&&target<1;
+}
+
 /** Whole percentage for display. 100 is reserved for genuine completion. */
 export function displayPercent(display){return display>=1?100:Math.min(99,Math.floor(display*100));}
