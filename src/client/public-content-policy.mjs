@@ -9,7 +9,9 @@ const copy=new Map([
  ['DEMO PREVIEW - A sample learning space for physics, mathematics, class and exam preparation. Actual enrollment and dates will be announced by the coaching team.','Explore structured learning in physics, mathematics and exam preparation. Contact the coaching team for current batches and admission details.'],
  ['Sample themes to customize.','Clear explanations, purposeful practice and thoughtful feedback.'],
 ]);
-export function publicText(value){if(typeof value!=='string')return value;const exact=copy.get(value.trim());if(exact)return exact;if(/\b(?:DEMO PREVIEW|DEMO ONLY|DEMO data|DEMO PLACEHOLDER|Replace with|Sample placeholder)/i.test(value.trim()))return '';return value;}
+export function publicText(value){if(typeof value!=='string')return value;const exact=copy.get(value.trim());if(exact)return exact;if(/\b(?:DEMO PREVIEW|DEMO ONLY|DEMO data|DEMO PLACEHOLDER|Replace with|Sample placeholder)/i.test(value.trim()))return '';
+ // Editor instructions typed into public fields are meant for administrators, never for visitors.
+ if(/^(?:Update (?:the )?global CMS settings|Admin note:)/i.test(value.trim()))return '';return value;}
 export function publicContactEmail(value){return typeof value==='string'&&!/@(?:example\.(?:invalid|com|org|net)|test\.com)$/i.test(value.trim())?value:'';}
 const publishable=value=>value?.title?.startsWith?.('[SAMPLE] ')?isPublishedSample(value):!isPlaceholderRecord(value);
 function clean(value){if(Array.isArray(value))return value.filter(publishable).map(clean);if(value&&typeof value==='object'){if(!publishable(value))return null;return Object.fromEntries(Object.entries(value).map(([key,next])=>[key,['email','contactEmail'].includes(key)?publicContactEmail(next):['title','heading','body','description','headline','tagline','teacherBio','subtitle','title1','title2','footerText'].includes(key)?publicText(next):clean(next)]));}return value;}

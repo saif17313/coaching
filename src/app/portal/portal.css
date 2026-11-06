@@ -52,3 +52,15 @@
 @media(max-width:700px){.studio-write-status{flex-direction:column;align-items:stretch}.studio-write-status .portal-secondary{width:100%}}
 @media(prefers-reduced-motion:reduce){.studio-page-entry,.studio-section-select,.studio-item-select{transition:none}}
 .admission-profile{padding:24px;display:grid;gap:18px;scroll-margin-top:24px}.admission-summary{display:flex;gap:24px;flex-wrap:wrap;margin:0}.admission-summary dt{font-size:12px;color:#638080}.admission-summary dd{margin:6px 0;font-weight:700;overflow-wrap:anywhere}.admission-profile input[readonly],.admission-profile textarea[readonly]{background:#f3f7f5;color:#536b70}.admission-profile fieldset{min-width:0}.admission-profile .studio-expansion{margin:0}.admission-profile legend{font-weight:750;color:#315e63;padding:0 6px}
+/* Sign-in screen in the EduCentre navy, gold and ivory identity shared with the public website. */
+.portal-login-screen{background:radial-gradient(50% 60% at 85% 10%,#e1e9f2,#e1e9f200 70%),radial-gradient(40% 50% at 5% 95%,#f3e6c899,#f3e6c800 70%),#f7f4ec}
+.portal-login-aside{background:radial-gradient(60% 70% at 100% 100%,#c6a15b2e,#c6a15b00 65%),radial-gradient(50% 60% at 0% 0%,#0e7c7433,#0e7c7400 70%),linear-gradient(150deg,#1d3a66,#0a1c38)}
+.portal-login-aside .portal-kicker,.portal-login-form-panel .portal-kicker{color:#c6a15b}
+.portal-login-art{border-color:#c6a15b4d;background:linear-gradient(145deg,#ffffff1a,#c6a15b14)}
+.portal-login-art small,.portal-login-aside-content p{color:#cdd6e2}
+.portal-login-form-panel h2{color:#0f2747}
+.portal-login-screen .portal-primary{background:linear-gradient(135deg,#1d3a66,#0f2747);border:1px solid #c6a15b59;box-shadow:0 14px 30px -16px #0f2747cc}
+.portal-login-screen .portal-primary span{color:#e7cf9c}
+.portal-login-screen input:focus{border-color:#c6a15b;box-shadow:0 0 0 3px #c6a15b2e}
+.portal-login-screen .portal-back{color:#0b5f5a}
+.portal-login-wrap{box-shadow:0 40px 80px -30px #0f274766}
