@@ -44,7 +44,7 @@ export async function examSheetPdf(sheet){
  facts([['Attempted',String(attempted.length)],['Absent',String(sheet.rows.filter(r=>r.participation==='absent').length)],['Not recorded',String(sheet.rows.filter(r=>r.participation==='not_recorded').length)],
   ['Average',marks.length?(marks.reduce((a,b)=>a+b,0)/marks.length).toFixed(2):'—'],['Highest / lowest',marks.length?`${Math.max(...marks)} / ${Math.min(...marks)}`:'—'],['Pass rate',passed===null||!marks.length?'—':`${Math.round(passed/marks.length*100)}% (${passed}/${marks.length})`]]);
  const ordered=[...sheet.rows].sort((a,b)=>(a.rank??9999)-(b.rank??9999)||a.fullName.localeCompare(b.fullName));
- table([{label:'RANK',width:42},{label:'STUDENT',width:150},{label:'ROLL',width:95},{label:'ATTENDANCE',width:72},{label:'MARKS',width:52},{label:'%',width:40},{label:'GRADE',width:40},{label:'REMARKS',width:24}],
+ table([{label:'RANK',width:42},{label:'STUDENT',width:150},{label:'STUDENT ID',width:95},{label:'ATTENDANCE',width:72},{label:'MARKS',width:52},{label:'%',width:40},{label:'GRADE',width:40},{label:'REMARKS',width:24}],
   ordered.map(r=>{const p=r.marks!==null?Number(r.marks)/e.maxMarks*100:null;return [r.rank?String(r.rank):'—',r.fullName,r.admissionRoll??'—',PARTICIPATION[r.participation]??r.participation,r.marks!==null?String(Number(r.marks)):'—',p===null?'—':p.toFixed(1),p===null?'—':letterGrade(p),r.remarks?'✓':''];}));
  const remarks=ordered.filter(r=>r.remarks);if(remarks.length){line('Remarks',11);for(const r of remarks)line(`${r.fullName}: ${r.remarks}`,9,muted);}
  line('"Not recorded" means no result was entered; it is never counted as absent or zero.',8,muted);
@@ -57,7 +57,7 @@ export async function progressReportPdf({student,exams}){
  header('STUDENT PROGRESS REPORT','Published examination results');
  const past=exams.filter(x=>!x.upcoming),attempted=past.filter(x=>x.participation==='attempted'&&x.marks!==null),percents=attempted.map(x=>Number(x.marks)/x.maxMarks*100);
  const avg=percents.length?percents.reduce((a,b)=>a+b,0)/percents.length:null;
- facts([['Student',student.fullName],['Admission roll',student.admissionRoll||'—'],['Batches',[...new Set(exams.map(x=>x.batchName))].join(', ')||'—'],['Report date',today()]]);
+ facts([['Student',student.fullName],['Student ID',student.admissionRoll||'—'],['Batches',[...new Set(exams.map(x=>x.batchName))].join(', ')||'—'],['Report date',today()]]);
  facts([['Exams attempted',String(attempted.length)],['Absent',String(past.filter(x=>x.participation==='absent').length)],['Awaiting result',String(past.filter(x=>x.participation==='not_recorded').length)],
   ['Average score',avg===null?'—':`${avg.toFixed(1)}% (${letterGrade(avg)})`],['Best score',percents.length?`${Math.max(...percents).toFixed(1)}%`:'—']]);
  const bySubject=new Map();for(const x of attempted){const list=bySubject.get(x.subject)??[];list.push(Number(x.marks)/x.maxMarks*100);bySubject.set(x.subject,list);}

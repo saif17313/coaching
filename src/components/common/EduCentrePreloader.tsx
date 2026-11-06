@@ -6,7 +6,6 @@ import {InlineScript} from './InlineScript';
 import './preloader.css';
 
 const SEEN_KEY='educentre:intro-seen';
-const REPLAY_AFTER_MS=12*60*60*1000;
 /** The brand reveal (CSS timeline) needs this long from first paint; reduced motion skips it. */
 const INTRO_MS=2600,INTRO_REDUCED_MS=300;
 /** Hold after reaching 100% so the completion shimmer is seen, then the exit transition length. */
@@ -18,10 +17,10 @@ const FINISH_GRACE_MS=1500;
 /** Matches the CSS failsafe that hides the overlay if scripts never arrive. */
 const FAILSAFE_MS=11000;
 
-// Decides before first paint: the intro plays once per 12 hours, never inside frames (CMS previews) or automated
-// browsers (it is purely presentational and would only delay tests), and not at all when storage is unavailable,
-// so a blocked browser is never shown it on every load.
-const DECIDE=`(function(){var s=document.currentScript,el=s&&s.parentNode,play=false;if(!el)return;try{var now=Date.now(),last=Number(localStorage.getItem("${SEEN_KEY}"))||0;play=window.self===window.top&&!navigator.webdriver&&now-last>${REPLAY_AFTER_MS};if(play)localStorage.setItem("${SEEN_KEY}",String(now))}catch(e){play=false}el.setAttribute("data-state",play?"intro":"done");el.setAttribute("data-t0",String(Math.round(performance.now())))})()`;
+// Decides before first paint: the intro plays once per visit (each new tab or window; reloads and in-site navigation
+// skip it), never inside frames (CMS previews) or automated browsers (it is purely presentational and would only
+// delay tests), and not at all when storage is unavailable, so a blocked browser is never shown it on every load.
+const DECIDE=`(function(){var s=document.currentScript,el=s&&s.parentNode,play=false;if(!el)return;try{play=window.self===window.top&&!navigator.webdriver&&!sessionStorage.getItem("${SEEN_KEY}");if(play)sessionStorage.setItem("${SEEN_KEY}",String(Date.now()))}catch(e){play=false}el.setAttribute("data-state",play?"intro":"done");el.setAttribute("data-t0",String(Math.round(performance.now())))})()`;
 
 const MOTES:[string,string,number,number][]=[['9%','68%',.9,3],['16%','28%',2.2,2],['24%','86%',3.6,2.5],['31%','14%',1.4,2],['69%','18%',2.8,2.5],['77%','80%',1.1,3],['86%','36%',4.2,2],['92%','62%',1.9,2.5],['6%','42%',4.8,2],['61%','90%',3.2,2],['43%','9%',5.1,2],['54%','84%',.7,2.5]];
 const TICKS=[.25,.5,.75];

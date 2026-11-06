@@ -16,7 +16,7 @@ export function validateAdmissionProfile(value,id,role){
  const keys=['id','fullName','email','accountStatus','revision','admissionRoll','admittedOn','personal','guardian','admissionDueId','enrollments','feePlans'];
  const exact=(v,fields)=>plain(v)&&Object.keys(v).length===fields.length&&fields.every(key=>Object.hasOwn(v,key));
  const text=(v,max)=>typeof v==='string'&&v.length<=max&&!/[\x00-\x1f\x7f]/.test(v);
- if(!exact(value,keys)||value.id!==id||!text(value.fullName,160)||!text(value.email,254)||!['pending','active','disabled','rejected'].includes(value.accountStatus)||!Number.isSafeInteger(value.revision)||value.revision<0||!(value.admissionRoll===null||/^EC-\d{4}-\d{8,}$/.test(value.admissionRoll))||!(value.admittedOn===null||/^\d{4}-\d{2}-\d{2}$/.test(value.admittedOn)))throw Error('UPSTREAM_DATA_INVALID');
+ if(!exact(value,keys)||value.id!==id||!text(value.fullName,160)||!text(value.email,254)||!['pending','active','disabled','rejected'].includes(value.accountStatus)||!Number.isSafeInteger(value.revision)||value.revision<0||!(value.admissionRoll===null||typeof value.admissionRoll==='string'&&/^(?:[1-9]\d{9}|EC-\d{4}-\d{8,})$/.test(value.admissionRoll))||!(value.admittedOn===null||/^\d{4}-\d{2}-\d{2}$/.test(value.admittedOn)))throw Error('UPSTREAM_DATA_INVALID');
  const personal=['phone','dateOfBirth','photoMediaId','schoolName','className','stream','academicSession','presentAddress','district'];
  const guardian=['fullName','relationship','mobile',...(role==='teacher'?['emergencyContact']:[])];
  if(!exact(value.personal,personal)||!exact(value.guardian,guardian)||!guardian.every(key=>text(value.guardian[key],160)))throw Error('UPSTREAM_DATA_INVALID');
