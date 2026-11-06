@@ -23,5 +23,5 @@ export function safeSupabaseAuthConfig(env){
 }
 export function verifyLoginBody(input){
  if(!input||typeof input!=='object'||Array.isArray(input)||Object.keys(input).sort().join(',')!=='email,password')return false;
- return typeof input.email==='string'&&input.email.length>=3&&input.email.length<=254&&/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.email)&&typeof input.password==='string'&&input.password.length>=1&&input.password.length<=512;
+ return typeof input.email==='string'&&input.email.length>=3&&input.email.length<=254&&(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.email)||/^[1-9][0-9]{9}$/.test(input.email))&&typeof input.password==='string'&&input.password.length>=1&&input.password.length<=512;
 }
