@@ -1,1 +1,19 @@
-export function BrandSymbol({size=64,className=''}:{size?:number;className?:string}){return <svg className={className} width={size} height={size} viewBox="0 0 64 64" fill="none" aria-hidden="true"><rect x="2" y="2" width="60" height="60" rx="18" fill="#007D73"/><path d="M13 22c8-3 13-2 19 3 6-5 11-6 19-3v24c-8-3-13-2-19 3-6-5-11-6-19-3V22Z" fill="#F8F6E9"/><path d="M32 25v24M19 28l7 2m-7 5 7 2m12-7 7-2m-7 9 7-2" stroke="#007D73" strokeWidth="2.5" strokeLinecap="round"/><path d="m32 10 3 5-3 5-3-5 3-5Z" fill="#E9C782"/></svg>;}
+import {useId} from 'react';
+import {EDUCENTRE_EMBLEM as P} from './educentre-logo-paths';
+
+/** Square EduCentre brand mark: the traced cap, E monogram and open book on an ivory tile with a hairline gold edge. */
+export function BrandSymbol({size=64,className=''}:{size?:number;className?:string}){
+ const uid='bs'+useId().replace(/[^a-zA-Z0-9_-]/g,'');
+ const gold=`url(#${uid}-gold)`;
+ return <svg className={className} width={size} height={size} viewBox="0 0 64 64" fill="none" aria-hidden="true">
+  <defs>
+   <linearGradient id={`${uid}-tile`} x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor="#fffdf8"/><stop offset="1" stopColor="#f3ecdc"/></linearGradient>
+   <linearGradient id={`${uid}-gold`} gradientUnits="userSpaceOnUse" x1="250" y1="0" x2="850" y2="0"><stop offset="0" stopColor="#b08341"/><stop offset=".5" stopColor="#e3c487"/><stop offset="1" stopColor="#ad8040"/></linearGradient>
+  </defs>
+  <rect x="1.5" y="1.5" width="61" height="61" rx="17" fill={`url(#${uid}-tile)`} stroke="#c9a15a" strokeOpacity=".55"/>
+  <g transform="translate(-4.26 10.9) scale(.0663)" fillRule="evenodd">
+   <path d={P.bookBase} fill="#071d42"/><path d={P.pageLeft} fill={gold}/><path d={P.pageRight} fill={gold}/>
+   <path d={P.monogram} fill="#071d42"/><path d={P.capBoard} fill="#071d42"/><path d={P.capBand} fill={gold}/><path d={P.tassel} fill={gold}/>
+  </g>
+ </svg>;
+}
